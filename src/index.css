@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-primary-black: #000000;
+  --color-primary-white: #FFFFFF;
+  --color-primary-dark-gray: #1a1a1a;
+
+  --color-accent-crypto: #3B82F6;
+  --color-accent-anime: #EF4444;
+  --color-accent-success: #10B981;
+  --color-accent-warning: #F59E0B;
+
+  --color-bg-light: #f5f5f5;
+  --color-bg-card: #FFFFFF;
+  --color-bg-hover: #f8fafc;
+
+  /* Typography */
+  --font-heading: "Inter", "Montserrat", sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+
+  --font-size-h1: 2.5rem;
+  --font-size-h2: 2rem;
+  --font-size-h3: 1.5rem;
+  --font-size-body: 1rem;
+  --font-size-small: 0.875rem;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+}
+
+/* Custom Utilities based on Design System JSON */
+@utility btn-primary {
+  @apply bg-black text-white px-6 py-3 rounded-lg font-bold hover:bg-gray-800 transition;
+}
+
+@utility btn-secondary {
+  @apply border-2 border-black bg-white text-black px-6 py-3 rounded-lg font-bold hover:bg-gray-50 transition;
+}
+
+@utility btn-danger {
+  @apply bg-red-600 text-white px-4 py-2 rounded font-medium;
+}
+
+@utility btn-icon {
+  @apply p-2 rounded-full hover:bg-gray-100;
+}
+
+@utility card-product {
+  @apply bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition;
+}
+
+@utility card-creator {
+  @apply bg-white rounded-xl p-6 border border-gray-200;
+}
+
+@utility input-text {
+  @apply border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black;
+}
+
+@utility input-select {
+  @apply border border-gray-300 rounded-lg px-4 py-2.5 appearance-none bg-white;
+}
+
+@utility badge-limited {
+  @apply bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-bold;
+}
+
+@utility badge-new {
+  @apply bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-bold;
+}
+
+@utility badge-trending {
+  @apply bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-bold;
+}
+
+@utility layout-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+@utility layout-section {
+  @apply py-12 md:py-16;
+}
+
+@utility grid-products {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@utility animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@utility animate-slideUp {
+  animation: slideUp 0.5s ease-out;
+}
+
+:root {
+  background-color: var(--color-bg-light);
+  color: var(--color-primary-black);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
