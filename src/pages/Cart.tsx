@@ -108,13 +108,13 @@ const Cart: React.FC = () => {
 
                     <div className="mb-8">
                         <label className="block text-xs font-black uppercase tracking-widest mb-3 text-primary-dark-gray/60">Promo Code</label>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                             <input
                                 type="text"
                                 placeholder="ENTER CODE"
-                                className="input-text flex-1 uppercase font-black text-sm"
+                                className="input-text flex-1 uppercase font-black text-sm min-w-0"
                             />
-                            <button className="bg-primary-black text-primary-white px-6 py-3 rounded-xl font-black hover:bg-primary-dark-gray transition-all">
+                            <button className="bg-primary-black text-primary-white px-6 py-3 rounded-xl font-black hover:bg-primary-dark-gray transition-all whitespace-nowrap shrink-0">
                                 APPLY
                             </button>
                         </div>

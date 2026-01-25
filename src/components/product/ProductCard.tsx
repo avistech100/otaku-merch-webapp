@@ -23,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             className="card-product group animate-fadeIn"
         >
             {/* Image Container */}
-            <div className="relative aspect-[4/5] overflow-hidden">
+            <div className="relative aspect-square overflow-hidden">
                 <img
                     src={product.image}
                     alt={product.title}
@@ -60,30 +60,31 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </div>
 
             {/* Product Details */}
-            <div className="p-5">
+            <div className="p-4 flex flex-col flex-grow">
                 <div className="flex justify-between items-start mb-2">
-                    <div>
+                    <div className="flex-grow min-w-0">
                         <p className="text-[10px] font-bold text-primary-dark-gray/60 uppercase tracking-widest mb-1">
                             {product.creatorBadge}
                         </p>
-                        <h3 className="font-bold text-lg group-hover:text-accent-crypto transition-all truncate pr-2 text-primary-black">
+                        <h3 className="font-bold text-base group-hover:text-accent-crypto transition-all truncate pr-2 text-primary-black">
                             {product.title}
                         </h3>
                     </div>
-                    <p className="font-black text-xl text-primary-black">
+                </div>
+                <div className="mt-auto">
+                    <p className="font-black text-lg text-primary-black">
                         ${product.price.toFixed(2)}
                     </p>
-                </div>
-
-                <div className="flex items-center gap-2 mt-4">
-                    <div className="w-5 h-5 bg-bg-light rounded-full overflow-hidden">
-                        <img
-                            src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${product.creatorId}`}
-                            alt="Creator"
-                            className="w-full h-full"
-                        />
+                    <div className="flex items-center gap-2 mt-3">
+                        <div className="w-5 h-5 bg-bg-light rounded-full overflow-hidden">
+                            <img
+                                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${product.creatorId}`}
+                                alt="Creator"
+                                className="w-full h-full"
+                            />
+                        </div>
+                        <span className="text-[10px] text-primary-dark-gray/60 font-medium tracking-tight">by CreativeLabs</span>
                     </div>
-                    <span className="text-xs text-primary-dark-gray/60 font-medium tracking-tight">by CreativeLabs</span>
                 </div>
             </div>
         </Link>

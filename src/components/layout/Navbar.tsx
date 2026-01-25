@@ -23,9 +23,19 @@ const Navbar: React.FC = () => {
                     <Link to="/creator/c1" className="font-bold text-primary-dark-gray hover:text-accent-crypto transition-all duration-300">CREATORS</Link>
                 </div>
 
+                {/* Search Bar - Desktop */}
+                <div className="hidden md:block relative w-[300px]">
+                    <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-dark-gray/50" size={16} />
+                    <input
+                        type="text"
+                        placeholder="Search Web3 & Anime merch..."
+                        className="w-full h-10 pl-10 pr-10 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-black transition-all text-sm"
+                    />
+                </div>
+
                 {/* Icons */}
-                <div className="flex items-center gap-6 text-primary-black">
-                    <button className="hover:text-accent-anime transition-all duration-300">
+                <div className="flex items-center gap-4 lg:gap-6 text-primary-black">
+                    <button className="md:hidden hover:text-accent-anime transition-all duration-300">
                         <FaSearch size={20} />
                     </button>
                     <Link to="/cart" className="relative hover:text-accent-anime transition-all duration-300">
@@ -50,9 +60,21 @@ const Navbar: React.FC = () => {
                 </div>
             </div>
 
+            {/* Mobile Search Bar Overlay (Always visible or toggleable) */}
+            <div className="md:hidden px-4 pb-4">
+                <div className="relative w-full">
+                    <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-dark-gray/50" size={14} />
+                    <input
+                        type="text"
+                        placeholder="Search merch..."
+                        className="w-full h-9 pl-9 pr-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-black transition-all text-xs"
+                    />
+                </div>
+            </div>
+
             {/* Mobile Menu Overlay */}
             {isMenuOpen && (
-                <div className="md:hidden absolute top-20 left-0 w-full bg-primary-white border-b border-bg-light p-6 flex flex-col gap-6 shadow-xl animate-fadeIn">
+                <div className="md:hidden absolute top-full left-0 w-full bg-primary-white border-b border-bg-light p-6 flex flex-col gap-6 shadow-xl animate-fadeIn z-50">
                     <Link to="/products" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-primary-black">SHOP ALL</Link>
                     <Link to="/products?category=Crypto Brands" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-primary-black">CRYPTO BRANDS</Link>
                     <Link to="/products?category=Anime Series" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-primary-black">ANIME SERIES</Link>
