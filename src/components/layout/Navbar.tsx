@@ -1,11 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaShoppingCart, FaBars, FaTimes, FaSearch, FaUser } from 'react-icons/fa';
+import { FaShoppingCart, FaBars, FaTimes, FaSearch, FaUser, FaSignOutAlt, FaBell } from 'react-icons/fa';
 import { useCartStore } from '../../store/useCartStore';
+import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../hooks/useAuth';
+import AuthModal from '../auth/AuthModal';
 
 const Navbar: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [notifications, setNotifications] = useState<any[]>([]);
+    const { user, signOut } = useAuth();
     const totalItems = useCartStore((state) => state.getTotalItems());
+
+    useEffect(() => {
+        if (!user) return;
+
+        // Fetch initial notifications
+        const fetchNotifications = async () => {
+            const { data } = await supabase
+                .from('notifications')
+                .select('*')
+                .eq('user_id', user.id)
+                .eq('read', false)
+                .order('created_at', { ascending: false });
+            if (data) setNotifications(data);
+        };
+
+        fetchNotifications();
+
+        // Subscribe to NEW notifications
+        const channel = supabase
+            .channel(`notifications-${user.id}`)
+            .on(
+                'postgres_changes',
+                {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'notifications',
+                    filter: `user_id=eq.${user.id}`
+                },
+                (payload) => {
+                    console.log('New notification:', payload);
+                    setNotifications(current => [payload.new, ...current]);
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [user]);
+
+    const handleSignOut = async () => {
+        await signOut();
+    };
 
     return (
         <nav className="fixed top-0 left-0 w-full bg-primary-white z-50 border-b border-bg-light shadow-sm">
@@ -20,7 +69,7 @@ const Navbar: React.FC = () => {
                     <Link to="/products" className="font-bold text-primary-dark-gray hover:text-accent-anime transition-all duration-300">SHOP ALL</Link>
                     <Link to="/products?category=Crypto Brands" className="font-bold text-primary-dark-gray hover:text-accent-crypto transition-all duration-300">CRYPTO</Link>
                     <Link to="/products?category=Anime Series" className="font-bold text-primary-dark-gray hover:text-accent-anime transition-all duration-300">ANIME</Link>
-                    <Link to="/creator/c1" className="font-bold text-primary-dark-gray hover:text-accent-crypto transition-all duration-300">CREATORS</Link>
+                    <Link to="/products" className="font-bold text-primary-dark-gray hover:text-accent-crypto transition-all duration-300">CREATORS</Link>
                 </div>
 
                 {/* Search Bar - Desktop */}
@@ -35,9 +84,6 @@ const Navbar: React.FC = () => {
 
                 {/* Icons */}
                 <div className="flex items-center gap-4 lg:gap-6 text-primary-black">
-                    <button className="md:hidden hover:text-accent-anime transition-all duration-300">
-                        <FaSearch size={20} />
-                    </button>
                     <Link to="/cart" className="relative hover:text-accent-anime transition-all duration-300">
                         <FaShoppingCart size={22} />
                         {totalItems > 0 && (
@@ -46,9 +92,58 @@ const Navbar: React.FC = () => {
                             </span>
                         )}
                     </Link>
-                    <button className="hidden md:block hover:text-accent-anime transition-all duration-300">
-                        <FaUser size={20} />
-                    </button>
+
+                    {user && (
+                        <div className="relative group">
+                            <button className="hover:text-accent-anime transition-all duration-300 pt-1">
+                                <FaBell size={20} />
+                                {notifications.length > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-accent-anime w-2 h-2 rounded-full ring-2 ring-primary-white"></span>
+                                )}
+                            </button>
+                            {/* Notification Dropdown */}
+                            <div className="absolute right-0 top-full mt-4 w-64 bg-primary-white border border-bg-light rounded-2xl shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 p-4">
+                                <h4 className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-3">Recent Alerts</h4>
+                                <div className="space-y-3">
+                                    {notifications.length === 0 ? (
+                                        <p className="text-xs font-medium text-primary-dark-gray/40 italic">No new alerts</p>
+                                    ) : (
+                                        notifications.slice(0, 3).map((n: any) => (
+                                            <div key={n.id} className="text-xs font-bold text-primary-black pb-2 border-b border-bg-light last:border-0">
+                                                <p className="line-clamp-2">{n.message}</p>
+                                                <span className="text-[8px] opacity-30 uppercase">{new Date(n.created_at).toLocaleTimeString()}</span>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                                {notifications.length > 0 && (
+                                    <Link to="/admin/analytics" className="block text-center text-[10px] font-black text-accent-crypto mt-4 uppercase tracking-widest hover:underline">View Intelligence</Link>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {user ? (
+                        <div className="flex items-center gap-4">
+                            <div className="w-8 h-8 rounded-full overflow-hidden border border-bg-light">
+                                <img
+                                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.email}`}
+                                    alt="Avatar"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <button onClick={handleSignOut} className="text-primary-dark-gray/60 hover:text-accent-anime transition-all">
+                                <FaSignOutAlt size={18} />
+                            </button>
+                        </div>
+                    ) : (
+                        <button
+                            onClick={() => setIsAuthModalOpen(true)}
+                            className="hidden md:flex items-center gap-2 font-black text-xs uppercase tracking-widest hover:text-accent-anime transition-all"
+                        >
+                            <FaUser size={18} /> LOGIN
+                        </button>
+                    )}
 
                     {/* Mobile Menu Toggle */}
                     <button
@@ -60,34 +155,40 @@ const Navbar: React.FC = () => {
                 </div>
             </div>
 
-            {/* Mobile Search Bar Overlay (Always visible or toggleable) */}
-            <div className="md:hidden px-4 pb-4">
-                <div className="relative w-full">
-                    <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-dark-gray/50" size={14} />
-                    <input
-                        type="text"
-                        placeholder="Search merch..."
-                        className="w-full h-9 pl-9 pr-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-black transition-all text-xs"
-                    />
-                </div>
-            </div>
-
             {/* Mobile Menu Overlay */}
             {isMenuOpen && (
                 <div className="md:hidden absolute top-full left-0 w-full bg-primary-white border-b border-bg-light p-6 flex flex-col gap-6 shadow-xl animate-fadeIn z-50">
                     <Link to="/products" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-primary-black">SHOP ALL</Link>
                     <Link to="/products?category=Crypto Brands" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-primary-black">CRYPTO BRANDS</Link>
                     <Link to="/products?category=Anime Series" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-primary-black">ANIME SERIES</Link>
-                    <Link to="/creator/c1" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-primary-black">CREATORS</Link>
+                    <Link to="/products" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-primary-black">CREATORS</Link>
                     <hr className="border-bg-light" />
-                    <div className="flex items-center gap-4 text-primary-black">
-                        <FaUser />
-                        <span className="font-bold">MY ACCOUNT</span>
-                    </div>
+                    {!user ? (
+                        <button
+                            onClick={() => { setIsAuthModalOpen(true); setIsMenuOpen(false); }}
+                            className="flex items-center gap-4 text-primary-black font-black uppercase tracking-widest"
+                        >
+                            <FaUser /> LOGIN / SIGNUP
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
+                            className="flex items-center gap-4 text-primary-black font-black uppercase tracking-widest"
+                        >
+                            <FaSignOutAlt /> LOGOUT
+                        </button>
+                    )}
                 </div>
             )}
+
+            <AuthModal
+                isOpen={isAuthModalOpen}
+                onClose={() => setIsAuthModalOpen(false)}
+            />
         </nav>
     );
 };
 
 export default Navbar;
+
+

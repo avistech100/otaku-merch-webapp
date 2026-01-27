@@ -1,17 +1,73 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { products } from '../data/mockData';
+import { supabase } from '../lib/supabase';
 import ProductCard from '../components/product/ProductCard';
 import { FaArrowRight, FaGem, FaRobot, FaFire } from 'react-icons/fa';
 
 const Home: React.FC = () => {
-    const featuredProducts = products.slice(0, 3);
+    const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                // Fetch categories
+                const { data: catData } = await supabase
+                    .from('categories')
+                    .select('*');
+
+                if (catData) setCategories(catData);
+
+                // Fetch featured products (approved status)
+                const { data: prodData } = await supabase
+                    .from('products')
+                    .select(`
+                        *,
+                        product_images(src, alt_text),
+                        product_variants(*)
+                    `)
+                    .eq('status', 'approved')
+                    .limit(3);
+
+                if (prodData) {
+                    // Map to existing Product type structure if needed
+                    const mappedProducts = prodData.map(p => ({
+                        id: p.id,
+                        title: p.title,
+                        price: p.price,
+                        description: p.description,
+                        image: p.product_images?.[0]?.src || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600',
+                        category: catData?.find(c => c.id === p.category_id)?.name || '',
+                        isLimited: p.is_limited_edition,
+                        hypeLevel: p.hype_score > 80 ? 'Legendary' : p.hype_score > 50 ? 'High' : 'Medium',
+                        chain: p.crypto_chain
+                    }));
+                    setFeaturedProducts(mappedProducts);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchData();
+    }, []);
+
+    const getIcon = (iconName: string) => {
+        switch (iconName) {
+            case 'FaGem': return <FaGem className="text-accent-crypto" size={24} />;
+            case 'FaRobot': return <FaRobot className="text-accent-anime" size={24} />;
+            case 'FaFire': return <FaFire className="text-accent-anime" size={24} />;
+            default: return <FaFire className="text-accent-anime" size={24} />;
+        }
+    };
 
     return (
         <div className="pb-20">
             {/* Hero Section */}
             <section className="relative h-[80vh] min-h-[600px] flex items-center bg-primary-black overflow-hidden">
-                {/* Background Animation/Image Placeholder */}
                 <div className="absolute inset-0 opacity-40">
                     <img
                         src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80&w=1200"
@@ -41,7 +97,7 @@ const Home: React.FC = () => {
                                 SHOP COLLECTION <FaArrowRight className="group-hover:translate-x-2 transition-transform" />
                             </Link>
                             <Link
-                                to="/creator/c1"
+                                to="/products"
                                 className="bg-primary-dark-gray text-primary-white border border-primary-dark-gray/30 font-black px-10 py-5 rounded-full hover:bg-primary-black transition-all"
                             >
                                 VIEW CREATORS
@@ -51,70 +107,59 @@ const Home: React.FC = () => {
                 </div>
             </section>
 
-            {/* Categories / Collections */}
+            {/* Categories */}
             <section className="layout-container layout-section">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* Crypto Category */}
-                    <Link to="/products?category=Crypto Brands" className="group relative h-[400px] rounded-3xl overflow-hidden bg-bg-light shadow-sm hover:shadow-xl transition-all duration-500">
-                        <img
-                            src="https://images.unsplash.com/photo-1622633054716-a618ee4e14f6?auto=format&fit=crop&q=80&w=800"
-                            alt="Crypto Brands"
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-primary-black/80 to-transparent flex flex-col justify-end p-10">
-                            <div className="flex items-center gap-3 mb-4">
-                                <FaGem className="text-accent-crypto" size={24} />
-                                <span className="text-primary-white/60 font-black tracking-widest text-xs uppercase">Curated Drop</span>
+                    {categories.slice(0, 2).map((cat) => (
+                        <Link
+                            key={cat.id}
+                            to={`/products?category=${cat.name}`}
+                            className="group relative h-[400px] rounded-3xl overflow-hidden bg-bg-light shadow-sm hover:shadow-xl transition-all duration-500"
+                        >
+                            <img
+                                src={cat.slug === 'crypto-brands' ? "https://images.unsplash.com/photo-1622633054716-a618ee4e14f6?auto=format&fit=crop&q=80&w=800" : "https://images.unsplash.com/photo-1541562232579-512a21360020?auto=format&fit=crop&q=80&w=800"}
+                                alt={cat.name}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-primary-black/80 to-transparent flex flex-col justify-end p-10">
+                                <div className="flex items-center gap-3 mb-4">
+                                    {getIcon(cat.icon)}
+                                    <span className="text-primary-white/60 font-black tracking-widest text-xs uppercase">{cat.type === 'crypto' ? 'Curated Drop' : 'Seasonal Drop'}</span>
+                                </div>
+                                <h2 className="text-4xl font-black text-primary-white mb-4 tracking-tighter uppercase">{cat.name}</h2>
+                                <p className="text-primary-white/70 mb-6 font-medium">{cat.description}</p>
+                                <span className="text-primary-white font-bold border-b-2 border-accent-anime w-fit pb-1 group-hover:pr-4 transition-all uppercase tracking-widest text-xs">EXPLORE NOW</span>
                             </div>
-                            <h2 className="text-4xl font-black text-primary-white mb-4 tracking-tighter">CRYPTO BRANDS</h2>
-                            <p className="text-primary-white/70 mb-6 font-medium">Explore apparel from the most iconic projects in the space.</p>
-                            <span className="text-primary-white font-bold border-b-2 border-accent-crypto w-fit pb-1 group-hover:pr-4 transition-all uppercase tracking-widest text-xs">EXPLORE NOW</span>
-                        </div>
-                    </Link>
-
-                    {/* Anime Category */}
-                    <Link to="/products?category=Anime Series" className="group relative h-[400px] rounded-3xl overflow-hidden bg-bg-light shadow-sm hover:shadow-xl transition-all duration-500">
-                        <img
-                            src="https://images.unsplash.com/photo-1541562232579-512a21360020?auto=format&fit=crop&q=80&w=800"
-                            alt="Anime Series"
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-primary-black/80 to-transparent flex flex-col justify-end p-10">
-                            <div className="flex items-center gap-3 mb-4">
-                                <FaRobot className="text-accent-anime" size={24} />
-                                <span className="text-primary-white/60 font-black tracking-widest text-xs uppercase">Seasonal Drop</span>
-                            </div>
-                            <h2 className="text-4xl font-black text-primary-white mb-4 tracking-tighter">ANIME SERIES</h2>
-                            <p className="text-primary-white/70 mb-6 font-medium">High-end mecha and cyberpunk inspired streetwear.</p>
-                            <span className="text-primary-white font-bold border-b-2 border-accent-anime w-fit pb-1 group-hover:pr-4 transition-all uppercase tracking-widest text-xs">EXPLORE NOW</span>
-                        </div>
-                    </Link>
+                        </Link>
+                    ))}
                 </div>
             </section>
 
             {/* New Arrivals */}
-            <section className="bg-bg-card layout-section border-y border-bg-light">
-                <div className="layout-container">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-                        <div>
-                            <div className="flex items-center gap-2 mb-4 text-accent-anime">
-                                <FaFire />
-                                <span className="font-black text-xs uppercase tracking-widest">Trending Now</span>
+            {featuredProducts.length > 0 && (
+                <section className="bg-bg-card layout-section border-y border-bg-light">
+                    <div className="layout-container">
+                        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                            <div>
+                                <div className="flex items-center gap-2 mb-4 text-accent-anime">
+                                    <FaFire />
+                                    <span className="font-black text-xs uppercase tracking-widest">Trending Now</span>
+                                </div>
+                                <h2 className="text-5xl font-black mb-0 tracking-tighter uppercase text-primary-black">NEW ARRIVALS</h2>
                             </div>
-                            <h2 className="text-5xl font-black mb-0 tracking-tighter uppercase text-primary-black">NEW ARRIVALS</h2>
+                            <Link to="/products" className="font-bold flex items-center gap-2 hover:text-accent-anime transition-all text-primary-black">
+                                VIEW ALL PRODUCTS <FaArrowRight size={14} />
+                            </Link>
                         </div>
-                        <Link to="/products" className="font-bold flex items-center gap-2 hover:text-accent-anime transition-all text-primary-black">
-                            VIEW ALL PRODUCTS <FaArrowRight size={14} />
-                        </Link>
-                    </div>
 
-                    <div className="grid-products">
-                        {featuredProducts.map(product => (
-                            <ProductCard key={product.id} product={product} />
-                        ))}
+                        <div className="grid-products">
+                            {featuredProducts.map(product => (
+                                <ProductCard key={product.id} product={product} />
+                            ))}
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             {/* Creator Spotlight */}
             <section className="layout-container layout-section">
@@ -140,7 +185,7 @@ const Home: React.FC = () => {
                             </div>
                         </div>
                         <Link
-                            to="/creator/c1"
+                            to="/products"
                             className="bg-accent-anime text-primary-white font-black px-10 py-5 rounded-full hover:brightness-110 shadow-lg shadow-accent-anime/20 transition-all flex items-center gap-2 w-fit uppercase tracking-widest"
                         >
                             FOLLOW CREATOR
@@ -153,3 +198,4 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+

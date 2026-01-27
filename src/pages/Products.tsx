@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { products } from '../data/mockData';
+import { supabase } from '../lib/supabase';
 import ProductCard from '../components/product/ProductCard';
 import { FaChevronDown } from 'react-icons/fa';
 
@@ -8,8 +8,52 @@ const Products: React.FC = () => {
     const [searchParams] = useSearchParams();
     const categoryParam = searchParams.get('category');
 
+    const [products, setProducts] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
     const [selectedChain, setSelectedChain] = useState<string>('All');
     const [selectedSort, setSelectedSort] = useState<string>('Newest');
+
+    useEffect(() => {
+        async function fetchData() {
+            setLoading(true);
+            try {
+                // Fetch categories
+                const { data: catData } = await supabase.from('categories').select('*');
+                if (catData) setCategories(catData);
+
+                // Fetch products (approved status)
+                const { data: prodData } = await supabase
+                    .from('products')
+                    .select(`
+                        *,
+                        product_images(src, alt_text),
+                        product_variants(*)
+                    `)
+                    .eq('status', 'approved');
+
+                if (prodData) {
+                    const mappedProducts = prodData.map(p => ({
+                        id: p.id,
+                        title: p.title,
+                        price: p.price,
+                        description: p.description,
+                        image: p.product_images?.[0]?.src || '',
+                        category: catData?.find(c => c.id === p.category_id)?.name || '',
+                        isLimited: p.is_limited_edition,
+                        hypeLevel: p.hype_score > 80 ? 'Legendary' : p.hype_score > 50 ? 'High' : 'Medium',
+                        chain: p.crypto_chain
+                    }));
+                    setProducts(mappedProducts);
+                }
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchData();
+    }, []);
 
     const filteredProducts = useMemo(() => {
         let result = products;
@@ -29,7 +73,20 @@ const Products: React.FC = () => {
         }
 
         return result;
-    }, [categoryParam, selectedChain, selectedSort]);
+    }, [products, categoryParam, selectedChain, selectedSort]);
+
+    const chains = useMemo(() => {
+        const uniqueChains = Array.from(new Set(products.map(p => p.chain).filter(Boolean)));
+        return ['All', ...uniqueChains];
+    }, [products]);
+
+    if (loading) {
+        return (
+            <div className="h-screen w-full flex items-center justify-center font-black text-4xl animate-pulse">
+                OTAKU <span className="text-accent ml-2">LOADING...</span>
+            </div>
+        );
+    }
 
     return (
         <div className="layout-container py-12 animate-fadeIn">
@@ -49,10 +106,10 @@ const Products: React.FC = () => {
                             onChange={(e) => setSelectedChain(e.target.value)}
                             className="input-select pr-12 w-full cursor-pointer font-bold focus:ring-2 focus:ring-accent-crypto text-primary-black"
                         >
-                            <option>All Chains</option>
-                            <option>Ethereum</option>
-                            <option>Solana</option>
-                            <option>Polygon</option>
+                            <option value="All">All Chains</option>
+                            {chains.filter(c => c !== 'All').map(chain => (
+                                <option key={chain} value={chain}>{chain}</option>
+                            ))}
                         </select>
                         <FaChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-primary-dark-gray/30" size={12} />
                     </div>
@@ -95,3 +152,4 @@ const Products: React.FC = () => {
 };
 
 export default Products;
+

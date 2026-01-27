@@ -1,13 +1,16 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { products } from '../data/mockData';
+import { supabase } from '../lib/supabase';
 import { useCartStore } from '../store/useCartStore';
 import ProductCard from '../components/product/ProductCard';
 import { FaMinus, FaPlus, FaCheck, FaStar, FaChevronLeft } from 'react-icons/fa';
 
 const ProductDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const product = products.find(p => p.id === id);
+    const [product, setProduct] = useState<any>(null);
+    const [variants, setVariants] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
     const addItem = useCartStore(state => state.addItem);
 
     const [activeImage, setActiveImage] = useState(0);
@@ -15,7 +18,105 @@ const ProductDetail: React.FC = () => {
     const [quantity, setQuantity] = useState(1);
     const [activeTab, setActiveTab] = useState('Description');
 
-    const relatedProducts = useMemo(() => products.filter(p => p.id !== id).slice(0, 4), [id]);
+    useEffect(() => {
+        async function fetchProduct() {
+            setLoading(true);
+            try {
+                // Fetch product with images and variants
+                const { data, error } = await supabase
+                    .from('products')
+                    .select(`
+                        *,
+                        product_images(*),
+                        product_variants(*),
+                        categories(name)
+                    `)
+                    .eq('id', id)
+                    .single();
+
+                if (data) {
+                    const mappedProduct = {
+                        id: data.id,
+                        title: data.title,
+                        price: data.price,
+                        description: data.description,
+                        images: data.product_images?.length > 0
+                            ? data.product_images.sort((a: any, b: any) => a.position - b.position).map((img: any) => img.src)
+                            : ['https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600'],
+                        category: data.categories?.name || 'Uncategorized',
+                        creatorId: data.creator_id,
+                        isLimited: data.is_limited_edition,
+                        sizes: data.product_variants?.map((v: any) => v.option1).filter(Boolean) || [],
+                        details: {
+                            materials: data.metadata?.materials || 'Premium materials',
+                            designStory: data.story || 'No story provided'
+                        },
+                        reviews: []
+                    };
+                    setProduct(mappedProduct);
+                    setVariants(data.product_variants || []);
+
+                    // Fetch related products
+                    const { data: related } = await supabase
+                        .from('products')
+                        .select('*, product_images(src)')
+                        .eq('category_id', data.category_id)
+                        .neq('id', id)
+                        .limit(4);
+
+                    if (related) {
+                        setRelatedProducts(related.map(r => ({
+                            id: r.id,
+                            title: r.title,
+                            price: r.price,
+                            image: r.product_images?.[0]?.src || '',
+                        })));
+                    }
+                }
+            } catch (err) {
+                console.error("Error fetching product:", err);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        if (id) {
+            fetchProduct();
+
+            // Real-time Subscription for Inventory Updates
+            const channel = supabase
+                .channel(`product-variants-${id}`)
+                .on(
+                    'postgres_changes',
+                    {
+                        event: 'UPDATE',
+                        schema: 'public',
+                        table: 'product_variants',
+                        filter: `product_id=eq.${id}`
+                    },
+                    (payload) => {
+                        console.log('Inventory updated:', payload);
+                        setVariants(current =>
+                            current.map(v => v.id === payload.new.id ? payload.new : v)
+                        );
+                    }
+                )
+                .subscribe();
+
+            return () => {
+                supabase.removeChannel(channel);
+            };
+        }
+    }, [id]);
+
+
+    if (loading) {
+        return (
+            <div className="h-screen w-full flex items-center justify-center font-black text-4xl animate-pulse">
+                OTAKU <span className="text-accent ml-2">LOADING...</span>
+            </div>
+        );
+    }
 
     if (!product) {
         return (
@@ -27,7 +128,7 @@ const ProductDetail: React.FC = () => {
     }
 
     const handleAddToCart = () => {
-        if (!selectedSize) {
+        if (product.sizes.length > 0 && !selectedSize) {
             alert('Please select a size');
             return;
         }
@@ -52,7 +153,7 @@ const ProductDetail: React.FC = () => {
                         />
                     </div>
                     <div className="grid grid-cols-4 gap-4">
-                        {product.images.map((img, idx) => (
+                        {product.images.map((img: string, idx: number) => (
                             <button
                                 key={idx}
                                 onClick={() => setActiveImage(idx)}
@@ -75,9 +176,9 @@ const ProductDetail: React.FC = () => {
                         </div>
                         <h1 className="text-5xl font-black mb-4 tracking-tighter uppercase leading-none text-primary-black">{product.title}</h1>
                         <div className="flex items-center gap-6">
-                            <p className="text-4xl font-black text-primary-black">${product.price.toFixed(2)}</p>
+                            <p className="text-4xl font-black text-primary-black">${Number(product.price).toFixed(2)}</p>
                             <div className="flex items-center gap-1 text-accent-warning">
-                                <FaStar /> <span className="text-primary-black font-bold ml-1">4.9</span> <span className="text-primary-dark-gray/60 font-medium ml-1 text-sm">(124 reviews)</span>
+                                <FaStar /> <span className="text-primary-black font-bold ml-1">4.9</span> <span className="text-primary-dark-gray/60 font-medium ml-1 text-sm">(Verified)</span>
                             </div>
                         </div>
                     </div>
@@ -87,24 +188,26 @@ const ProductDetail: React.FC = () => {
                     </p>
 
                     {/* Size Selector */}
-                    <div className="mb-10">
-                        <div className="flex justify-between items-end mb-4">
-                            <h4 className="font-black text-sm uppercase tracking-widest text-primary-black">Select Size</h4>
-                            <button className="text-primary-dark-gray/60 text-xs font-bold underline hover:text-primary-black">Size Guide</button>
+                    {product.sizes.length > 0 && (
+                        <div className="mb-10">
+                            <div className="flex justify-between items-end mb-4">
+                                <h4 className="font-black text-sm uppercase tracking-widest text-primary-black">Select Size</h4>
+                                <button className="text-primary-dark-gray/60 text-xs font-bold underline hover:text-primary-black">Size Guide</button>
+                            </div>
+                            <div className="flex flex-wrap gap-3">
+                                {product.sizes.map((size: string) => (
+                                    <button
+                                        key={size}
+                                        onClick={() => setSelectedSize(size)}
+                                        className={`w-14 h-14 rounded-full border-2 font-black transition-all flex items-center justify-center
+                        ${selectedSize === size ? 'border-accent-anime bg-accent-anime text-primary-white' : 'border-bg-light hover:border-primary-black text-primary-black'}`}
+                                    >
+                                        {size}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
-                        <div className="flex flex-wrap gap-3">
-                            {product.sizes.map(size => (
-                                <button
-                                    key={size}
-                                    onClick={() => setSelectedSize(size)}
-                                    className={`w-14 h-14 rounded-full border-2 font-black transition-all flex items-center justify-center
-                    ${selectedSize === size ? 'border-accent-anime bg-accent-anime text-primary-white' : 'border-bg-light hover:border-primary-black text-primary-black'}`}
-                                >
-                                    {size}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                    )}
 
                     {/* Quantity & Add to Cart */}
                     <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -128,13 +231,13 @@ const ProductDetail: React.FC = () => {
                     {/* Creator Badge */}
                     <div className="flex items-center gap-4 p-6 bg-bg-light/50 rounded-3xl border border-bg-light">
                         <div className="w-12 h-12 bg-primary-white rounded-full overflow-hidden shadow-sm">
-                            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${product.creatorId}`} alt="Creator" />
+                            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${product.creatorId || 'default'}`} alt="Creator" />
                         </div>
                         <div>
                             <p className="text-[10px] font-black text-accent-crypto uppercase tracking-widest">Verified Creator</p>
                             <h4 className="font-bold flex items-center gap-2 uppercase text-primary-black">CreativeLabs <FaCheck className="text-accent-crypto" size={10} /></h4>
                         </div>
-                        <Link to={`/creator/${product.creatorId}`} className="ml-auto text-xs font-black border-b border-primary-black hover:text-accent-crypto hover:border-accent-crypto transition-all">VIEW PROFILE</Link>
+                        <Link to={`/products`} className="ml-auto text-xs font-black border-b border-primary-black hover:text-accent-crypto hover:border-accent-crypto transition-all">VIEW ALL PRODUCTS</Link>
                     </div>
                 </div>
             </div>
@@ -168,32 +271,24 @@ const ProductDetail: React.FC = () => {
                     )}
                     {activeTab === 'Reviews' && (
                         <div className="space-y-8">
-                            {product.reviews.length > 0 ? product.reviews.map(review => (
-                                <div key={review.id} className="border-b border-bg-light pb-8">
-                                    <div className="flex justify-between items-center mb-4">
-                                        <span className="font-bold text-primary-black">{review.userName}</span>
-                                        <span className="text-primary-dark-gray/40 text-sm">{review.date}</span>
-                                    </div>
-                                    <div className="flex text-accent-warning mb-4">
-                                        {[...Array(5)].map((_, i) => <FaStar key={i} />)}
-                                    </div>
-                                    <p className="text-primary-dark-gray/70">{review.comment}</p>
-                                </div>
-                            )) : <p className="text-primary-dark-gray/40 italic font-medium">No reviews yet for this product.</p>}
+                            <p className="text-primary-dark-gray/40 italic font-medium">No reviews yet for this product. Be the first to review!</p>
                         </div>
                     )}
                 </div>
             </section>
 
             {/* Related Products */}
-            <section className="animate-slideUp">
-                <h2 className="text-4xl font-black mb-12 tracking-tighter uppercase text-primary-black">You May Also Like</h2>
-                <div className="grid-products">
-                    {relatedProducts.map(p => <ProductCard key={p.id} product={p} />)}
-                </div>
-            </section>
+            {relatedProducts.length > 0 && (
+                <section className="animate-slideUp">
+                    <h2 className="text-4xl font-black mb-12 tracking-tighter uppercase text-primary-black">You May Also Like</h2>
+                    <div className="grid-products">
+                        {relatedProducts.map((p: any) => <ProductCard key={p.id} product={p} />)}
+                    </div>
+                </section>
+            )}
         </div>
     );
 };
 
 export default ProductDetail;
+
