@@ -106,8 +106,16 @@ const ProductEditor: React.FC = () => {
 
             const mainImage = finalImages[0] || '';
 
+            const generateSlug = (text: string) => {
+                return text
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/(^-|-$)+/g, '') + '-' + Math.random().toString(36).substring(2, 7);
+            };
+
             const productData = {
                 title,
+                slug: generateSlug(title),
                 description,
                 price: parseFloat(price),
                 compare_price: comparePrice ? parseFloat(comparePrice) : null,

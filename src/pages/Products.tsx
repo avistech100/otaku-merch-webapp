@@ -39,7 +39,7 @@ const Products: React.FC = () => {
                         title: p.title,
                         price: p.price,
                         description: p.description,
-                        image: p.product_images?.[0]?.src || '',
+                        image: p.image_url || p.product_images?.[0]?.src || '',
                         category: catData?.find(c => c.id === p.category_id)?.name || '',
                         isLimited: p.is_limited_edition,
                         hypeLevel: p.hype_score > 80 ? 'Legendary' : p.hype_score > 50 ? 'High' : 'Medium',

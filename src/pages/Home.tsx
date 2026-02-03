@@ -30,6 +30,7 @@ const Home: React.FC = () => {
                         product_variants(*)
                     `)
                     .eq('status', 'approved')
+                    .order('created_at', { ascending: false })
                     .limit(3);
 
                 if (prodData) {
@@ -39,7 +40,7 @@ const Home: React.FC = () => {
                         title: p.title,
                         price: p.price,
                         description: p.description,
-                        image: p.product_images?.[0]?.src || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600',
+                        image: p.image_url || p.product_images?.[0]?.src || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600',
                         category: catData?.find(c => c.id === p.category_id)?.name || '',
                         isLimited: p.is_limited_edition,
                         hypeLevel: p.hype_score > 80 ? 'Legendary' : p.hype_score > 50 ? 'High' : 'Medium',

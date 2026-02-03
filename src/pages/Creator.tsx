@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import ProductCard from '../components/product/ProductCard';
-import { FaTwitter, FaInstagram, FaGlobe, FaTrophy, FaCalendarAlt, FaCheckCircle, FaSpinner } from 'react-icons/fa';
+import { FaTwitter, FaInstagram, FaGlobe, FaTrophy, FaCalendarAlt, FaCheckCircle, FaSpinner, FaPlus, FaCheck } from 'react-icons/fa';
+import { useSocial } from '../hooks/useSocial';
 
 const Creator: React.FC = () => {
     const { id } = useParams<{ id: string }>();
+    const { isFollowing, followerCount, toggleFollow, loading: followLoading } = useSocial(id);
     const [creator, setCreator] = useState<any>(null);
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -97,8 +99,8 @@ const Creator: React.FC = () => {
 
                         <div className="flex flex-wrap gap-4 mb-8">
                             <div className="bg-bg-light/50 border border-bg-light rounded-2xl px-6 py-4 shadow-sm">
-                                <p className="text-2xl font-black tracking-tight text-primary-black">{(Math.random() * 10).toFixed(1)}K</p>
-                                <p className="text-[10px] font-black text-primary-dark-gray/30 uppercase tracking-widest">Followers (Sim)</p>
+                                <p className="text-2xl font-black tracking-tight text-primary-black">{followerCount}</p>
+                                <p className="text-[10px] font-black text-primary-dark-gray/30 uppercase tracking-widest">Followers</p>
                             </div>
                             <div className="bg-bg-light/50 border border-bg-light rounded-2xl px-6 py-4 shadow-sm">
                                 <p className="text-2xl font-black tracking-tight text-primary-black">{products.length}</p>
@@ -112,8 +114,15 @@ const Creator: React.FC = () => {
                             {socialLinks.website && <a href={socialLinks.website} target="_blank" rel="noopener noreferrer" className="p-4 bg-primary-black text-primary-white rounded-2xl hover:bg-accent-crypto hover:scale-105 transition-all"><FaGlobe /></a>}
                         </div>
 
-                        <button className="w-full bg-accent-crypto text-primary-white font-black py-4 rounded-full uppercase tracking-widest hover:brightness-110 shadow-lg shadow-accent-crypto/20 transition-all mb-12">
-                            FOLLOW CREATOR
+                        <button
+                            onClick={toggleFollow}
+                            disabled={followLoading}
+                            className={`w-full font-black py-4 rounded-full uppercase tracking-widest transition-all mb-12 flex items-center justify-center gap-2 shadow-lg ${isFollowing
+                                    ? 'bg-bg-light text-primary-black border-2 border-primary-black hover:bg-red-50 hover:text-red-500 hover:border-red-500'
+                                    : 'bg-accent-crypto text-primary-white hover:brightness-110 shadow-accent-crypto/20'
+                                }`}
+                        >
+                            {followLoading ? <FaSpinner className="animate-spin" /> : (isFollowing ? <><FaCheck /> FOLLOWING</> : <><FaPlus /> FOLLOW CREATOR</>)}
                         </button>
 
                         <div className="space-y-6">

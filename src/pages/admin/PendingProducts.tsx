@@ -8,11 +8,18 @@ const PendingProducts: React.FC = () => {
 
     const fetchPending = async () => {
         setLoading(true);
-        const { data } = await supabase
+        console.log('[Admin] Fetching pending products...');
+        const { data, error } = await supabase
             .from('products')
-            .select('*, profiles(full_name)')
+            .select('*, profiles!creator_id(full_name)')
             .eq('status', 'pending');
-        if (data) setProducts(data);
+
+        if (error) {
+            console.error('[Admin] Error fetching pending products:', error);
+        } else {
+            console.log('[Admin] Pending products data:', data);
+            if (data) setProducts(data);
+        }
         setLoading(false);
     };
 
@@ -48,7 +55,7 @@ const PendingProducts: React.FC = () => {
                     {products.map((product) => (
                         <div key={product.id} className="bg-primary-white border border-bg-light rounded-[40px] overflow-hidden shadow-2xl flex flex-col lg:flex-row group">
                             <div className="lg:w-72 bg-bg-light relative overflow-hidden">
-                                <img src={product.image || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=400'} alt="Product" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                <img src={product.image_url || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=400'} alt="Product" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                                 <div className="absolute top-4 left-4">
                                     <span className="bg-primary-white/90 backdrop-blur-md text-primary-black text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest flex items-center gap-2">
                                         <FaTag size={8} /> ${product.price}

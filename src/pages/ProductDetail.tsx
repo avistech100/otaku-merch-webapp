@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { useCartStore } from '../store/useCartStore';
 import ProductCard from '../components/product/ProductCard';
 import { FaMinus, FaPlus, FaCheck, FaStar, FaChevronLeft } from 'react-icons/fa';
+import CommentSection from '../components/product/CommentSection';
 
 const ProductDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -35,18 +36,20 @@ const ProductDetail: React.FC = () => {
                     .single();
 
                 if (data) {
+                    const mainImage = data.image_url;
+                    const additionalImages = data.additional_images || [];
+                    const allImages = [mainImage, ...additionalImages].filter(Boolean);
+
                     const mappedProduct = {
                         id: data.id,
                         title: data.title,
                         price: data.price,
                         description: data.description,
-                        images: data.product_images?.length > 0
-                            ? data.product_images.sort((a: any, b: any) => a.position - b.position).map((img: any) => img.src)
-                            : ['https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600'],
+                        images: allImages.length > 0 ? allImages : ['https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600'],
                         category: data.categories?.name || 'Uncategorized',
                         creatorId: data.creator_id,
                         isLimited: data.is_limited_edition,
-                        sizes: data.product_variants?.map((v: any) => v.option1).filter(Boolean) || [],
+                        sizes: data.variants?.map((v: any) => v.name).filter(Boolean) || [],
                         details: {
                             materials: data.metadata?.materials || 'Premium materials',
                             designStory: data.story || 'No story provided'
@@ -54,7 +57,7 @@ const ProductDetail: React.FC = () => {
                         reviews: []
                     };
                     setProduct(mappedProduct);
-                    setVariants(data.product_variants || []);
+                    setVariants(data.variants || []);
 
                     // Fetch related products
                     const { data: related } = await supabase
@@ -270,9 +273,7 @@ const ProductDetail: React.FC = () => {
                         <p className="text-primary-dark-gray/70 text-lg font-medium leading-relaxed">{product.details.designStory}</p>
                     )}
                     {activeTab === 'Reviews' && (
-                        <div className="space-y-8">
-                            <p className="text-primary-dark-gray/40 italic font-medium">No reviews yet for this product. Be the first to review!</p>
-                        </div>
+                        <CommentSection productId={id!} />
                     )}
                 </div>
             </section>

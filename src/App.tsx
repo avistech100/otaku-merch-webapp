@@ -14,6 +14,8 @@ const Cart = lazy(() => import('./pages/Cart'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 const Creator = lazy(() => import('./pages/Creator'));
 const Profile = lazy(() => import('./pages/Profile'));
+const Feed = lazy(() => import('./pages/Feed'));
+const Inbox = lazy(() => import('./pages/Inbox'));
 
 // Creator Dashboard Pages
 const CreatorDashboardLayout = lazy(() => import('./components/creator/CreatorDashboardLayout'));
@@ -105,6 +107,14 @@ const App: React.FC = () => {
 
             <Route path="/profile" element={<ProtectedRoute allowedRoles={['user', 'creator', 'admin']} />}>
               <Route index element={<Profile />} />
+            </Route>
+
+            <Route path="/feed" element={<ProtectedRoute allowedRoles={['user', 'creator', 'admin']} />}>
+              <Route index element={<Feed />} />
+            </Route>
+
+            <Route path="/inbox" element={<ProtectedRoute allowedRoles={['user', 'creator', 'admin']} />}>
+              <Route index element={<Inbox />} />
             </Route>
 
             {/* Creator Dashboard Routes */}
