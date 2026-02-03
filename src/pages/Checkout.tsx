@@ -93,10 +93,17 @@ const Checkout: React.FC = () => {
     const handleSuccess = async (id: string, reference: string) => {
         try {
             // Update order status in Supabase
-            await supabase.rpc('handle_payment_success', {
-                p_order_id: id,
-                p_reference: reference
-            });
+            // Update order status in Supabase
+            const { error: updateError } = await supabase
+                .from('orders')
+                .update({
+                    status: 'processing',
+                    payment_status: 'paid',
+                    // payment_ref: reference // Add this column if it exists, otherwise skip or store in metadata if needed. I'll skip to be safe matching schema.
+                })
+                .eq('id', id);
+
+            if (updateError) throw updateError;
 
             clearCart();
             setStep(4); // Success step

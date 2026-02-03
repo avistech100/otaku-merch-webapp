@@ -79,6 +79,11 @@ const Navbar: React.FC = () => {
                         type="text"
                         placeholder="Search Web3 & Anime merch..."
                         className="w-full h-10 pl-10 pr-10 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-black transition-all text-sm"
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                window.location.href = `/products?search=${e.currentTarget.value}`;
+                            }
+                        }}
                     />
                 </div>
 

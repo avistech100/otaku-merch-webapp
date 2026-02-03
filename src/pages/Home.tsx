@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import ProductCard from '../components/product/ProductCard';
-import { FaArrowRight, FaGem, FaRobot, FaFire } from 'react-icons/fa';
+import CreatorSignupModal from '../components/auth/CreatorSignupModal';
+import { FaArrowRight, FaGem, FaRobot, FaFire, FaStore } from 'react-icons/fa';
 
 const Home: React.FC = () => {
     const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isCreatorModalOpen, setIsCreatorModalOpen] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -96,6 +98,12 @@ const Home: React.FC = () => {
                             >
                                 SHOP COLLECTION <FaArrowRight className="group-hover:translate-x-2 transition-transform" />
                             </Link>
+                            <button
+                                onClick={() => setIsCreatorModalOpen(true)}
+                                className="bg-accent-crypto text-primary-white font-black px-10 py-5 rounded-full hover:bg-accent-anime transition-all flex items-center gap-2"
+                            >
+                                <FaStore /> BECOME A CREATOR
+                            </button>
                             <Link
                                 to="/products"
                                 className="bg-primary-dark-gray text-primary-white border border-primary-dark-gray/30 font-black px-10 py-5 rounded-full hover:bg-primary-black transition-all"
@@ -193,6 +201,12 @@ const Home: React.FC = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Creator Signup Modal */}
+            <CreatorSignupModal
+                isOpen={isCreatorModalOpen}
+                onClose={() => setIsCreatorModalOpen(false)}
+            />
         </div>
     );
 };

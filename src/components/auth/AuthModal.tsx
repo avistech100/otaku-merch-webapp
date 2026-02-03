@@ -27,17 +27,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
             } else {
-                const { error } = await supabase.auth.signUp({
+                const { data, error } = await supabase.auth.signUp({
                     email,
                     password,
                     options: {
                         data: {
                             full_name: fullName,
-                        }
+                        },
+                        emailRedirectTo: window.location.origin
                     }
                 });
                 if (error) throw error;
-                alert('Check your email for the confirmation link!');
+
+                // Check if email confirmation is required
+                if (data?.user && !data.session) {
+                    alert('✅ Account created! Check your email for the confirmation link.');
+                } else if (data?.session) {
+                    // Auto-confirmed (happens when email confirmation is disabled in Supabase)
+                    alert('✅ Account created successfully! You are now logged in.');
+                }
             }
             onClose();
         } catch (err: any) {
