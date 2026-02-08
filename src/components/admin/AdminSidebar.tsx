@@ -12,7 +12,7 @@ interface AdminSidebarProps {
     setIsMobileMenuOpen?: (open: boolean) => void;
 }
 
-const AdminSidebar: React.FC<AdminSidebarProps> = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
+const AdminSidebar: React.FC<AdminSidebarProps> = ({ isMobileMenuOpen: _isMobileMenuOpen, setIsMobileMenuOpen: _setIsMobileMenuOpen }) => {
     const { signOut } = useAuth();
     const navigate = useNavigate();
 

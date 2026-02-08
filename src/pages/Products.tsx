@@ -110,10 +110,7 @@ const Products: React.FC = () => {
         return result;
     }, [products, selectedCategory, searchParam, selectedChain, selectedSort, priceRange]);
 
-    const chains = useMemo(() => {
-        const uniqueChains = Array.from(new Set(products.map(p => p.chain).filter(Boolean)));
-        return ['All', ...uniqueChains];
-    }, [products]);
+
 
     if (loading) {
         return (

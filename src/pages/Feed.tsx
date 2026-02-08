@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 import ProductCard from '../components/product/ProductCard';
-import { FaUserCircle, FaSpinner, FaFire } from 'react-icons/fa';
+import { FaSpinner, FaFire } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Feed: React.FC = () => {
@@ -112,12 +112,21 @@ const Feed: React.FC = () => {
                                     id: p.id,
                                     title: p.title,
                                     price: p.price,
+                                    description: p.description || '',
                                     image: p.image_url,
-                                    category: p.category,
-                                    creator: p.profiles?.store_name || p.profiles?.full_name || 'Creator',
+                                    images: p.product_images?.map((img: any) => img.url) || [p.image_url],
+                                    category: p.category || 'Crypto Brands',
                                     creatorId: p.creator_id,
-                                    isNew: new Date(p.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-                                    inStock: p.stock_quantity > 0
+                                    creatorName: p.profiles?.store_name || p.profiles?.full_name || 'Verified Creator',
+                                    creatorBadge: 'Verified',
+                                    sizes: p.sizes || ['M', 'L', 'XL'],
+                                    isLimited: p.is_limited_edition || false,
+                                    hypeLevel: 'Medium' as const,
+                                    reviews: [],
+                                    details: {
+                                        materials: p.materials || '',
+                                        designStory: p.design_story || ''
+                                    }
                                 };
                                 return <ProductCard key={p.id} product={mappedProduct} />;
                             })}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaGlobe, FaCogs, FaSave, FaShieldAlt, FaPercentage, FaExclamationTriangle } from 'react-icons/fa';
+import { FaGlobe, FaCogs, FaSave, FaPercentage, FaExclamationTriangle } from 'react-icons/fa';
 
 const SiteSettings: React.FC = () => {
     const [maintenanceMode, setMaintenanceMode] = useState(false);

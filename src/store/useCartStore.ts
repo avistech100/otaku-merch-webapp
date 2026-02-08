@@ -150,6 +150,7 @@ export const useCartStore = create<CartState>()(
                                 images: [],
                                 category: 'Crypto Brands', // Placeholder
                                 creatorId: item.products.creator_id,
+                                creatorName: 'Verified Creator', // Default name
                                 creatorBadge: 'Verified',
                                 sizes: [],
                                 isLimited: item.products.is_limited_edition,

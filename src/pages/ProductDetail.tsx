@@ -9,7 +9,7 @@ import CommentSection from '../components/product/CommentSection';
 const ProductDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [product, setProduct] = useState<any>(null);
-    const [variants, setVariants] = useState<any[]>([]);
+    const [_variants, setVariants] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
     const addItem = useCartStore(state => state.addItem);
@@ -24,7 +24,7 @@ const ProductDetail: React.FC = () => {
             setLoading(true);
             try {
                 // Fetch product with images and variants
-                const { data, error } = await supabase
+                const { data, error: _error } = await supabase
                     .from('products')
                     .select(`
                         *,

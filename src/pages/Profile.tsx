@@ -70,7 +70,7 @@ const Profile: React.FC = () => {
     };
 
     const fetchProfile = async () => {
-        const { data, error } = await supabase
+        const { data, error: _error } = await supabase
             .from('profiles')
             .select('*')
             .eq('id', user?.id)
@@ -128,7 +128,7 @@ const Profile: React.FC = () => {
                 .eq('id', user?.id);
 
             if (error) throw error;
-            setProfile(prev => ({ ...prev, avatar_url: url }));
+            setProfile((prev: any) => ({ ...prev, avatar_url: url }));
         } catch (err) {
             console.error('Error updating avatar:', err);
         }
@@ -189,8 +189,8 @@ const Profile: React.FC = () => {
             header: 'Status',
             accessor: (row) => (
                 <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${row.status === 'delivered' ? 'bg-green-100 text-green-700' :
-                        row.status === 'shipping' ? 'bg-blue-100 text-blue-700' :
-                            'bg-yellow-100 text-yellow-700'
+                    row.status === 'shipping' ? 'bg-blue-100 text-blue-700' :
+                        'bg-yellow-100 text-yellow-700'
                     }`}>
                     {row.status}
                 </span>
@@ -246,8 +246,8 @@ const Profile: React.FC = () => {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`w-full flex items-center gap-4 p-5 rounded-2xl font-black uppercase text-xs tracking-widest transition-all ${activeTab === tab.id
-                                    ? 'bg-primary-black text-white shadow-xl translate-x-1'
-                                    : 'bg-primary-white border border-bg-light text-primary-dark-gray hover:border-primary-black'
+                                ? 'bg-primary-black text-white shadow-xl translate-x-1'
+                                : 'bg-primary-white border border-bg-light text-primary-dark-gray hover:border-primary-black'
                                 }`}
                         >
                             <tab.icon size={16} />
@@ -271,9 +271,9 @@ const Profile: React.FC = () => {
                                 <div className="flex flex-col md:flex-row items-center gap-10 mb-10">
                                     <div className="relative group cursor-pointer">
                                         <AvatarUpload
-                                            url={profile.avatar_url}
-                                            onUpload={handleAvatarUpdate}
-                                            bucket="avatars"
+                                            currentAvatarUrl={profile.avatar_url}
+                                            userId={user?.id || ''}
+                                            onUploadComplete={handleAvatarUpdate}
                                         />
                                         <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
                                             <FaCamera className="text-white text-xl" />

@@ -93,7 +93,7 @@ const Inbox: React.FC = () => {
 
         setSending(true);
         try {
-            const { data, error } = await supabase
+            const { data, error: _error } = await supabase
                 .from('messages')
                 .insert({
                     sender_id: user.id,
@@ -187,8 +187,8 @@ const Inbox: React.FC = () => {
                                     return (
                                         <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
                                             <div className={`max-w-[70%] p-5 rounded-3xl font-medium text-sm shadow-sm ${isMe
-                                                    ? 'bg-primary-black text-white rounded-tr-none'
-                                                    : 'bg-primary-white text-primary-black rounded-tl-none border border-bg-light'
+                                                ? 'bg-primary-black text-white rounded-tr-none'
+                                                : 'bg-primary-white text-primary-black rounded-tl-none border border-bg-light'
                                                 }`}>
                                                 <p className="leading-relaxed">{msg.body}</p>
                                                 <p className={`text-[8px] mt-2 font-black uppercase opacity-40 ${isMe ? 'text-white text-right' : 'text-primary-black'}`}>

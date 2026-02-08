@@ -74,7 +74,7 @@ export const useSocial = (targetUserId?: string, productId?: string) => {
     };
 
     const fetchComments = async () => {
-        const { data, error } = await supabase
+        const { data, error: _error } = await supabase
             .from('comments')
             .select('*, profiles(full_name, avatar_url, username)')
             .eq('product_id', productId)
@@ -88,7 +88,7 @@ export const useSocial = (targetUserId?: string, productId?: string) => {
         if (!content.trim()) return;
 
         try {
-            const { data, error } = await supabase
+            const { data, error: _error } = await supabase
                 .from('comments')
                 .insert({
                     product_id: productId,

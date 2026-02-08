@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useCartStore } from '../store/useCartStore';
 import { supabase } from '../lib/supabase';
 import { FaCheck, FaLock, FaShippingFast, FaCreditCard, FaSpinner } from 'react-icons/fa';
@@ -8,12 +8,10 @@ import { FaCheck, FaLock, FaShippingFast, FaCreditCard, FaSpinner } from 'react-
 import PaystackPop from '@paystack/inline-js';
 
 const Checkout: React.FC = () => {
-    const navigate = useNavigate();
     const { items, getSubtotal, clearCart } = useCartStore();
     const subtotal = getSubtotal();
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
-    const [orderId, setOrderId] = useState<string | null>(null);
 
     const [shippingInfo, setShippingInfo] = useState({
         firstName: '',
@@ -52,7 +50,7 @@ const Checkout: React.FC = () => {
                 .single();
 
             if (orderError) throw orderError;
-            setOrderId(order.id);
+
 
             // 2. Insert Order Items
             const orderItems = items.map(item => ({
@@ -90,7 +88,7 @@ const Checkout: React.FC = () => {
         }
     };
 
-    const handleSuccess = async (id: string, reference: string) => {
+    const handleSuccess = async (id: string, _reference: string) => {
         try {
             // Update order status in Supabase
             // Update order status in Supabase

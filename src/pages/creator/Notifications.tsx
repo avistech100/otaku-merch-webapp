@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
-import { FaBell, FaCheck, FaExclamationCircle, FaInfoCircle, FaTrash } from 'react-icons/fa';
+import { FaBell, FaCheck, FaTrash } from 'react-icons/fa';
 
 const CreatorNotifications: React.FC = () => {
     const { user } = useAuth();

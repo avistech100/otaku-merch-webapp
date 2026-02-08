@@ -7,7 +7,7 @@ interface CommentSectionProps {
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({ productId }) => {
-    const { comments, loading, postComment } = useSocial(undefined, productId);
+    const { comments, loading: _loading, postComment } = useSocial(undefined, productId);
     const [newComment, setNewComment] = useState('');
     const [submitting, setSubmitting] = useState(false);
 

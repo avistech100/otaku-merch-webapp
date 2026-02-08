@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
-import { FaChartLine, FaShoppingBag, FaUsers, FaArrowTrendUp } from 'react-icons/fa6';
+import { FaChartLine, FaShoppingBag, FaUsers, FaArrowUp } from 'react-icons/fa';
 import {
-    LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid,
+    AreaChart, Area, XAxis, YAxis, CartesianGrid,
     Tooltip, ResponsiveContainer, BarChart, Bar, Cell
 } from 'recharts';
 
@@ -30,7 +30,7 @@ const Analytics: React.FC = () => {
         setLoading(true);
         try {
             // 1. Fetch Order Items for Revenue & Top Products
-            const { data: sales, error } = await supabase
+            const { data: sales, error: _error } = await supabase
                 .from('order_items')
                 .select(`
                     creator_earnings,
@@ -84,7 +84,7 @@ const Analytics: React.FC = () => {
     const summaryCards = [
         { label: 'Total Revenue', value: `$${stats.totalRevenue.toFixed(2)}`, icon: FaChartLine, color: 'bg-accent-crypto' },
         { label: 'Total Sales', value: stats.totalOrders, icon: FaShoppingBag, color: 'bg-accent-anime' },
-        { label: 'Avg Order Value', value: `$${stats.avgOrderValue.toFixed(2)}`, icon: FaArrowTrendUp, color: 'bg-primary-black' },
+        { label: 'Avg Order Value', value: `$${stats.avgOrderValue.toFixed(2)}`, icon: FaArrowUp, color: 'bg-primary-black' },
         { label: 'Conversion Rate', value: `${stats.conversionRate}%`, icon: FaUsers, color: 'bg-primary-dark-gray' },
     ];
 
@@ -123,7 +123,7 @@ const Analytics: React.FC = () => {
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
-                                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} prefix="$" />
+                                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} tickFormatter={(value) => `$${value}`} />
                                 <Tooltip
                                     contentStyle={{ borderRadius: '24px', border: 'none', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
                                 />
