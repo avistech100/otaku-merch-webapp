@@ -23,6 +23,7 @@ export interface Product {
   images: string[];
   category: Category;
   creatorId: string;
+  creatorName: string;
   creatorBadge: string;
   sizes: string[];
   colors?: { name: string; hex: string }[];

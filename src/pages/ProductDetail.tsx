@@ -28,6 +28,7 @@ const ProductDetail: React.FC = () => {
                     .from('products')
                     .select(`
                         *,
+                        profiles!creator_id(full_name, store_name, avatar_url),
                         product_images(*),
                         product_variants(*),
                         categories(name)
@@ -48,6 +49,8 @@ const ProductDetail: React.FC = () => {
                         images: allImages.length > 0 ? allImages : ['https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600'],
                         category: data.categories?.name || 'Uncategorized',
                         creatorId: data.creator_id,
+                        creatorName: data.profiles?.store_name || data.profiles?.full_name || 'Verified Creator',
+                        creatorAvatar: data.profiles?.avatar_url,
                         isLimited: data.is_limited_edition,
                         sizes: data.variants?.map((v: any) => v.name).filter(Boolean) || [],
                         details: {
@@ -234,11 +237,11 @@ const ProductDetail: React.FC = () => {
                     {/* Creator Badge */}
                     <div className="flex items-center gap-4 p-6 bg-bg-light/50 rounded-3xl border border-bg-light">
                         <div className="w-12 h-12 bg-primary-white rounded-full overflow-hidden shadow-sm">
-                            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${product.creatorId || 'default'}`} alt="Creator" />
+                            <img src={product.creatorAvatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${product.creatorId || 'default'}`} alt="Creator" />
                         </div>
                         <div>
                             <p className="text-[10px] font-black text-accent-crypto uppercase tracking-widest">Verified Creator</p>
-                            <h4 className="font-bold flex items-center gap-2 uppercase text-primary-black">CreativeLabs <FaCheck className="text-accent-crypto" size={10} /></h4>
+                            <h4 className="font-bold flex items-center gap-2 uppercase text-primary-black">{product.creatorName} <FaCheck className="text-accent-crypto" size={10} /></h4>
                         </div>
                         <Link to={`/products`} className="ml-auto text-xs font-black border-b border-primary-black hover:text-accent-crypto hover:border-accent-crypto transition-all">VIEW ALL PRODUCTS</Link>
                     </div>

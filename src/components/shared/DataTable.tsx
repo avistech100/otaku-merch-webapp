@@ -42,15 +42,15 @@ const DataTable = <T extends { id: any }>({
     }
 
     return (
-        <div className="w-full bg-primary-white rounded-[40px] shadow-xl shadow-black/5 overflow-hidden">
+        <div className="w-full admin-table-container rounded-[40px] overflow-hidden border border-bg-light/10 shadow-xl shadow-black/5">
             <div className="overflow-x-auto">
                 <table className="w-full">
                     <thead>
-                        <tr className="border-b border-bg-light">
+                        <tr className="border-b border-bg-light/10 bg-bg-light/5">
                             {columns.map((col, i) => (
                                 <th
                                     key={i}
-                                    className={`p-6 text-left text-xs font-black uppercase tracking-widest text-primary-dark-gray/60 ${col.className || ''}`}
+                                    className={`p-6 text-left text-xs font-black uppercase tracking-widest text-primary-dark-gray/40 ${col.className || ''}`}
                                 >
                                     <div className="flex items-center gap-2">
                                         {col.header}
@@ -58,13 +58,13 @@ const DataTable = <T extends { id: any }>({
                                     </div>
                                 </th>
                             ))}
-                            {actions && <th className="p-6 text-right text-xs font-black uppercase tracking-widest text-primary-dark-gray/60">Actions</th>}
+                            {actions && <th className="p-6 text-right text-xs font-black uppercase tracking-widest text-primary-dark-gray/40">Actions</th>}
                         </tr>
                     </thead>
                     <tbody>
                         {data.length === 0 ? (
                             <tr>
-                                <td colSpan={columns.length + (actions ? 1 : 0)} className="p-10 text-center text-primary-dark-gray/60 font-medium italic">
+                                <td colSpan={columns.length + (actions ? 1 : 0)} className="p-10 text-center text-primary-dark-gray/40 font-medium italic">
                                     No records found.
                                 </td>
                             </tr>
@@ -73,10 +73,10 @@ const DataTable = <T extends { id: any }>({
                                 <tr
                                     key={row.id}
                                     onClick={() => onRowClick && onRowClick(row)}
-                                    className={`border-b border-bg-light last:border-0 hover:bg-bg-light/20 transition-colors ${onRowClick ? 'cursor-pointer' : ''}`}
+                                    className={`border-b border-bg-light/5 last:border-0 hover:bg-bg-light/10 transition-colors ${onRowClick ? 'cursor-pointer' : ''}`}
                                 >
                                     {columns.map((col, i) => (
-                                        <td key={i} className="p-6 text-sm font-bold text-primary-black">
+                                        <td key={i} className="p-6 text-sm font-bold">
                                             {typeof col.accessor === 'function' ? col.accessor(row) : (row[col.accessor] as React.ReactNode)}
                                         </td>
                                     ))}

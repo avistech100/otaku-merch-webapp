@@ -5,7 +5,6 @@ import { useAuth } from '../../hooks/useAuth';
 import FileUpload from '../../components/shared/FileUpload';
 import { FaSave, FaSpinner, FaArrowLeft, FaTimes, FaPlus, FaTag, FaBox, FaLayerGroup } from 'react-icons/fa';
 
-const CATEGORIES = ['T-Shirts', 'Hoodies', 'Accessories', 'Art Prints', 'Collectibles'];
 const SIZES = ['S', 'M', 'L', 'XL', '2XL'];
 
 const ProductEditor: React.FC = () => {
@@ -16,6 +15,7 @@ const ProductEditor: React.FC = () => {
 
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(isEditMode);
+    const [dbCategories, setDbCategories] = useState<any[]>([]);
 
     // Basic Info
     const [title, setTitle] = useState('');
@@ -23,7 +23,8 @@ const ProductEditor: React.FC = () => {
     const [price, setPrice] = useState('');
     const [comparePrice, setComparePrice] = useState('');
     const [sku, setSku] = useState('');
-    const [category, setCategory] = useState(CATEGORIES[0]);
+    const [categoryId, setCategoryId] = useState('');
+    const [category, setCategory] = useState('');
     const [stockQuantity, setStockQuantity] = useState('0');
     const [isLimitedEdition, setIsLimitedEdition] = useState(false);
     const [tags, setTags] = useState<string[]>([]);
@@ -38,10 +39,22 @@ const ProductEditor: React.FC = () => {
     const [variants, setVariants] = useState<{ id?: string, name: string, price: number, stock: number }[]>([]);
 
     useEffect(() => {
+        fetchCategories();
         if (isEditMode && user) {
             fetchProduct();
         }
     }, [isEditMode, user]);
+
+    const fetchCategories = async () => {
+        const { data } = await supabase.from('categories').select('*');
+        if (data) {
+            setDbCategories(data);
+            if (!isEditMode && data.length > 0) {
+                setCategoryId(data[0].id);
+                setCategory(data[0].name);
+            }
+        }
+    };
 
     const fetchProduct = async () => {
         const { data, error } = await supabase
@@ -61,7 +74,8 @@ const ProductEditor: React.FC = () => {
             setPrice(data.price.toString());
             setComparePrice(data.compare_price?.toString() || '');
             setSku(data.sku || '');
-            setCategory(data.category);
+            setCategoryId(data.category_id || '');
+            setCategory(data.category || '');
             setStockQuantity(data.stock_quantity.toString());
             setIsLimitedEdition(data.is_limited_edition);
             setTags(data.tags || []);
@@ -120,6 +134,7 @@ const ProductEditor: React.FC = () => {
                 price: parseFloat(price),
                 compare_price: comparePrice ? parseFloat(comparePrice) : null,
                 sku,
+                category_id: categoryId || null,
                 category,
                 stock_quantity: parseInt(stockQuantity),
                 is_limited_edition: isLimitedEdition,
@@ -131,19 +146,28 @@ const ProductEditor: React.FC = () => {
                 variants: hasVariants ? variants : []
             };
 
+            console.log('Attempting to save product:', { isEditMode, status, productData });
+
+            let result;
             if (isEditMode) {
-                const { error } = await supabase
+                result = await supabase
                     .from('products')
                     .update(productData)
-                    .eq('id', id);
-                if (error) throw error;
+                    .eq('id', id)
+                    .select();
             } else {
-                const { error } = await supabase
+                result = await supabase
                     .from('products')
-                    .insert(productData);
-                if (error) throw error;
+                    .insert(productData)
+                    .select();
             }
 
+            if (result.error) {
+                console.error('Supabase Operation Error:', result.error);
+                throw result.error;
+            }
+
+            console.log('Operation successful:', result.data);
             navigate('/creator/products');
 
         } catch (error: any) {
@@ -352,11 +376,16 @@ const ProductEditor: React.FC = () => {
                             <div>
                                 <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 block">Sector</label>
                                 <select
-                                    value={category}
-                                    onChange={e => setCategory(e.target.value)}
+                                    value={categoryId}
+                                    onChange={e => {
+                                        const id = e.target.value;
+                                        setCategoryId(id);
+                                        const name = dbCategories.find(c => c.id === id)?.name || '';
+                                        setCategory(name);
+                                    }}
                                     className="w-full h-12 px-6 rounded-xl bg-bg-light/30 font-black text-xs outline-none cursor-pointer border border-transparent focus:border-primary-black"
                                 >
-                                    {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                                    {dbCategories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
                                 </select>
                             </div>
                             <div>

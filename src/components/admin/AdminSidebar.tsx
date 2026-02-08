@@ -7,7 +7,12 @@ import {
 } from 'react-icons/fa';
 import { useAuth } from '../../hooks/useAuth';
 
-const AdminSidebar: React.FC = () => {
+interface AdminSidebarProps {
+    isMobileMenuOpen?: boolean;
+    setIsMobileMenuOpen?: (open: boolean) => void;
+}
+
+const AdminSidebar: React.FC<AdminSidebarProps> = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
     const { signOut } = useAuth();
     const navigate = useNavigate();
 
@@ -29,53 +34,109 @@ const AdminSidebar: React.FC = () => {
     ];
 
     return (
-        <aside className="fixed left-0 top-0 h-screen w-72 bg-[#09090B] text-white z-40 hidden lg:flex flex-col border-r border-white/5 shadow-2xl">
+        <aside style={{
+            position: 'fixed',
+            left: 0,
+            top: 0,
+            height: '100vh',
+            width: '260px',
+            background: 'var(--bg-secondary)',
+            zIndex: 40,
+            display: 'flex',
+            flexDirection: 'column',
+            borderRight: '1px solid var(--border)'
+        }} className="hidden lg:flex">
             {/* Admin Header */}
-            <div className="h-24 flex items-center px-10 border-b border-white/5 bg-gradient-to-r from-purple-900/10 to-transparent">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
-                        <FaRocket className="text-white text-lg" />
+            <div style={{
+                height: '72px',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '0 24px',
+                borderBottom: '1px solid var(--border)',
+                background: 'linear-gradient(135deg, rgba(124, 90, 237, 0.08), transparent)'
+            }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: 'var(--radius-sm)',
+                        background: 'var(--accent-primary)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 4px 12px rgba(124, 90, 237, 0.3)'
+                    }}>
+                        <FaRocket style={{ color: 'white', fontSize: '16px' }} />
                     </div>
-                    <span className="text-xl font-black tracking-tight">
-                        HQ <span className="text-purple-500">OPERATIONS</span>
+                    <span style={{
+                        fontSize: '18px',
+                        fontWeight: 700,
+                        color: 'var(--text-primary)',
+                        letterSpacing: '-0.02em'
+                    }}>
+                        HQ <span style={{ color: 'var(--accent-primary)' }}>COMMAND</span>
                     </span>
                 </div>
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 overflow-y-auto py-10 px-6 space-y-2">
-                <div className="px-4 mb-4">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">Intelligence</p>
+            <nav style={{
+                flex: 1,
+                overflowY: 'auto',
+                padding: '24px 16px'
+            }}>
+                <div className="admin-nav-label">Operations</div>
+                <div className="admin-nav-group">
+                    {navItems.map((item) => (
+                        <NavLink
+                            key={item.path}
+                            to={item.path}
+                            className={({ isActive }) => `admin-nav-item ${isActive ? 'active' : ''}`}
+                        >
+                            <item.icon />
+                            <span>{item.label}</span>
+                        </NavLink>
+                    ))}
                 </div>
-                {navItems.map((item) => (
-                    <NavLink
-                        key={item.path}
-                        to={item.path}
-                        className={({ isActive }) => `
-                            flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 group
-                            ${isActive
-                                ? 'bg-purple-600 text-white shadow-xl shadow-purple-900/20 translate-x-1'
-                                : 'hover:bg-white/5 text-white/50 hover:text-white'}
-                        `}
-                    >
-                        {({ isActive }) => (
-                            <>
-                                <item.icon className={`text-lg transition-transform group-hover:scale-110 ${isActive ? 'text-white' : 'text-purple-500'}`} />
-                                <span className="font-bold text-xs uppercase tracking-widest">{item.label}</span>
-                            </>
-                        )}
-                    </NavLink>
-                ))}
             </nav>
 
             {/* Admin Footer */}
-            <div className="p-6 border-t border-white/5 bg-black/20">
+            <div style={{
+                padding: '16px',
+                borderTop: '1px solid var(--border)',
+                background: 'rgba(0, 0, 0, 0.2)'
+            }}>
                 <button
                     onClick={handleLogout}
-                    className="w-full flex items-center justify-center gap-3 px-5 py-4 rounded-2xl bg-white/5 hover:bg-red-500/10 hover:text-red-500 transition-all text-white/40 border border-white/5"
+                    style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '12px',
+                        padding: '12px 20px',
+                        borderRadius: 'var(--radius-sm)',
+                        background: 'rgba(255, 92, 124, 0.1)',
+                        border: '1px solid rgba(255, 92, 124, 0.2)',
+                        color: 'var(--error)',
+                        cursor: 'pointer',
+                        transition: 'all 150ms',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em'
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 92, 124, 0.15)';
+                        e.currentTarget.style.transform = 'scale(0.98)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 92, 124, 0.1)';
+                        e.currentTarget.style.transform = 'scale(1)';
+                    }}
                 >
                     <FaSignOutAlt />
-                    <span className="font-bold text-xs uppercase tracking-widest">Terminate Session</span>
+                    <span>Terminate Session</span>
                 </button>
             </div>
         </aside>

@@ -1,67 +1,144 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
-import { FaBars, FaBell, FaSearch } from 'react-icons/fa';
+import { FaBell, FaSearch } from 'react-icons/fa';
+import '../../styles/admin-theme.css';
 
 const AdminDashboardLayout: React.FC = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <div className="min-h-screen bg-[#020203] text-white">
-            <AdminSidebar />
+        <div className="admin-theme">
+            <AdminSidebar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
 
-            <div className="lg:ml-72 flex flex-col min-h-screen relative">
-                {/* Global Admin Header */}
-                <header className="h-24 px-10 flex items-center justify-between sticky top-0 z-30 bg-[#020203]/80 backdrop-blur-xl border-b border-white/5">
-                    {/* Search / Status */}
-                    <div className="hidden md:flex items-center gap-6">
-                        <div className="relative group">
-                            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-purple-500 transition-colors" />
-                            <input
-                                type="text"
-                                placeholder="Search Command System..."
-                                className="h-12 w-80 bg-white/5 rounded-xl pl-12 pr-6 border border-white/5 focus:border-purple-500 focus:bg-white/[0.07] outline-none transition-all text-sm font-medium"
-                            />
-                        </div>
+            <div className="lg:ml-[260px] flex flex-col min-h-screen">
+                {/* Control Center Header */}
+                <header style={{
+                    height: '72px',
+                    padding: '0 32px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 30,
+                    background: 'var(--bg-primary)',
+                    borderBottom: '1px solid var(--border)',
+                    backdropFilter: 'blur(12px)'
+                }}>
+                    {/* Search */}
+                    <div style={{ position: 'relative', width: '320px' }}>
+                        <FaSearch style={{
+                            position: 'absolute',
+                            left: '14px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            color: 'var(--text-muted)',
+                            fontSize: '14px'
+                        }} />
+                        <input
+                            type="text"
+                            placeholder="Search control system..."
+                            style={{
+                                width: '100%',
+                                height: '40px',
+                                paddingLeft: '40px',
+                                paddingRight: '14px',
+                                background: 'var(--bg-secondary)',
+                                border: '1px solid var(--border)',
+                                borderRadius: 'var(--radius-sm)',
+                                color: 'var(--text-primary)',
+                                fontSize: '14px',
+                                outline: 'none',
+                                transition: 'all 150ms'
+                            }}
+                            onFocus={(e) => {
+                                e.target.style.borderColor = 'var(--accent-primary)';
+                                e.target.style.background = 'var(--bg-elevated)';
+                            }}
+                            onBlur={(e) => {
+                                e.target.style.borderColor = 'var(--border)';
+                                e.target.style.background = 'var(--bg-secondary)';
+                            }}
+                        />
                     </div>
 
-                    {/* Actions */}
-                    <div className="flex items-center gap-4">
-                        <button className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white/40 hover:text-purple-500 hover:bg-purple-500/10 transition-all border border-white/5">
-                            <FaBell />
+                    {/* Right Actions */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <button style={{
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: 'var(--radius-sm)',
+                            background: 'var(--bg-secondary)',
+                            border: '1px solid var(--border)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'var(--text-muted)',
+                            cursor: 'pointer',
+                            transition: 'all 150ms'
+                        }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'var(--bg-elevated)';
+                                e.currentTarget.style.color = 'var(--accent-primary)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'var(--bg-secondary)';
+                                e.currentTarget.style.color = 'var(--text-muted)';
+                            }}
+                        >
+                            <FaBell size={16} />
                         </button>
-                        <div className="h-10 w-[1px] bg-white/5 mx-2" />
-                        <div className="flex items-center gap-3 pl-2">
-                            <div className="text-right hidden sm:block">
-                                <p className="text-xs font-black text-white uppercase tracking-tighter">System Admin</p>
-                                <p className="text-[10px] text-purple-500 font-bold uppercase tracking-widest">Master Access</p>
+
+                        <div style={{
+                            height: '32px',
+                            width: '1px',
+                            background: 'var(--border)'
+                        }} />
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <div style={{ textAlign: 'right' }}>
+                                <p className="text-micro" style={{ color: 'var(--text-primary)', marginBottom: '2px' }}>System Admin</p>
+                                <p style={{ fontSize: '11px', color: 'var(--accent-primary)', fontWeight: 500 }}>Master Access</p>
                             </div>
-                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 p-[2px]">
-                                <div className="w-full h-full rounded-[10px] bg-[#09090B] flex items-center justify-center overflow-hidden">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin" alt="Admin" className="w-full h-full object-cover" />
+                            <div style={{
+                                width: '36px',
+                                height: '36px',
+                                borderRadius: 'var(--radius-sm)',
+                                background: 'linear-gradient(135deg, var(--accent-primary), #6366f1)',
+                                padding: '2px'
+                            }}>
+                                <div style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    borderRadius: '6px',
+                                    background: 'var(--bg-primary)',
+                                    overflow: 'hidden',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+                                    <img
+                                        src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin"
+                                        alt="Admin"
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
                                 </div>
                             </div>
                         </div>
-
-                        {/* Mobile Menu Toggle */}
-                        <button
-                            className="lg:hidden w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center"
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        >
-                            <FaBars />
-                        </button>
                     </div>
                 </header>
 
                 {/* Main Viewport */}
-                <main className="flex-1 p-8 md:p-12 animate-fadeIn relative overflow-hidden">
-                    {/* Abstract Background Elements */}
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
-                    <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-indigo-600/5 rounded-full blur-[100px] -ml-32 -mb-32 pointer-events-none" />
-
-                    <div className="max-w-7xl mx-auto relative z-10">
-                        <Outlet />
-                    </div>
+                <main style={{
+                    flex: 1,
+                    padding: '32px',
+                    position: 'relative',
+                    maxWidth: '1400px',
+                    margin: '0 auto',
+                    width: '100%'
+                }}>
+                    <Outlet />
                 </main>
             </div>
         </div>

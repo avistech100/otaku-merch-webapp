@@ -83,7 +83,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                                 className="w-full h-full"
                             />
                         </div>
-                        <span className="text-[10px] text-primary-dark-gray/60 font-medium tracking-tight">by CreativeLabs</span>
+                        <span className="text-[10px] text-primary-dark-gray/60 font-medium tracking-tight">by {product.creatorName}</span>
                     </div>
                 </div>
             </div>

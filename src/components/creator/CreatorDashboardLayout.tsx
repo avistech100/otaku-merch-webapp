@@ -1,32 +1,46 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import CreatorSidebar from './CreatorSidebar';
-import { FaBars } from 'react-icons/fa';
+import '../../styles/admin-theme.css';
 
 const CreatorDashboardLayout: React.FC = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
     return (
-        <div className="min-h-screen bg-bg-light/30">
+        <div className="admin-theme">
             <CreatorSidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
 
-            {/* Mobile Header */}
-            <div className="lg:hidden h-16 bg-primary-black text-primary-white flex items-center justify-between px-6 sticky top-0 z-30 shadow-lg">
-                <span className="font-black tracking-tighter uppercase text-xs">Creator <span className="text-accent-crypto">Center</span></span>
-                <button
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    className="w-10 h-10 flex items-center justify-center bg-primary-dark-gray/20 rounded-xl"
-                >
-                    <FaBars />
-                </button>
-            </div>
+            <div className="lg:ml-[260px] flex flex-col min-h-screen">
+                {/* Creator Control Header */}
+                <header style={{
+                    height: '72px',
+                    padding: '0 32px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 30,
+                    background: 'var(--bg-primary)',
+                    borderBottom: '1px solid var(--border)'
+                }}>
+                    <h1 style={{
+                        font: 'var(--font-h3)',
+                        color: 'var(--text-primary)'
+                    }}>Creator Dashboard</h1>
+                </header>
 
-            {/* Main Content */}
-            <main className="lg:ml-64 min-h-screen p-6 md:p-10 transition-all duration-300">
-                <div className="max-w-7xl mx-auto">
+                {/* Main Content */}
+                <main style={{
+                    flex: 1,
+                    padding: '32px',
+                    maxWidth: '1400px',
+                    margin: '0 auto',
+                    width: '100%'
+                }}>
                     <Outlet />
-                </div>
-            </main>
+                </main>
+            </div>
         </div>
     );
 };

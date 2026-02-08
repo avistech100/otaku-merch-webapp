@@ -42,15 +42,15 @@ const ContentManagement: React.FC = () => {
             header: 'Title',
             accessor: (row) => (
                 <div className="flex flex-col">
-                    <span className="font-bold text-white text-sm">{row.title}</span>
-                    <span className="text-[10px] text-white/40 font-black uppercase tracking-widest">{row.slug}</span>
+                    <span style={{ color: 'var(--text-primary)' }} className="font-bold text-sm">{row.title}</span>
+                    <span style={{ color: 'var(--text-muted)' }} className="text-[10px] font-black uppercase tracking-widest">{row.slug}</span>
                 </div>
             )
         },
         {
             header: 'Type',
             accessor: (row) => (
-                <span className="px-2 py-1 rounded bg-white/5 text-[10px] font-black uppercase tracking-widest text-white/60 border border-white/5">
+                <span style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-secondary)', borderColor: 'var(--border)' }} className="px-2 py-1 rounded text-[10px] font-black uppercase tracking-widest border">
                     {row.type}
                 </span>
             )
@@ -60,14 +60,14 @@ const ContentManagement: React.FC = () => {
             accessor: (row) => (
                 <div className="flex items-center gap-2">
                     <div className={`w-2 h-2 rounded-full ${row.status === 'published' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]' : 'bg-yellow-500'}`} />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-white/60">{row.status}</span>
+                    <span style={{ color: 'var(--text-secondary)' }} className="text-[10px] font-black uppercase tracking-widest">{row.status}</span>
                 </div>
             )
         },
         {
             header: 'Created',
             accessor: (row) => (
-                <span className="text-xs text-white/40 font-bold">
+                <span style={{ color: 'var(--text-muted)' }} className="text-xs font-bold">
                     {new Date(row.created_at).toLocaleDateString()}
                 </span>
             )
@@ -97,8 +97,8 @@ const ContentManagement: React.FC = () => {
         <div className="space-y-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h1 className="text-5xl font-black tracking-tighter text-white mb-2 uppercase">Content System</h1>
-                    <p className="text-white/40 font-bold tracking-widest uppercase text-xs flex items-center gap-2">
+                    <h1 style={{ color: 'var(--text-primary)' }} className="text-5xl font-black tracking-tighter mb-2 uppercase">Content System</h1>
+                    <p style={{ color: 'var(--text-muted)' }} className="font-bold tracking-widest uppercase text-xs flex items-center gap-2">
                         <FaFileAlt className="text-purple-500" /> Platform Communication • Announcements & Articles
                     </p>
                 </div>
@@ -107,7 +107,7 @@ const ContentManagement: React.FC = () => {
                 </button>
             </div>
 
-            <section className="bg-white/5 border border-white/5 p-8 rounded-[40px] shadow-2xl relative overflow-hidden">
+            <section className="admin-card relative overflow-hidden">
                 <DataTable
                     columns={columns}
                     data={content}

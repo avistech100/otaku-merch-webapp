@@ -8,7 +8,6 @@ import { FaArrowRight, FaGem, FaRobot, FaFire, FaStore } from 'react-icons/fa';
 const Home: React.FC = () => {
     const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
     const [isCreatorModalOpen, setIsCreatorModalOpen] = useState(false);
 
     useEffect(() => {
@@ -26,6 +25,8 @@ const Home: React.FC = () => {
                     .from('products')
                     .select(`
                         *,
+                        profiles!creator_id(full_name, store_name),
+                        categories(name),
                         product_images(src, alt_text),
                         product_variants(*)
                     `)
@@ -41,7 +42,10 @@ const Home: React.FC = () => {
                         price: p.price,
                         description: p.description,
                         image: p.image_url || p.product_images?.[0]?.src || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600',
-                        category: catData?.find(c => c.id === p.category_id)?.name || '',
+                        category: p.categories?.name || '',
+                        creatorId: p.creator_id,
+                        creatorName: p.profiles?.store_name || p.profiles?.full_name || 'Verified Creator',
+                        creatorBadge: p.profiles?.store_name ? 'Official Store' : 'Verified Creator',
                         isLimited: p.is_limited_edition,
                         hypeLevel: p.hype_score > 80 ? 'Legendary' : p.hype_score > 50 ? 'High' : 'Medium',
                         chain: p.crypto_chain
@@ -50,8 +54,6 @@ const Home: React.FC = () => {
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false);
             }
         }
 

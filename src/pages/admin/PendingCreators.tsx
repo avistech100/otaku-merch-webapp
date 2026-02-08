@@ -35,30 +35,34 @@ const PendingCreators: React.FC = () => {
     if (loading) return <div className="layout-container py-20 text-center animate-pulse font-black text-2xl uppercase">Scanning Transmissions...</div>;
 
     return (
-        <div className="layout-container py-12 animate-fadeIn">
-            <h1 className="text-5xl font-black mb-4 tracking-tighter uppercase text-primary-black">Creator Vanguard</h1>
-            <p className="text-primary-dark-gray/60 font-medium mb-12 uppercase tracking-[0.3em] text-xs">Verify & Authorize New Creators</p>
+        <div className="animate-fadeIn space-y-10">
+            <div>
+                <h1 className="text-5xl font-black mb-2 tracking-tighter uppercase" style={{ color: 'var(--text-primary)' }}>Creator Vanguard</h1>
+                <p className="font-medium uppercase tracking-[0.3em] text-xs flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
+                    <FaUserCheck className="text-accent-secondary" /> Verify & Authorize New Creators
+                </p>
+            </div>
 
             {creators.length === 0 ? (
-                <div className="bg-bg-light/30 border-2 border-dashed border-bg-light rounded-[40px] p-20 text-center">
-                    <p className="font-black text-primary-dark-gray/20 uppercase tracking-widest">No pending applications</p>
+                <div className="admin-card border-2 border-dashed border-border p-20 text-center">
+                    <p className="font-black uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>No pending applications</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 gap-6">
                     {creators.map((creator) => (
-                        <div key={creator.id} className="bg-primary-white border border-bg-light p-8 rounded-[40px] shadow-xl shadow-black/5 flex flex-col md:flex-row items-center justify-between gap-8 group hover:border-accent-anime transition-all duration-500">
+                        <div key={creator.id} className="admin-card flex flex-col md:flex-row items-center justify-between gap-8 group hover:border-accent-primary transition-all duration-500">
                             <div className="flex items-center gap-6">
-                                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-primary-black/10 shadow-lg group-hover:scale-110 transition-transform duration-500">
+                                <div className="w-20 h-20 rounded-xl overflow-hidden border border-border shadow-lg group-hover:scale-105 transition-transform duration-500">
                                     <img src={creator.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.id}`} alt="Avatar" className="w-full h-full object-cover" />
                                 </div>
                                 <div>
-                                    <h3 className="text-2xl font-black text-primary-black uppercase tracking-tighter">{creator.full_name}</h3>
+                                    <h3 className="text-2xl font-black uppercase tracking-tighter" style={{ color: 'var(--text-primary)' }}>{creator.full_name}</h3>
                                     <div className="flex items-center gap-4 mt-2">
-                                        <div className="flex items-center gap-2 text-[10px] font-black text-primary-dark-gray/40 uppercase tracking-widest">
-                                            <FaEnvelope className="text-accent-crypto" /> {creator.username}
+                                        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--text-secondary)' }}>
+                                            <FaEnvelope className="text-accent-primary" /> {creator.username}
                                         </div>
-                                        <div className="flex items-center gap-2 text-[10px] font-black text-primary-dark-gray/40 uppercase tracking-widest">
-                                            <FaClock className="text-accent-anime" /> Applied Recently
+                                        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
+                                            <FaClock className="text-accent-secondary" /> Applied Recently
                                         </div>
                                     </div>
                                 </div>
@@ -67,13 +71,13 @@ const PendingCreators: React.FC = () => {
                             <div className="flex gap-4 w-full md:w-auto">
                                 <button
                                     onClick={() => handleApproval(creator.id, true)}
-                                    className="flex-1 md:flex-none flex items-center justify-center gap-3 bg-primary-black text-primary-white px-8 py-4 rounded-full font-black uppercase text-xs tracking-widest hover:bg-accent-crypto transition-all shadow-lg"
+                                    className="admin-btn admin-btn-primary flex-1 md:flex-none uppercase text-xs tracking-widest shadow-lg"
                                 >
                                     <FaUserCheck /> AUTHORIZE
                                 </button>
                                 <button
                                     onClick={() => handleApproval(creator.id, false)}
-                                    className="flex-1 md:flex-none flex items-center justify-center gap-3 border-2 border-bg-light text-primary-dark-gray hover:text-accent-anime hover:border-accent-anime px-8 py-4 rounded-full font-black uppercase text-xs tracking-widest transition-all"
+                                    className="admin-btn admin-btn-secondary flex-1 md:flex-none uppercase text-xs tracking-widest hover:text-error hover:border-error"
                                 >
                                     <FaUserTimes /> REJECT
                                 </button>

@@ -5,16 +5,30 @@ import ProductCard from '../components/product/ProductCard';
 import { FaChevronDown } from 'react-icons/fa';
 
 const Products: React.FC = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const categoryParam = searchParams.get('category');
     const searchParam = searchParams.get('search');
 
     const [products, setProducts] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    // Initialize selectedCategory from URL param or default to 'All'
+    const [selectedCategory, setSelectedCategory] = useState<string>(categoryParam || 'All');
     const [selectedChain, setSelectedChain] = useState<string>('All');
     const [selectedSort, setSelectedSort] = useState<string>('Newest');
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+
+    useEffect(() => {
+        // Sync state if URL param changes
+        if (categoryParam) {
+            setSelectedCategory(categoryParam);
+        }
+    }, [categoryParam]);
+
+    useEffect(() => {
+        // Reset chain filter when category changes
+        setSelectedChain('All');
+    }, [selectedCategory]);
 
     useEffect(() => {
         async function fetchData() {
@@ -29,6 +43,8 @@ const Products: React.FC = () => {
                     .from('products')
                     .select(`
                         *,
+                        profiles!creator_id(full_name, store_name),
+                        categories(name),
                         product_images(src, alt_text)
                     `)
                     .eq('status', 'approved');
@@ -40,10 +56,14 @@ const Products: React.FC = () => {
                         price: p.price,
                         description: p.description,
                         image: p.image_url || p.product_images?.[0]?.src || '',
-                        category: catData?.find(c => c.id === p.category_id)?.name || '',
+                        category: p.categories?.name || '',
+                        creatorId: p.creator_id,
+                        creatorName: p.profiles?.store_name || p.profiles?.full_name || 'Verified Creator',
+                        creatorBadge: p.profiles?.store_name ? 'Official Store' : 'Verified Creator',
                         isLimited: p.is_limited_edition,
                         hypeLevel: p.hype_score > 80 ? 'Legendary' : p.hype_score > 50 ? 'High' : 'Medium',
-                        chain: p.crypto_chain
+                        chain: p.crypto_chain,
+                        created_at: p.created_at // Ensure created_at is mapped
                     }));
                     setProducts(mappedProducts);
                 }
@@ -59,8 +79,8 @@ const Products: React.FC = () => {
     const filteredProducts = useMemo(() => {
         let result = products;
 
-        if (categoryParam) {
-            result = result.filter(p => p.category === categoryParam);
+        if (selectedCategory !== 'All') {
+            result = result.filter(p => p.category === selectedCategory);
         }
 
         if (searchParam) {
@@ -82,10 +102,13 @@ const Products: React.FC = () => {
             result = [...result].sort((a, b) => a.price - b.price);
         } else if (selectedSort === 'Price: High to Low') {
             result = [...result].sort((a, b) => b.price - a.price);
+        } else if (selectedSort === 'Newest') {
+            // Sort by created_at descending
+            result = [...result].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
         }
 
         return result;
-    }, [products, categoryParam, searchParam, selectedChain, selectedSort, priceRange]);
+    }, [products, selectedCategory, searchParam, selectedChain, selectedSort, priceRange]);
 
     const chains = useMemo(() => {
         const uniqueChains = Array.from(new Set(products.map(p => p.chain).filter(Boolean)));
@@ -106,7 +129,7 @@ const Products: React.FC = () => {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                     <div>
                         <h1 className="text-5xl font-black mb-2 tracking-tighter uppercase text-primary-black">
-                            {searchParam ? `Results for "${searchParam}"` : categoryParam || 'All Products'}
+                            {searchParam ? `Results for "${searchParam}"` : selectedCategory === 'All' ? 'All Products' : selectedCategory}
                         </h1>
                         <p className="text-primary-dark-gray/60 font-medium">Showing {filteredProducts.length} items</p>
                     </div>
@@ -133,13 +156,13 @@ const Products: React.FC = () => {
 
                         <div className="relative group flex-1 md:flex-none">
                             <select
-                                value={selectedChain}
-                                onChange={(e) => setSelectedChain(e.target.value)}
+                                value={selectedCategory}
+                                onChange={(e) => setSelectedCategory(e.target.value)}
                                 className="input-select pr-12 w-full cursor-pointer font-bold focus:ring-2 focus:ring-accent-crypto text-primary-black min-w-[140px]"
                             >
-                                <option value="All">All Chains</option>
-                                {chains.filter(c => c !== 'All').map(chain => (
-                                    <option key={chain} value={chain}>{chain}</option>
+                                <option value="All">All Categories</option>
+                                {categories.map(cat => (
+                                    <option key={cat.id} value={cat.name}>{cat.name}</option>
                                 ))}
                             </select>
                             <FaChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-primary-dark-gray/30" size={12} />
@@ -172,7 +195,7 @@ const Products: React.FC = () => {
                 <div className="py-40 text-center animate-slideUp">
                     <h2 className="text-2xl font-black text-primary-dark-gray/20 mb-4 uppercase tracking-tighter">No Products Found</h2>
                     <button
-                        onClick={() => { setSelectedChain('All'); }}
+                        onClick={() => { setSelectedCategory('All'); setSelectedChain('All'); }}
                         className="text-accent-anime font-bold underline decoration-accent-anime/30 underline-offset-4 hover:text-primary-black transition-all"
                     >
                         Clear all filters

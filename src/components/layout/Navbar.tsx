@@ -11,6 +11,33 @@ const Navbar: React.FC = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [notifications, setNotifications] = useState<any[]>([]);
     const { user, signOut } = useAuth();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState<any[]>([]);
+    const [showResults, setShowResults] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(async () => {
+            if (searchTerm.length > 2) {
+                const { data } = await supabase
+                    .from('products')
+                    .select('id, title, image_url, price, product_images(src)')
+                    .ilike('title', `%${searchTerm}%`)
+                    .eq('status', 'approved')
+                    .limit(5);
+
+                if (data) {
+                    setSearchResults(data);
+                    setShowResults(true);
+                }
+            } else {
+                setSearchResults([]);
+                setShowResults(false);
+            }
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [searchTerm]);
+
     const totalItems = useCartStore((state) => state.getTotalItems());
 
     useEffect(() => {
@@ -78,13 +105,54 @@ const Navbar: React.FC = () => {
                     <input
                         type="text"
                         placeholder="Search Web3 & Anime merch..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full h-10 pl-10 pr-10 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-black transition-all text-sm"
                         onKeyDown={(e) => {
                             if (e.key === 'Enter') {
-                                window.location.href = `/products?search=${e.currentTarget.value}`;
+                                window.location.href = `/products?search=${searchTerm}`;
+                                setShowResults(false);
                             }
                         }}
+                        onBlur={() => setTimeout(() => setShowResults(false), 200)}
+                        onFocus={() => searchTerm.length > 2 && setShowResults(true)}
                     />
+
+                    {/* Search Results Dropdown */}
+                    {showResults && searchResults.length > 0 && (
+                        <div className="absolute top-12 left-0 w-full bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 animate-fadeIn">
+                            {searchResults.map(product => (
+                                <Link
+                                    key={product.id}
+                                    to={`/product/${product.id}`}
+                                    className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0"
+                                    onClick={() => {
+                                        setSearchTerm('');
+                                        setShowResults(false);
+                                    }}
+                                >
+                                    <img
+                                        src={product.image_url || product.product_images?.[0]?.src || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=100'}
+                                        alt={product.title}
+                                        className="w-10 h-10 rounded-md object-cover bg-gray-100"
+                                    />
+                                    <div>
+                                        <div className="text-sm font-bold text-primary-black line-clamp-1">{product.title}</div>
+                                        <div className="text-xs text-primary-dark-gray/60">${product.price}</div>
+                                    </div>
+                                </Link>
+                            ))}
+                            <div className="p-2 bg-gray-50 text-center">
+                                <Link
+                                    to={`/products?search=${searchTerm}`}
+                                    className="text-[10px] font-black uppercase tracking-widest text-accent-anime hover:underline"
+                                    onClick={() => setShowResults(false)}
+                                >
+                                    View all results
+                                </Link>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Icons */}
