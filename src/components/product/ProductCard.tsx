@@ -78,9 +78,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     <div className="flex items-center gap-2 mt-3">
                         <div className="w-5 h-5 bg-bg-light rounded-full overflow-hidden">
                             <img
-                                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${product.creatorId}`}
+                                src={product.creatorAvatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${product.creatorId}`}
                                 alt="Creator"
-                                className="w-full h-full"
+                                className="w-full h-full object-cover"
                             />
                         </div>
                         <span className="text-[10px] text-primary-dark-gray/60 font-medium tracking-tight">by {product.creatorName}</span>

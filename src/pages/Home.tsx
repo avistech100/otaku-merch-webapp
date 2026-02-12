@@ -25,7 +25,7 @@ const Home: React.FC = () => {
                     .from('products')
                     .select(`
                         *,
-                        profiles!creator_id(full_name, store_name),
+                        profiles!creator_id(full_name, store_name, avatar_url),
                         categories(name),
                         product_images(src, alt_text),
                         product_variants(*)
@@ -45,6 +45,7 @@ const Home: React.FC = () => {
                         category: p.categories?.name || '',
                         creatorId: p.creator_id,
                         creatorName: p.profiles?.store_name || p.profiles?.full_name || 'Verified Creator',
+                        creatorAvatar: p.profiles?.avatar_url,
                         creatorBadge: p.profiles?.store_name ? 'Official Store' : 'Verified Creator',
                         isLimited: p.is_limited_edition,
                         hypeLevel: p.hype_score > 80 ? 'Legendary' : p.hype_score > 50 ? 'High' : 'Medium',

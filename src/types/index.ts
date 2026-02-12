@@ -24,6 +24,7 @@ export interface Product {
   category: Category;
   creatorId: string;
   creatorName: string;
+  creatorAvatar?: string;
   creatorBadge: string;
   sizes: string[];
   colors?: { name: string; hex: string }[];

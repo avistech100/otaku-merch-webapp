@@ -48,11 +48,13 @@ const Creator: React.FC = () => {
                 price: p.price,
                 image: p.image_url,
                 category: p.category,
-                creator: p.profiles?.store_name || p.profiles?.full_name || 'Creator',
-                creatorAvoid: false, // Legacy field
                 creatorId: p.creator_id,
-                isNew: new Date(p.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // New if < 7 days
-                inStock: p.stock_quantity > 0
+                creatorName: p.profiles?.store_name || p.profiles?.full_name || 'Creator',
+                creatorAvatar: p.profiles?.avatar_url,
+                creatorBadge: p.profiles?.store_name ? 'Official Store' : 'Verified Creator',
+                sizes: [], // Add if needed, Product interface requires it
+                isLimited: p.is_limited_edition,
+                hypeLevel: p.hype_score > 80 ? 'Legendary' : 'High',
             }));
 
             setProducts(mappedProducts);
@@ -118,8 +120,8 @@ const Creator: React.FC = () => {
                             onClick={toggleFollow}
                             disabled={followLoading}
                             className={`w-full font-black py-4 rounded-full uppercase tracking-widest transition-all mb-12 flex items-center justify-center gap-2 shadow-lg ${isFollowing
-                                    ? 'bg-bg-light text-primary-black border-2 border-primary-black hover:bg-red-50 hover:text-red-500 hover:border-red-500'
-                                    : 'bg-accent-crypto text-primary-white hover:brightness-110 shadow-accent-crypto/20'
+                                ? 'bg-bg-light text-primary-black border-2 border-primary-black hover:bg-red-50 hover:text-red-500 hover:border-red-500'
+                                : 'bg-accent-crypto text-primary-white hover:brightness-110 shadow-accent-crypto/20'
                                 }`}
                         >
                             {followLoading ? <FaSpinner className="animate-spin" /> : (isFollowing ? <><FaCheck /> FOLLOWING</> : <><FaPlus /> FOLLOW CREATOR</>)}

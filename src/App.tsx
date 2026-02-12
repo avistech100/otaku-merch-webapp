@@ -5,6 +5,7 @@ import { supabase } from './lib/supabase';
 import { useCartStore } from './store/useCartStore';
 import { useAuth } from './hooks/useAuth';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import ScrollToTop from './components/shared/ScrollToTop';
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -90,6 +91,7 @@ const App: React.FC = () => {
   console.log('[App] Rendering main app');
   return (
     <Router>
+      <ScrollToTop />
       <Layout>
         <Suspense fallback={
           <div className="h-screen w-full flex items-center justify-center font-black text-4xl animate-pulse">
