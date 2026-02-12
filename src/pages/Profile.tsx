@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 import {
-    FaUser, FaBox, FaCamera, FaSave, FaSpinner, FaHistory,
+    FaUser, FaBox, FaSave, FaSpinner,
     FaMapMarkedAlt, FaBell, FaShieldAlt, FaTrashAlt, FaPlus,
-    FaTwitter, FaInstagram, FaGlobe, FaChevronRight
+    FaTwitter, FaInstagram, FaGlobe, FaChevronRight, FaChevronDown,
+    FaShoppingBag, FaExchangeAlt, FaCheckCircle, FaClock, FaTimesCircle,
+    FaTruck, FaReceipt
 } from 'react-icons/fa';
 import AvatarUpload from '../components/shared/AvatarUpload';
-import DataTable, { type Column } from '../components/shared/DataTable';
 import { useNavigate } from 'react-router-dom';
 
 const Profile: React.FC = () => {
@@ -33,6 +34,12 @@ const Profile: React.FC = () => {
 
     // Orders State
     const [orders, setOrders] = useState<any[]>([]);
+    const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
+    const [orderItems, setOrderItems] = useState<Record<string, any[]>>({});
+    const [loadingItems, setLoadingItems] = useState<string | null>(null);
+
+    // Transactions State
+    const [transactions, setTransactions] = useState<any[]>([]);
 
     // Addresses State
     const [addresses, setAddresses] = useState<any[]>([]);
@@ -84,7 +91,39 @@ const Profile: React.FC = () => {
             .select('*')
             .eq('user_id', user?.id)
             .order('created_at', { ascending: false });
-        if (data) setOrders(data);
+        if (data) {
+            setOrders(data);
+            // Build transactions from orders that have payment data
+            const txns = data.map((order: any) => ({
+                id: order.id,
+                order_number: order.order_number,
+                date: order.created_at,
+                amount: order.total,
+                payment_status: order.payment_status,
+                payment_method: order.payment_method || 'Paystack',
+                payment_reference: order.payment_reference || '—',
+                status: order.status,
+            }));
+            setTransactions(txns);
+        }
+    };
+
+    const fetchOrderItems = async (orderId: string) => {
+        if (orderItems[orderId]) {
+            // Already cached
+            setExpandedOrderId(expandedOrderId === orderId ? null : orderId);
+            return;
+        }
+        setLoadingItems(orderId);
+        const { data } = await supabase
+            .from('order_items')
+            .select('*, products(title, image_url)')
+            .eq('order_id', orderId);
+        if (data) {
+            setOrderItems(prev => ({ ...prev, [orderId]: data }));
+        }
+        setExpandedOrderId(expandedOrderId === orderId ? null : orderId);
+        setLoadingItems(null);
     };
 
     const fetchAddresses = async () => {
@@ -112,7 +151,7 @@ const Profile: React.FC = () => {
                 .eq('id', user?.id);
 
             if (error) throw error;
-            alert('Security clearance updated. Profile synchronized.');
+            alert('Profile updated successfully.');
         } catch (err: any) {
             alert('Error updating profile: ' + err.message);
         } finally {
@@ -154,14 +193,14 @@ const Profile: React.FC = () => {
             setEditingAddress(null);
             fetchAddresses();
         } catch (err: any) {
-            alert('Failed to authorize address: ' + err.message);
+            alert('Failed to save address: ' + err.message);
         } finally {
             setSaving(false);
         }
     };
 
     const handleDeleteAddress = async (id: string) => {
-        if (!confirm('Permanent deletion of this waypoint?')) return;
+        if (!confirm('Are you sure you want to delete this address?')) return;
         await supabase.from('addresses').delete().eq('id', id);
         fetchAddresses();
     };
@@ -175,57 +214,50 @@ const Profile: React.FC = () => {
         }
     };
 
-    const orderColumns: Column<any>[] = [
-        {
-            header: 'Order Reference',
-            accessor: (row) => (
-                <div className="flex flex-col">
-                    <span className="font-mono text-xs font-black">#{row.id.slice(0, 8).toUpperCase()}</span>
-                    <span className="text-[10px] text-primary-dark-gray/40 font-bold uppercase">{new Date(row.created_at).toLocaleDateString()}</span>
-                </div>
-            )
-        },
-        {
-            header: 'Status',
-            accessor: (row) => (
-                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${row.status === 'delivered' ? 'bg-green-100 text-green-700' :
-                    row.status === 'shipping' ? 'bg-blue-100 text-blue-700' :
-                        'bg-yellow-100 text-yellow-700'
-                    }`}>
-                    {row.status}
-                </span>
-            )
-        },
-        {
-            header: 'Investment',
-            accessor: (row) => <span className="font-black text-primary-black">${row.total_amount.toFixed(2)}</span>
-        },
-        {
-            header: 'Actions',
-            accessor: (row) => (
-                <button
-                    onClick={() => navigate(`/checkout/success?orderId=${row.id}`)}
-                    className="p-2 hover:bg-bg-light rounded-lg transition-colors text-primary-dark-gray hover:text-primary-black"
-                >
-                    <FaChevronRight size={12} />
-                </button>
-            )
+    // Helper: status icon + color
+    const getStatusBadge = (status: string) => {
+        switch (status) {
+            case 'delivered':
+                return { icon: FaCheckCircle, color: 'bg-emerald-50 text-emerald-600 border-emerald-200', label: 'Delivered' };
+            case 'shipped':
+            case 'shipping':
+                return { icon: FaTruck, color: 'bg-blue-50 text-blue-600 border-blue-200', label: 'Shipped' };
+            case 'processing':
+                return { icon: FaClock, color: 'bg-amber-50 text-amber-600 border-amber-200', label: 'Processing' };
+            case 'cancelled':
+                return { icon: FaTimesCircle, color: 'bg-red-50 text-red-600 border-red-200', label: 'Cancelled' };
+            default:
+                return { icon: FaClock, color: 'bg-yellow-50 text-yellow-600 border-yellow-200', label: 'Pending' };
         }
-    ];
+    };
+
+    const getPaymentBadge = (status: string) => {
+        switch (status) {
+            case 'paid':
+                return { color: 'bg-emerald-50 text-emerald-600 border-emerald-200', label: 'Paid' };
+            case 'failed':
+                return { color: 'bg-red-50 text-red-600 border-red-200', label: 'Failed' };
+            case 'refunded':
+                return { color: 'bg-purple-50 text-purple-600 border-purple-200', label: 'Refunded' };
+            default:
+                return { color: 'bg-yellow-50 text-yellow-600 border-yellow-200', label: 'Pending' };
+        }
+    };
 
     if (loading) return (
         <div className="h-screen flex items-center justify-center">
             <div className="flex flex-col items-center gap-4">
                 <FaSpinner className="animate-spin text-4xl text-primary-black" />
-                <p className="font-black uppercase tracking-widest text-xs">Synchronizing User Node...</p>
+                <p className="font-black uppercase tracking-widest text-xs">Loading profile...</p>
             </div>
         </div>
     );
 
     const tabs = [
         { id: 'general', label: 'Identity', icon: FaUser },
-        { id: 'orders', label: 'Mission Logs', icon: FaHistory },
-        { id: 'addresses', label: 'Waypoints', icon: FaMapMarkedAlt },
+        { id: 'orders', label: 'Order History', icon: FaShoppingBag },
+        { id: 'transactions', label: 'Transactions', icon: FaExchangeAlt },
+        { id: 'addresses', label: 'Shipping', icon: FaMapMarkedAlt },
         { id: 'preferences', label: 'Config', icon: FaShieldAlt }
     ];
 
@@ -265,6 +297,7 @@ const Profile: React.FC = () => {
 
                 {/* Content Area */}
                 <div className="lg:col-span-3">
+                    {/* =================== IDENTITY TAB =================== */}
                     {activeTab === 'general' && (
                         <div className="space-y-8 animate-fadeIn">
                             <div className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
@@ -329,28 +362,148 @@ const Profile: React.FC = () => {
                         </div>
                     )}
 
+                    {/* =================== ORDER HISTORY TAB =================== */}
                     {activeTab === 'orders' && (
                         <div className="space-y-8 animate-fadeIn">
                             <div className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                                <h3 className="text-2xl font-black uppercase tracking-tight text-primary-black mb-8 flex items-center gap-3">
-                                    <FaHistory className="text-accent-crypto" /> Mission Logs
-                                </h3>
+                                <div className="flex items-center justify-between mb-10">
+                                    <h3 className="text-2xl font-black uppercase tracking-tight text-primary-black flex items-center gap-3">
+                                        <FaShoppingBag className="text-accent-anime" /> Order History
+                                    </h3>
+                                    <span className="text-xs font-black uppercase tracking-widest text-primary-dark-gray/40">
+                                        {orders.length} order{orders.length !== 1 ? 's' : ''}
+                                    </span>
+                                </div>
 
                                 {orders.length > 0 ? (
-                                    <DataTable
-                                        columns={orderColumns}
-                                        data={orders}
-                                        isLoading={loading}
-                                    />
+                                    <div className="space-y-4">
+                                        {orders.map(order => {
+                                            const badge = getStatusBadge(order.status);
+                                            const isExpanded = expandedOrderId === order.id;
+                                            const items = orderItems[order.id] || [];
+
+                                            return (
+                                                <div key={order.id} className="rounded-3xl border border-bg-light overflow-hidden hover:border-accent-anime/30 transition-all">
+                                                    {/* Order Header - Clickable */}
+                                                    <button
+                                                        onClick={() => fetchOrderItems(order.id)}
+                                                        className="w-full p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 text-left hover:bg-bg-light/20 transition-colors"
+                                                    >
+                                                        <div className="flex items-center gap-5">
+                                                            <div className="w-12 h-12 rounded-2xl bg-bg-light/50 flex items-center justify-center text-primary-dark-gray/40">
+                                                                <FaReceipt size={18} />
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-black text-sm uppercase tracking-tight text-primary-black">
+                                                                    {order.order_number || `#${order.id.slice(0, 8).toUpperCase()}`}
+                                                                </p>
+                                                                <p className="text-[10px] font-bold text-primary-dark-gray/40 uppercase tracking-widest mt-1">
+                                                                    {new Date(order.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="flex items-center gap-4">
+                                                            <span className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${badge.color}`}>
+                                                                {badge.label}
+                                                            </span>
+                                                            <span className="font-black text-lg text-primary-black tracking-tight">
+                                                                ${(order.total || 0).toFixed(2)}
+                                                            </span>
+                                                            <div className={`transition-transform duration-300 text-primary-dark-gray/30 ${isExpanded ? 'rotate-180' : ''}`}>
+                                                                <FaChevronDown size={12} />
+                                                            </div>
+                                                        </div>
+                                                    </button>
+
+                                                    {/* Expanded Order Details */}
+                                                    {isExpanded && (
+                                                        <div className="border-t border-bg-light bg-bg-light/10 p-6 animate-fadeIn">
+                                                            {/* Order Meta */}
+                                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                                                                <div className="bg-primary-white p-4 rounded-2xl border border-bg-light">
+                                                                    <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Subtotal</p>
+                                                                    <p className="font-black text-primary-black">${(order.subtotal || 0).toFixed(2)}</p>
+                                                                </div>
+                                                                <div className="bg-primary-white p-4 rounded-2xl border border-bg-light">
+                                                                    <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Shipping</p>
+                                                                    <p className="font-black text-primary-black">${(order.shipping || 0).toFixed(2)}</p>
+                                                                </div>
+                                                                <div className="bg-primary-white p-4 rounded-2xl border border-bg-light">
+                                                                    <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Payment</p>
+                                                                    <p className={`font-black ${order.payment_status === 'paid' ? 'text-emerald-600' : 'text-yellow-600'}`}>
+                                                                        {(order.payment_status || 'pending').toUpperCase()}
+                                                                    </p>
+                                                                </div>
+                                                                <div className="bg-primary-white p-4 rounded-2xl border border-bg-light">
+                                                                    <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Total</p>
+                                                                    <p className="font-black text-accent-anime text-lg">${(order.total || 0).toFixed(2)}</p>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Shipping Address */}
+                                                            {order.shipping_address && (
+                                                                <div className="bg-primary-white p-4 rounded-2xl border border-bg-light mb-6">
+                                                                    <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2">Shipping Address</p>
+                                                                    <p className="font-bold text-sm text-primary-black">{order.shipping_address.full_name || order.shipping_address.firstName}</p>
+                                                                    <p className="text-xs text-primary-dark-gray/60">
+                                                                        {order.shipping_address.address_line1 || order.shipping_address.address}
+                                                                        {order.shipping_address.city ? `, ${order.shipping_address.city}` : ''}
+                                                                        {order.shipping_address.state ? `, ${order.shipping_address.state}` : ''}
+                                                                        {order.shipping_address.postal_code ? ` ${order.shipping_address.postal_code}` : order.shipping_address.zip ? ` ${order.shipping_address.zip}` : ''}
+                                                                    </p>
+                                                                </div>
+                                                            )}
+
+                                                            {/* Order Items */}
+                                                            <div>
+                                                                <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-3">Items</p>
+                                                                {loadingItems === order.id ? (
+                                                                    <div className="flex items-center justify-center py-8">
+                                                                        <FaSpinner className="animate-spin text-primary-dark-gray/30" />
+                                                                    </div>
+                                                                ) : items.length > 0 ? (
+                                                                    <div className="space-y-3">
+                                                                        {items.map((item: any) => (
+                                                                            <div key={item.id} className="flex items-center gap-4 p-3 bg-primary-white rounded-2xl border border-bg-light">
+                                                                                <div className="w-14 h-14 rounded-xl bg-bg-light overflow-hidden shrink-0">
+                                                                                    <img
+                                                                                        src={item.products?.image_url || item.product_image || 'https://via.placeholder.com/56'}
+                                                                                        alt={item.products?.title || item.product_title}
+                                                                                        className="w-full h-full object-cover"
+                                                                                    />
+                                                                                </div>
+                                                                                <div className="flex-1 min-w-0">
+                                                                                    <p className="font-black text-xs uppercase tracking-tight text-primary-black truncate">{item.products?.title || item.product_title}</p>
+                                                                                    <div className="flex items-center gap-2 mt-1">
+                                                                                        {item.variant && <span className="text-[9px] font-bold text-primary-dark-gray/40 uppercase">{item.variant}</span>}
+                                                                                        <span className="text-[9px] font-bold text-primary-dark-gray/40 uppercase">Qty: {item.quantity}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <p className="font-black text-primary-black">${((item.price || item.subtotal || 0) * (item.quantity || 1)).toFixed(2)}</p>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                ) : (
+                                                                    <p className="text-xs text-primary-dark-gray/40 py-4 text-center">No item details available</p>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 ) : (
                                     <div className="py-24 text-center border-4 border-dashed border-bg-light rounded-[40px]">
                                         <FaBox className="text-6xl text-primary-dark-gray/10 mx-auto mb-6" />
-                                        <p className="font-black uppercase tracking-widest text-sm text-primary-dark-gray/40">No missions logged in the database</p>
+                                        <p className="font-black uppercase tracking-widest text-sm text-primary-dark-gray/40">No orders found</p>
+                                        <p className="text-xs text-primary-dark-gray/30 mt-2 mb-8">Start shopping to see your order history here</p>
                                         <button
                                             onClick={() => navigate('/products')}
-                                            className="mt-8 px-10 py-5 bg-primary-black text-white rounded-full font-black uppercase text-xs tracking-widest hover:bg-accent-anime transition-all shadow-xl"
+                                            className="px-10 py-5 bg-primary-black text-white rounded-full font-black uppercase text-xs tracking-widest hover:bg-accent-anime transition-all shadow-xl"
                                         >
-                                            Initiate Shopping
+                                            Browse Products
                                         </button>
                                     </div>
                                 )}
@@ -358,12 +511,102 @@ const Profile: React.FC = () => {
                         </div>
                     )}
 
+                    {/* =================== TRANSACTIONS TAB =================== */}
+                    {activeTab === 'transactions' && (
+                        <div className="space-y-8 animate-fadeIn">
+                            <div className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
+                                <div className="flex items-center justify-between mb-10">
+                                    <h3 className="text-2xl font-black uppercase tracking-tight text-primary-black flex items-center gap-3">
+                                        <FaExchangeAlt className="text-accent-crypto" /> Transaction History
+                                    </h3>
+                                    <span className="text-xs font-black uppercase tracking-widest text-primary-dark-gray/40">
+                                        {transactions.length} record{transactions.length !== 1 ? 's' : ''}
+                                    </span>
+                                </div>
+
+                                {transactions.length > 0 ? (
+                                    <>
+                                        {/* Summary Cards */}
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                                            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 p-6 rounded-3xl border border-emerald-200/50">
+                                                <p className="text-[9px] font-black uppercase tracking-widest text-emerald-500/60 mb-2">Total Spent</p>
+                                                <p className="text-3xl font-black text-emerald-700 tracking-tight">
+                                                    ${transactions.filter(t => t.payment_status === 'paid').reduce((acc, t) => acc + (t.amount || 0), 0).toFixed(2)}
+                                                </p>
+                                            </div>
+                                            <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 p-6 rounded-3xl border border-blue-200/50">
+                                                <p className="text-[9px] font-black uppercase tracking-widest text-blue-500/60 mb-2">Completed</p>
+                                                <p className="text-3xl font-black text-blue-700 tracking-tight">
+                                                    {transactions.filter(t => t.payment_status === 'paid').length}
+                                                </p>
+                                            </div>
+                                            <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 p-6 rounded-3xl border border-amber-200/50">
+                                                <p className="text-[9px] font-black uppercase tracking-widest text-amber-500/60 mb-2">Pending</p>
+                                                <p className="text-3xl font-black text-amber-700 tracking-tight">
+                                                    {transactions.filter(t => t.payment_status === 'pending').length}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Transaction List */}
+                                        <div className="space-y-3">
+                                            {transactions.map(txn => {
+                                                const payBadge = getPaymentBadge(txn.payment_status);
+                                                return (
+                                                    <div key={txn.id} className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl border border-bg-light hover:border-accent-crypto/30 transition-all group">
+                                                        <div className="flex items-center gap-4">
+                                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${txn.payment_status === 'paid' ? 'bg-emerald-100 text-emerald-600' : txn.payment_status === 'failed' ? 'bg-red-100 text-red-500' : 'bg-yellow-100 text-yellow-600'}`}>
+                                                                {txn.payment_status === 'paid' ? <FaCheckCircle size={16} /> : txn.payment_status === 'failed' ? <FaTimesCircle size={16} /> : <FaClock size={16} />}
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-black text-sm uppercase tracking-tight text-primary-black">
+                                                                    {txn.order_number || `#${txn.id.slice(0, 8).toUpperCase()}`}
+                                                                </p>
+                                                                <div className="flex items-center gap-3 mt-1">
+                                                                    <span className="text-[10px] font-bold text-primary-dark-gray/40 uppercase">
+                                                                        {new Date(txn.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                                                                    </span>
+                                                                    <span className="w-1 h-1 rounded-full bg-bg-light" />
+                                                                    <span className="text-[10px] font-bold text-primary-dark-gray/40 uppercase">{txn.payment_method}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="text-right">
+                                                                <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/30 mb-0.5">Reference</p>
+                                                                <p className="font-mono text-[10px] text-primary-dark-gray/50">{txn.payment_reference}</p>
+                                                            </div>
+                                                            <span className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${payBadge.color}`}>
+                                                                {payBadge.label}
+                                                            </span>
+                                                            <span className="font-black text-lg text-primary-black tracking-tight min-w-[80px] text-right">
+                                                                ${(txn.amount || 0).toFixed(2)}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="py-24 text-center border-4 border-dashed border-bg-light rounded-[40px]">
+                                        <FaExchangeAlt className="text-6xl text-primary-dark-gray/10 mx-auto mb-6" />
+                                        <p className="font-black uppercase tracking-widest text-sm text-primary-dark-gray/40">No transactions recorded</p>
+                                        <p className="text-xs text-primary-dark-gray/30 mt-2">Your payment history will appear here after your first purchase</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* =================== SHIPPING ADDRESSES TAB =================== */}
                     {activeTab === 'addresses' && (
                         <div className="space-y-8 animate-fadeIn">
                             <div className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
                                 <div className="flex items-center justify-between mb-10">
                                     <h3 className="text-2xl font-black uppercase tracking-tight text-primary-black flex items-center gap-3">
-                                        <FaMapMarkedAlt className="text-accent-anime" /> Logistics Waypoints
+                                        <FaMapMarkedAlt className="text-accent-anime" /> Shipping Addresses
                                     </h3>
                                     {!showAddressForm && (
                                         <button
@@ -378,7 +621,7 @@ const Profile: React.FC = () => {
                                             }}
                                             className="px-6 py-3 bg-primary-black text-white rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-accent-crypto transition-all flex items-center gap-2"
                                         >
-                                            <FaPlus /> New Waypoint
+                                            <FaPlus /> New Address
                                         </button>
                                     )}
                                 </div>
@@ -388,8 +631,8 @@ const Profile: React.FC = () => {
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <input required placeholder="Receiver Name" className="input-text w-full font-bold" value={addressForm.full_name} onChange={e => setAddressForm({ ...addressForm, full_name: e.target.value })} />
                                             <input required placeholder="Phone Number" className="input-text w-full font-bold" value={addressForm.phone} onChange={e => setAddressForm({ ...addressForm, phone: e.target.value })} />
-                                            <input required placeholder="Address Line 1" className="md:col-span-2 input-text w-full font-bold" value={addressForm.address_line1} onChange={e => setAddressForm({ ...addressForm, address_line1: e.target.value })} />
-                                            <input placeholder="Apt, Suite, Room (Optional)" className="md:col-span-2 input-text w-full font-bold" value={addressForm.address_line2} onChange={e => setAddressForm({ ...addressForm, address_line2: e.target.value })} />
+                                            <input required placeholder="Street Address" className="md:col-span-2 input-text w-full font-bold" value={addressForm.address_line1} onChange={e => setAddressForm({ ...addressForm, address_line1: e.target.value })} />
+                                            <input placeholder="Apartment, Suite, etc. (Optional)" className="md:col-span-2 input-text w-full font-bold" value={addressForm.address_line2} onChange={e => setAddressForm({ ...addressForm, address_line2: e.target.value })} />
                                             <input required placeholder="City" className="input-text w-full font-bold" value={addressForm.city} onChange={e => setAddressForm({ ...addressForm, city: e.target.value })} />
                                             <input required placeholder="State / Province" className="input-text w-full font-bold" value={addressForm.state} onChange={e => setAddressForm({ ...addressForm, state: e.target.value })} />
                                             <input required placeholder="Postal Code" className="input-text w-full font-bold" value={addressForm.postal_code} onChange={e => setAddressForm({ ...addressForm, postal_code: e.target.value })} />
@@ -402,10 +645,10 @@ const Profile: React.FC = () => {
                                         </div>
                                         <div className="flex items-center gap-4 py-4">
                                             <input type="checkbox" id="default-addr" checked={addressForm.is_default} onChange={e => setAddressForm({ ...addressForm, is_default: e.target.checked })} className="w-5 h-5 rounded accent-primary-black" />
-                                            <label htmlFor="default-addr" className="text-xs font-black uppercase tracking-widest text-primary-dark-gray cursor-pointer">Set as primary deployment waypoint</label>
+                                            <label htmlFor="default-addr" className="text-xs font-black uppercase tracking-widest text-primary-dark-gray cursor-pointer">Set as primary shipping address</label>
                                         </div>
                                         <div className="flex gap-4">
-                                            <button type="submit" disabled={saving} className="flex-1 btn-primary h-14 rounded-xl">{saving ? <FaSpinner className="animate-spin" /> : 'Authorize Waypoint'}</button>
+                                            <button type="submit" disabled={saving} className="flex-1 btn-primary h-14 rounded-xl">{saving ? <FaSpinner className="animate-spin" /> : 'Save Address'}</button>
                                             <button type="button" onClick={() => setShowAddressForm(false)} className="flex-1 btn-secondary h-14 rounded-xl">Cancel</button>
                                         </div>
                                     </form>
@@ -427,7 +670,7 @@ const Profile: React.FC = () => {
                                         ))}
                                         {addresses.length === 0 && (
                                             <div className="md:col-span-2 py-16 text-center border-2 border-dashed border-bg-light rounded-[32px]">
-                                                <p className="font-black uppercase tracking-widest text-[10px] text-primary-dark-gray/30">No logistic coordinates found</p>
+                                                <p className="font-black uppercase tracking-widest text-[10px] text-primary-dark-gray/30">No shipping addresses found</p>
                                             </div>
                                         )}
                                     </div>
@@ -436,6 +679,7 @@ const Profile: React.FC = () => {
                         </div>
                     )}
 
+                    {/* =================== CONFIG / PREFERENCES TAB =================== */}
                     {activeTab === 'preferences' && (
                         <div className="space-y-8 animate-fadeIn">
                             {/* Notification Control */}
@@ -489,7 +733,7 @@ const Profile: React.FC = () => {
                                     <FaTrashAlt /> Danger Zone
                                 </h3>
                                 <p className="text-sm font-medium text-red-500/60 mb-8 max-w-xl">
-                                    Initiating decommissioning sequence will permanently erase your identity, orders, and waypoints from the Otaku Merch grid. This cannot be undone.
+                                    Initiating decommissioning sequence will permanently erase your identity, orders, and data from the Otaku Merch grid. This cannot be undone.
                                 </p>
                                 <button
                                     onClick={handleDeleteAccount}

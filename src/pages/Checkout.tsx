@@ -2,28 +2,72 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '../store/useCartStore';
 import { supabase } from '../lib/supabase';
-import { FaCheck, FaLock, FaShippingFast, FaCreditCard, FaSpinner } from 'react-icons/fa';
+import { useAuth } from '../hooks/useAuth';
+import { FaCheck, FaLock, FaShippingFast, FaCreditCard, FaSpinner, FaPlus } from 'react-icons/fa';
 
 // @ts-ignore
 import PaystackPop from '@paystack/inline-js';
 
 const Checkout: React.FC = () => {
     const { items, getSubtotal, clearCart } = useCartStore();
+    const { user } = useAuth();
     const subtotal = getSubtotal();
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [userAddresses, setUserAddresses] = useState<any[]>([]);
+    const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
 
     const [shippingInfo, setShippingInfo] = useState({
-        firstName: '',
-        lastName: '',
         email: '',
-        address: '',
+        full_name: '',
+        phone: '',
+        address_line1: '',
+        address_line2: '',
         city: '',
         state: '',
-        zip: ''
+        postal_code: '',
+        country: 'Nigeria'
     });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    React.useEffect(() => {
+        if (user) {
+            fetchAddresses();
+        }
+    }, [user]);
+
+    const fetchAddresses = async () => {
+        const { data } = await supabase
+            .from('addresses')
+            .select('*')
+            .eq('user_id', user?.id)
+            .order('is_default', { ascending: false });
+
+        if (data && data.length > 0) {
+            setUserAddresses(data);
+            // Auto-select primary or first
+            const primary = data.find(a => a.is_default) || data[0];
+            selectAddress(primary);
+        }
+    };
+
+    const selectAddress = (addr: any) => {
+        setSelectedAddressId(addr.id);
+        setShippingInfo(prev => ({
+            ...prev,
+            full_name: addr.full_name,
+            phone: addr.phone,
+            address_line1: addr.address_line1,
+            address_line2: addr.address_line2 || '',
+            city: addr.city,
+            state: addr.state,
+            postal_code: addr.postal_code,
+            country: addr.country
+        }));
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        // If user types manually, clear selected ID to indicate new/custom address
+        if (selectedAddressId) setSelectedAddressId(null);
         setShippingInfo({ ...shippingInfo, [e.target.name]: e.target.value });
     };
 
@@ -159,21 +203,77 @@ const Checkout: React.FC = () => {
                                 <h2 className="text-3xl font-black tracking-tighter uppercase flex items-center gap-3 text-primary-black">
                                     <FaShippingFast size={24} className="text-accent-crypto" /> Shipping Info
                                 </h2>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <input type="text" name="firstName" placeholder="First Name" value={shippingInfo.firstName} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                    <input type="text" name="lastName" placeholder="Last Name" value={shippingInfo.lastName} onChange={handleInputChange} className="input-text w-full font-bold" />
+
+                                {/* Saved Addresses Selection */}
+                                {userAddresses.length > 0 && (
+                                    <div className="mb-8">
+                                        <h4 className="text-xs font-black uppercase tracking-widest text-primary-dark-gray/40 mb-4">Saved Locations</h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {userAddresses.map(addr => (
+                                                <button
+                                                    key={addr.id}
+                                                    onClick={() => selectAddress(addr)}
+                                                    className={`p-4 rounded-2xl border-2 text-left transition-all relative ${selectedAddressId === addr.id
+                                                        ? 'border-accent-anime bg-accent-anime/5'
+                                                        : 'border-bg-light hover:border-primary-black'
+                                                        }`}
+                                                >
+                                                    {selectedAddressId === addr.id && (
+                                                        <div className="absolute top-4 right-4 text-accent-anime">
+                                                            <FaCheck />
+                                                        </div>
+                                                    )}
+                                                    <p className="font-black text-sm uppercase text-primary-black">{addr.full_name}</p>
+                                                    <p className="text-xs text-primary-dark-gray/60 mt-1">{addr.address_line1}</p>
+                                                    <p className="text-[10px] font-bold text-primary-dark-gray/40 uppercase mt-2">{addr.city}, {addr.state}</p>
+                                                </button>
+                                            ))}
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedAddressId(null);
+                                                    setShippingInfo({
+                                                        email: shippingInfo.email, // keep email
+                                                        full_name: '', phone: '', address_line1: '', address_line2: '',
+                                                        city: '', state: '', postal_code: '', country: 'Nigeria'
+                                                    });
+                                                }}
+                                                className={`p-4 rounded-2xl border-2 border-dashed border-bg-light hover:border-accent-crypto hover:bg-accent-crypto/5 transition-all flex flex-col items-center justify-center gap-2 text-primary-dark-gray/40 hover:text-accent-crypto ${!selectedAddressId ? 'border-accent-crypto bg-accent-crypto/5 text-accent-crypto' : ''}`}
+                                            >
+                                                <FaPlus />
+                                                <span className="font-black text-[10px] uppercase tracking-widest">New Address</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="space-y-4">
+                                    <h4 className="text-xs font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2">Contact & Destination</h4>
+                                    <input type="email" name="email" placeholder="Email Address" value={shippingInfo.email} onChange={handleInputChange} className="input-text w-full font-bold" />
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <input type="text" name="full_name" placeholder="Full Name" value={shippingInfo.full_name} onChange={handleInputChange} className="input-text w-full font-bold" />
+                                        <input type="text" name="phone" placeholder="Phone Number" value={shippingInfo.phone} onChange={handleInputChange} className="input-text w-full font-bold" />
+                                    </div>
+                                    <input type="text" name="address_line1" placeholder="Street Address" value={shippingInfo.address_line1} onChange={handleInputChange} className="input-text w-full font-bold" />
+                                    <input type="text" name="address_line2" placeholder="Apartment, Suite, etc. (Optional)" value={shippingInfo.address_line2} onChange={handleInputChange} className="input-text w-full font-bold" />
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <input type="text" name="city" placeholder="City" value={shippingInfo.city} onChange={handleInputChange} className="input-text w-full font-bold" />
+                                        <input type="text" name="state" placeholder="State / Province" value={shippingInfo.state} onChange={handleInputChange} className="input-text w-full font-bold" />
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <input type="text" name="postal_code" placeholder="Postal Code" value={shippingInfo.postal_code} onChange={handleInputChange} className="input-text w-full font-bold" />
+                                        <select name="country" value={shippingInfo.country} onChange={handleInputChange} className="input-select w-full font-bold">
+                                            <option value="Nigeria">Nigeria</option>
+                                            <option value="USA">USA</option>
+                                            <option value="UK">UK</option>
+                                            <option value="Japan">Japan</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <input type="email" name="email" placeholder="Email Address" value={shippingInfo.email} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                <input type="text" name="address" placeholder="Address" value={shippingInfo.address} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                <div className="grid grid-cols-3 gap-4">
-                                    <input type="text" name="city" placeholder="City" value={shippingInfo.city} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                    <input type="text" name="state" placeholder="State" value={shippingInfo.state} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                    <input type="text" name="zip" placeholder="Zip" value={shippingInfo.zip} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                </div>
+
                                 <button
                                     onClick={() => setStep(2)}
                                     className="w-full btn-primary py-5 rounded-full uppercase tracking-widest shadow-xl shadow-black/10"
-                                    disabled={!shippingInfo.email || !shippingInfo.address}
+                                    disabled={!shippingInfo.email || !shippingInfo.address_line1 || !shippingInfo.full_name || !shippingInfo.city}
                                 >
                                     Continue to Payment
                                 </button>
@@ -207,8 +307,9 @@ const Checkout: React.FC = () => {
                                 <div className="bg-bg-light/50 rounded-[32px] p-8 space-y-6 border border-bg-light">
                                     <div>
                                         <h4 className="text-[10px] font-black uppercase text-primary-dark-gray/40 tracking-widest mb-2">Shipping to</h4>
-                                        <p className="font-bold text-primary-black">{shippingInfo.firstName} {shippingInfo.lastName}</p>
-                                        <p className="text-sm text-primary-dark-gray/60">{shippingInfo.address}, {shippingInfo.city}, {shippingInfo.zip}</p>
+                                        <p className="font-bold text-primary-black">{shippingInfo.full_name}</p>
+                                        <p className="text-sm text-primary-dark-gray/60">{shippingInfo.address_line1} {shippingInfo.address_line2}, {shippingInfo.city}, {shippingInfo.state} {shippingInfo.postal_code}</p>
+                                        <p className="text-sm text-primary-dark-gray/60">{shippingInfo.country} • {shippingInfo.phone}</p>
                                     </div>
                                     <div>
                                         <h4 className="text-[10px] font-black uppercase text-primary-dark-gray/40 tracking-widest mb-2">Payment</h4>
