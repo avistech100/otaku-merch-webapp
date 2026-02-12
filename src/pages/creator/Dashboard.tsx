@@ -93,11 +93,11 @@ const CreatorDashboard: React.FC = () => {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-primary-black mb-2">Command Center</h1>
-                    <p className="text-primary-dark-gray/60 font-medium uppercase tracking-[0.2em] text-xs">Vanguard Protocol Active. Welcome back, Pilot.</p>
+                    <h1 className="text-5xl font-black uppercase tracking-tighter text-[#FAFAFA] mb-2">Command Center</h1>
+                    <p className="text-[#A1A1AA] font-medium uppercase tracking-[0.2em] text-xs">Vanguard Protocol Active. Welcome back, Pilot.</p>
                 </div>
                 <div className="flex gap-4">
-                    <button onClick={() => navigate('/creator/products/new')} className="bg-primary-black text-white px-8 py-4 rounded-full font-black uppercase tracking-widest text-[10px] flex items-center gap-2 shadow-2xl hover:bg-accent-anime transition-all">
+                    <button onClick={() => navigate('/creator/products/new')} className="bg-[#3B82F6] text-white px-8 py-4 rounded-lg font-black uppercase tracking-widest text-[10px] flex items-center gap-2 shadow-[0_0_20px_rgba(59,130,246,0.2)] hover:bg-[#3B82F6]/90 transition-all">
                         <FaPlus /> Initialize Drop
                     </button>
                 </div>
@@ -106,12 +106,12 @@ const CreatorDashboard: React.FC = () => {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {cards.map((card, i) => (
-                    <div key={i} className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light group hover:-translate-y-2 transition-all duration-500">
-                        <div className={`w-14 h-14 rounded-2xl ${card.bg} ${card.color} flex items-center justify-center mb-6 shadow-sm border border-black/5`}>
-                            <card.icon size={20} />
+                    <div key={i} className="bg-[#121215] p-8 rounded-xl border border-[#27272A] group hover:border-[#3B82F6]/30 transition-all duration-300">
+                        <div className={`w-12 h-12 rounded-lg ${card.bg} ${card.color} flex items-center justify-center mb-6 border border-white/5`}>
+                            <card.icon size={18} />
                         </div>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">{card.title}</p>
-                        <p className="text-4xl font-black text-primary-black tracking-tighter">{card.value}</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-1">{card.title}</p>
+                        <p className="text-4xl font-black text-[#FAFAFA] tracking-tighter">{card.value}</p>
                     </div>
                 ))}
             </div>
@@ -119,13 +119,13 @@ const CreatorDashboard: React.FC = () => {
             {/* Main Dashboard Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 {/* Revenue Visualization */}
-                <div className="lg:col-span-2 bg-primary-white p-10 rounded-[50px] shadow-xl shadow-black/5 border border-bg-light">
+                <div className="lg:col-span-2 bg-[#121215] p-10 rounded-xl border border-[#27272A]">
                     <div className="flex items-center justify-between mb-10">
                         <div>
-                            <h3 className="text-2xl font-black uppercase tracking-tight text-primary-black">Income Trajectory</h3>
-                            <p className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40">Last 30 Days of Operational Data</p>
+                            <h3 className="text-2xl font-black uppercase tracking-tight text-[#FAFAFA]">Income Trajectory</h3>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-[#71717A]">Last 30 Days of Operational Data</p>
                         </div>
-                        <div className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-600 rounded-full">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-[#10B981]/10 text-[#10B981] rounded-lg border border-[#10B981]/20">
                             <FaArrowUp size={10} />
                             <span className="text-[10px] font-black">+12.5%</span>
                         </div>
@@ -135,18 +135,19 @@ const CreatorDashboard: React.FC = () => {
                             <AreaChart data={chartData}>
                                 <defs>
                                     <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10B981" stopOpacity={0.2} />
-                                        <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
+                                        <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.2} />
+                                        <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                                <XAxis dataKey="name" tick={{ fontSize: 10, fontWeight: 'bold' }} axisLine={false} tickLine={false} dy={10} />
-                                <YAxis tick={{ fontSize: 10, fontWeight: 'bold' }} axisLine={false} tickLine={false} dx={-10} tickFormatter={(val) => `$${val}`} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#27272A" />
+                                <XAxis dataKey="name" tick={{ fontSize: 10, fontWeight: 'bold', fill: '#71717A' }} axisLine={false} tickLine={false} dy={10} />
+                                <YAxis tick={{ fontSize: 10, fontWeight: 'bold', fill: '#71717A' }} axisLine={false} tickLine={false} dx={-10} tickFormatter={(val) => `$${val}`} />
                                 <Tooltip
-                                    contentStyle={{ borderRadius: '24px', border: 'none', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', background: '#fff' }}
-                                    cursor={{ stroke: '#000', strokeWidth: 1 }}
+                                    contentStyle={{ borderRadius: '8px', border: '1px solid #27272A', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', background: '#18181B', color: '#FAFAFA' }}
+                                    itemStyle={{ color: '#3B82F6' }}
+                                    cursor={{ stroke: '#3B82F6', strokeWidth: 1 }}
                                 />
-                                <Area type="monotone" dataKey="sales" stroke="#10B981" strokeWidth={5} fillOpacity={1} fill="url(#colorSales)" />
+                                <Area type="monotone" dataKey="sales" stroke="#3B82F6" strokeWidth={4} fillOpacity={1} fill="url(#colorSales)" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
@@ -154,40 +155,41 @@ const CreatorDashboard: React.FC = () => {
 
                 {/* Right Panel - Recent Activity & Top Creators */}
                 <div className="space-y-10">
-                    <div className="bg-primary-white p-10 rounded-[50px] shadow-xl shadow-black/5 border border-bg-light h-full">
+                    <div className="bg-[#121215] p-10 rounded-xl border border-[#27272A] h-full">
                         <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-xl font-black uppercase tracking-tight text-primary-black flex items-center gap-3">
-                                <FaFire className="text-red-500" /> Recent Logic
+                            <h3 className="text-xl font-black uppercase tracking-tight text-[#FAFAFA] flex items-center gap-3">
+                                <FaFire className="text-[#A855F7]" /> Recent Logic
                             </h3>
-                            <button className="text-[10px] font-black uppercase tracking-widest text-accent-anime hover:underline" onClick={() => navigate('/creator/orders')}>View All</button>
+                            <button className="text-[10px] font-black uppercase tracking-widest text-[#3B82F6] hover:underline" onClick={() => navigate('/creator/orders')}>View All</button>
                         </div>
                         <div className="space-y-8">
                             {recentOrders.length > 0 ? recentOrders.map((order, i) => (
                                 <div key={i} className="flex items-center gap-5 group cursor-pointer" onClick={() => navigate(`/creator/orders/${order.orders.id}`)}>
-                                    <div className="w-12 h-12 rounded-2xl bg-bg-light flex items-center justify-center text-[10px] font-black shrink-0 border border-transparent group-hover:border-accent-anime transition-all">
+                                    <div className="w-12 h-12 rounded-lg bg-[#18181B] flex items-center justify-center text-[10px] font-black shrink-0 border border-[#27272A] group-hover:border-[#3B82F6]/50 transition-all text-[#71717A]">
                                         ORD
                                     </div>
                                     <div className="flex-1 overflow-hidden">
-                                        <p className="font-extrabold text-sm text-primary-black group-hover:text-accent-anime transition-colors truncate uppercase tracking-tight">#{order.orders.id.slice(0, 8)} - {order.product_title}</p>
-                                        <p className="text-[9px] text-primary-dark-gray/40 uppercase font-black tracking-widest">{new Date(order.created_at).toLocaleDateString()}</p>
+                                        <p className="font-extrabold text-sm text-[#FAFAFA] group-hover:text-[#3B82F6] transition-colors truncate uppercase tracking-tight">#{order.orders.id.slice(0, 8)} - {order.product_title}</p>
+                                        <p className="text-[9px] text-[#71717A] uppercase font-black tracking-widest">{new Date(order.created_at).toLocaleDateString()}</p>
                                     </div>
-                                    <span className="text-green-500 font-black text-sm shrink-0">+${order.creator_earnings.toFixed(2)}</span>
+                                    <span className="text-[#10B981] font-black text-sm shrink-0">+${order.creator_earnings.toFixed(2)}</span>
                                 </div>
                             )) : (
                                 <div className="text-center py-20">
-                                    <p className="text-primary-dark-gray/40 font-black uppercase text-[10px] tracking-widest">No Transmissions Recorded</p>
+                                    <p className="text-[#71717A] font-black uppercase text-[10px] tracking-widest">No Transmissions Recorded</p>
                                 </div>
                             )}
                         </div>
                         <button
                             onClick={() => navigate('/creator/analytics')}
-                            className="w-full mt-10 py-5 rounded-3xl bg-primary-black text-white font-black text-[10px] uppercase tracking-widest hover:bg-accent-anime transition-all shadow-xl shadow-black/10"
+                            className="w-full mt-10 py-5 rounded-lg bg-[#18181B] border border-[#27272A] text-[#FAFAFA] font-black text-[10px] uppercase tracking-widest hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5 transition-all"
                         >
                             Intelligence Report
                         </button>
                     </div>
                 </div>
             </div>
+
         </div>
     );
 };

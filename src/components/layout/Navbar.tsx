@@ -4,6 +4,7 @@ import { FaShoppingCart, FaBars, FaTimes, FaSearch, FaUser, FaSignOutAlt, FaBell
 import { useCartStore } from '../../store/useCartStore';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
+import { useProfile } from '../../hooks/useProfile';
 import AuthModal from '../auth/AuthModal';
 
 const Navbar: React.FC = () => {
@@ -11,6 +12,7 @@ const Navbar: React.FC = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [notifications, setNotifications] = useState<any[]>([]);
     const { user, signOut } = useAuth();
+    const { profile } = useProfile();
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [showResults, setShowResults] = useState(false);
@@ -198,13 +200,13 @@ const Navbar: React.FC = () => {
 
                     {user ? (
                         <div className="flex items-center gap-4">
-                            <div className="w-8 h-8 rounded-full overflow-hidden border border-bg-light">
+                            <Link to="/profile" className="w-8 h-8 rounded-full overflow-hidden border border-bg-light hover:border-accent-anime transition-all duration-300 bg-bg-light">
                                 <img
-                                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.email}`}
+                                    src={profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.email}`}
                                     alt="Avatar"
                                     className="w-full h-full object-cover"
                                 />
-                            </div>
+                            </Link>
                             <button onClick={handleSignOut} className="text-primary-dark-gray/60 hover:text-accent-anime transition-all">
                                 <FaSignOutAlt size={18} />
                             </button>

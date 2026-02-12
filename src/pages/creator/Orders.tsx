@@ -91,29 +91,32 @@ const CreatorOrders: React.FC = () => {
             header: 'Order Signature',
             accessor: (row) => (
                 <div className="flex flex-col">
-                    <span className="font-mono text-xs font-black text-primary-black">#{row.id.slice(0, 8).toUpperCase()}</span>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-primary-dark-gray/40">{new Date(row.created_at).toLocaleDateString()} @ {new Date(row.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    <span className="font-mono text-xs font-black text-[#FAFAFA]">#{row.id.slice(0, 8).toUpperCase()}</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-[#71717A]">{new Date(row.created_at).toLocaleDateString()} @ {new Date(row.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                 </div>
             )
+
         },
         {
             header: 'Recipient',
             accessor: (row) => (
                 <div className="flex flex-col">
-                    <span className="font-bold text-xs text-primary-black uppercase tracking-tight">{row.shipping_address?.full_name || 'ANONYMOUS_ENTITY'}</span>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-primary-dark-gray/40">{row.shipping_address?.city}, {row.shipping_address?.country}</span>
+                    <span className="font-bold text-xs text-[#FAFAFA] uppercase tracking-tight">{row.shipping_address?.full_name || 'ANONYMOUS_ENTITY'}</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-[#71717A]">{row.shipping_address?.city}, {row.shipping_address?.country}</span>
                 </div>
             )
+
         },
         {
             header: 'Payload',
             accessor: (row) => (
                 <div className="flex items-center gap-2">
-                    <span className="font-black text-xs text-primary-black">{row.items_count} ITEMS</span>
-                    <span className="w-1 h-1 rounded-full bg-bg-light" />
-                    <span className="font-black text-accent-crypto text-xs">${row.total_amount.toFixed(2)}</span>
+                    <span className="font-black text-xs text-[#FAFAFA]">{row.items_count} ITEMS</span>
+                    <span className="w-1 h-1 rounded-full bg-[#27272A]" />
+                    <span className="font-black text-[#3B82F6] text-xs">${row.total_amount.toFixed(2)}</span>
                 </div>
             )
+
         },
         {
             header: 'Condition',
@@ -132,12 +135,13 @@ const CreatorOrders: React.FC = () => {
         <div className="animate-fadeIn pb-20">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-primary-black mb-2">Order Terminal</h1>
-                    <p className="text-primary-dark-gray/60 font-medium uppercase tracking-[0.2em] text-xs">Tracking global deployments and asset distribution.</p>
+                    <h1 className="text-5xl font-black uppercase tracking-tighter text-[#FAFAFA] mb-2">Order Terminal</h1>
+                    <p className="text-[#71717A] font-medium uppercase tracking-[0.2em] text-xs">Tracking global deployments and asset distribution.</p>
                 </div>
             </div>
 
-            <section className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light transition-all overflow-hidden text-primary-black">
+            <section className="bg-[#121215] p-8 rounded-xl border border-[#27272A] transition-all overflow-hidden text-[#FAFAFA]">
+
                 <DataTable
                     columns={columns}
                     data={orders}
@@ -145,11 +149,12 @@ const CreatorOrders: React.FC = () => {
                     actions={(row) => (
                         <button
                             onClick={() => navigate(`/creator/orders/${row.id}`)}
-                            className="bg-primary-black text-white px-6 py-3 rounded-full font-black uppercase tracking-widest text-[10px] flex items-center gap-2 hover:bg-accent-anime transition-all"
+                            className="bg-[#18181B] border border-[#27272A] text-[#FAFAFA] px-6 py-3 rounded-lg font-black uppercase tracking-widest text-[10px] flex items-center gap-2 hover:border-[#3B82F6]/50 transition-all shadow-lg"
                         >
-                            <FaEye /> Inspect
+                            <FaEye className="text-[#3B82F6]" /> Inspect
                         </button>
                     )}
+
                 />
             </section>
         </div>

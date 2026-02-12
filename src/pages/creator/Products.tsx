@@ -64,28 +64,30 @@ const CreatorProducts: React.FC = () => {
             header: 'Asset Control',
             accessor: (row) => (
                 <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-2xl bg-bg-light overflow-hidden border border-bg-light shadow-sm">
+                    <div className="w-14 h-14 rounded-lg bg-[#18181B] overflow-hidden border border-[#27272A] shadow-sm">
                         <img src={row.image_url || 'https://via.placeholder.com/150'} alt={row.title} className="w-full h-full object-cover" />
                     </div>
                     <div>
-                        <p className="font-extrabold text-primary-black text-sm uppercase tracking-tight">{row.title}</p>
+                        <p className="font-extrabold text-[#FAFAFA] text-sm uppercase tracking-tight">{row.title}</p>
                         <div className="flex items-center gap-2 mt-1">
-                            <span className="text-[9px] uppercase font-black tracking-widest text-primary-dark-gray/40">{row.category}</span>
-                            <span className="w-1 h-1 rounded-full bg-bg-light" />
-                            <span className="text-[9px] uppercase font-black tracking-widest text-primary-dark-gray/40">ID: {row.id.slice(0, 8)}</span>
+                            <span className="text-[9px] uppercase font-black tracking-widest text-[#71717A]">{row.category}</span>
+                            <span className="w-1 h-1 rounded-full bg-[#27272A]" />
+                            <span className="text-[9px] uppercase font-black tracking-widest text-[#71717A]">ID: {row.id.slice(0, 8)}</span>
                         </div>
                     </div>
                 </div>
             )
+
         },
         {
             header: 'Valuation',
             accessor: (row) => (
                 <div className="flex flex-col">
-                    <span className="font-black text-primary-black">${row.price.toFixed(2)}</span>
-                    <span className="text-[10px] text-primary-dark-gray/40 font-bold">BASE_UNIT</span>
+                    <span className="font-black text-[#FAFAFA]">${row.price.toFixed(2)}</span>
+                    <span className="text-[10px] text-[#71717A] font-bold">BASE_UNIT</span>
                 </div>
             )
+
         },
         {
             header: 'Inventory',
@@ -93,9 +95,9 @@ const CreatorProducts: React.FC = () => {
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
                         <div className={`w-1.5 h-1.5 rounded-full ${row.stock_quantity > 10 ? 'bg-green-500' : 'bg-red-500 animate-pulse'}`} />
-                        <span className="font-black text-primary-black text-xs">{row.stock_quantity} UNITS</span>
+                        <span className="font-black text-[#FAFAFA] text-xs">{row.stock_quantity} UNITS</span>
                     </div>
-                    <div className="w-16 h-1 bg-bg-light rounded-full overflow-hidden">
+                    <div className="w-16 h-1 bg-[#18181B] rounded-full overflow-hidden">
                         <div
                             className={`h-full ${row.stock_quantity > 10 ? 'bg-green-500' : 'bg-red-500'}`}
                             style={{ width: `${Math.min(100, (row.stock_quantity / 50) * 100)}%` }}
@@ -103,14 +105,15 @@ const CreatorProducts: React.FC = () => {
                     </div>
                 </div>
             )
+
         },
         {
             header: 'Status',
             accessor: (row) => (
                 <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${row.status === 'approved' ? 'bg-green-50 text-green-600 border-green-100' :
-                        row.status === 'rejected' ? 'bg-red-50 text-red-600 border-red-100' :
-                            row.status === 'draft' ? 'bg-gray-100 text-gray-500 border-gray-200' :
-                                'bg-yellow-50 text-yellow-600 border-yellow-100'
+                    row.status === 'rejected' ? 'bg-red-50 text-red-600 border-red-100' :
+                        row.status === 'draft' ? 'bg-gray-100 text-gray-500 border-gray-200' :
+                            'bg-yellow-50 text-yellow-600 border-yellow-100'
                     }`}>
                     {row.status}
                 </span>
@@ -131,20 +134,21 @@ const CreatorProducts: React.FC = () => {
         <div className="animate-fadeIn pb-20">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-primary-black mb-2">My Arsenal</h1>
-                    <p className="text-primary-dark-gray/60 font-medium uppercase tracking-[0.2em] text-xs">Inventory Synchronized. Ready for deployment.</p>
+                    <h1 className="text-5xl font-black uppercase tracking-tighter text-[#FAFAFA] mb-2">My Arsenal</h1>
+                    <p className="text-[#71717A] font-medium uppercase tracking-[0.2em] text-xs">Inventory Synchronized. Ready for deployment.</p>
                 </div>
                 <div className="flex gap-4">
                     <button
                         onClick={() => navigate('/creator/products/new')}
-                        className="bg-primary-black text-white px-10 py-5 rounded-full font-black uppercase tracking-widest text-xs flex items-center gap-3 shadow-2xl hover:bg-accent-anime transition-all group"
+                        className="bg-[#3B82F6] text-white px-10 py-5 rounded-lg font-black uppercase tracking-widest text-xs flex items-center gap-3 shadow-[0_0_20px_rgba(59,130,246,0.2)] hover:bg-[#3B82F6]/90 transition-all group"
                     >
                         <FaPlus className="group-hover:rotate-90 transition-transform" /> New Drop
                     </button>
                 </div>
             </div>
 
-            <section className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light transition-all overflow-hidden">
+            <section className="bg-[#121215] p-8 rounded-xl border border-[#27272A] transition-all overflow-hidden">
+
                 <DataTable
                     columns={columns}
                     data={products}
@@ -153,27 +157,28 @@ const CreatorProducts: React.FC = () => {
                         <div className="flex items-center justify-end gap-3">
                             <button
                                 onClick={() => navigate(`/product/${row.id}`)}
-                                className="w-10 h-10 flex items-center justify-center hover:bg-bg-light rounded-xl text-primary-dark-gray hover:text-primary-black transition-all"
+                                className="w-10 h-10 flex items-center justify-center hover:bg-[#18181B] rounded-lg text-[#71717A] hover:text-[#FAFAFA] transition-all border border-transparent hover:border-[#27272A]"
                                 title="View Landing Page"
                             >
                                 <FaExternalLinkAlt size={14} />
                             </button>
                             <button
                                 onClick={() => navigate(`/creator/products/edit/${row.id}`)}
-                                className="w-10 h-10 flex items-center justify-center hover:bg-bg-light rounded-xl text-primary-dark-gray hover:text-primary-black transition-all"
+                                className="w-10 h-10 flex items-center justify-center hover:bg-[#18181B] rounded-lg text-[#71717A] hover:text-[#FAFAFA] transition-all border border-transparent hover:border-[#27272A]"
                                 title="Edit Configuration"
                             >
                                 <FaEdit size={14} />
                             </button>
                             <button
                                 onClick={() => handleDelete(row)}
-                                className="w-10 h-10 flex items-center justify-center hover:bg-red-50 rounded-xl text-primary-dark-gray hover:text-red-500 transition-all"
+                                className="w-10 h-10 flex items-center justify-center hover:bg-[#EF4444]/10 rounded-lg text-[#71717A] hover:text-[#EF4444] transition-all border border-transparent hover:border-[#EF4444]/20"
                                 title="Decommission"
                             >
                                 <FaTrash size={14} />
                             </button>
                         </div>
                     )}
+
                 />
             </section>
         </div>

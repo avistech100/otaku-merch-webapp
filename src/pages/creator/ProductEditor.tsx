@@ -191,132 +191,135 @@ const ProductEditor: React.FC = () => {
         <div className="max-w-5xl mx-auto animate-fadeIn pb-32">
             {/* Header */}
             <div className="flex items-center gap-6 mb-12">
-                <button onClick={() => navigate('/creator/products')} className="w-14 h-14 rounded-full bg-primary-white shadow-lg flex items-center justify-center hover:bg-primary-black hover:text-white transition-all group">
+                <button onClick={() => navigate('/creator/products')} className="w-14 h-14 rounded-full bg-[#121215] border border-[#27272A] shadow-lg flex items-center justify-center text-[#FAFAFA] hover:border-[#3B82F6] transition-all group">
                     <FaArrowLeft className="group-hover:-translate-x-1 transition-transform" />
                 </button>
                 <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-primary-black mb-2">{isEditMode ? 'Modify Asset' : 'New Drop Injection'}</h1>
-                    <p className="text-primary-dark-gray/60 font-medium uppercase tracking-[0.2em] text-xs">ID: {id || 'NEW_ENTRY_GENESIS'}</p>
+                    <h1 className="text-5xl font-black uppercase tracking-tighter text-[#FAFAFA] mb-2">{isEditMode ? 'Modify Asset' : 'New Drop Injection'}</h1>
+                    <p className="text-[#71717A] font-medium uppercase tracking-[0.2em] text-xs">ID: {id || 'NEW_ENTRY_GENESIS'}</p>
                 </div>
             </div>
+
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left Column - Main Info */}
                 <div className="lg:col-span-2 space-y-8">
                     {/* Basic Data */}
-                    <section className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                        <h3 className="text-xl font-black uppercase tracking-tight mb-8 flex items-center gap-3">
-                            <FaBox className="text-accent-anime" /> Core Specifications
+                    <section className="bg-[#121215] p-10 rounded-xl border border-[#27272A]">
+                        <h3 className="text-xl font-black uppercase tracking-tight mb-8 flex items-center gap-3 text-[#FAFAFA]">
+                            <FaBox className="text-[#3B82F6]" /> Core Specifications
                         </h3>
                         <div className="space-y-6">
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 block">Product Title</label>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Product Title</label>
                                 <input
                                     type="text"
                                     required
                                     value={title}
                                     onChange={e => setTitle(e.target.value)}
-                                    className="w-full h-14 px-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-bold outline-none"
+                                    className="w-full h-14 px-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-bold outline-none text-[#FAFAFA]"
                                     placeholder="e.g. NAKAMOTO GENESIS HOODIE"
                                 />
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 block">Description & Lore</label>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Description & Lore</label>
                                 <textarea
                                     required
                                     value={description}
                                     onChange={e => setDescription(e.target.value)}
-                                    className="w-full h-48 p-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-medium outline-none resize-none"
+                                    className="w-full h-48 p-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-medium outline-none resize-none text-[#FAFAFA] placeholder-[#71717A]"
                                     placeholder="Describe materials, fit, and the story behind this piece..."
                                 />
                             </div>
                         </div>
                     </section>
 
+
                     {/* Inventory & Pricing */}
-                    <section className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                        <h3 className="text-xl font-black uppercase tracking-tight mb-8 flex items-center gap-3">
-                            <FaLayerGroup className="text-accent-crypto" /> Logistics & Valuation
+                    <section className="bg-[#121215] p-10 rounded-xl border border-[#27272A]">
+                        <h3 className="text-xl font-black uppercase tracking-tight mb-8 flex items-center gap-3 text-[#FAFAFA]">
+                            <FaLayerGroup className="text-[#A855F7]" /> Logistics & Valuation
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 block">Listing Price ($)</label>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Listing Price ($)</label>
                                 <input
                                     type="number"
                                     required
                                     step="0.01"
                                     value={price}
                                     onChange={e => setPrice(e.target.value)}
-                                    className="w-full h-14 px-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-bold outline-none"
+                                    className="w-full h-14 px-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-bold outline-none text-[#FAFAFA]"
                                     placeholder="0.00"
                                 />
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 block">Compare Price ($)</label>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Compare Price ($)</label>
                                 <input
                                     type="number"
                                     step="0.01"
                                     value={comparePrice}
                                     onChange={e => setComparePrice(e.target.value)}
-                                    className="w-full h-14 px-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-bold outline-none"
+                                    className="w-full h-14 px-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-bold outline-none text-[#FAFAFA]"
                                     placeholder="0.00 (Optional)"
                                 />
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 block">SKU / Serial Number</label>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">SKU / Serial Number</label>
                                 <input
                                     type="text"
                                     value={sku}
                                     onChange={e => setSku(e.target.value)}
-                                    className="w-full h-14 px-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-bold outline-none"
+                                    className="w-full h-14 px-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-bold outline-none text-[#FAFAFA]"
                                     placeholder="OTKU-GEN-001"
                                 />
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 block">Total Inventory Units</label>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Total Inventory Units</label>
                                 <input
                                     type="number"
                                     required
                                     value={stockQuantity}
                                     onChange={e => setStockQuantity(e.target.value)}
-                                    className="w-full h-14 px-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-bold outline-none"
+                                    className="w-full h-14 px-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-bold outline-none text-[#FAFAFA]"
                                     placeholder="0"
                                 />
                             </div>
                         </div>
 
-                        <div className="mt-8 flex items-center gap-6 p-6 rounded-2xl bg-bg-light/30">
+                        <div className="mt-8 flex items-center gap-6 p-6 rounded-lg bg-[#18181B] border border-[#27272A]">
                             <div className="flex items-center gap-4 cursor-pointer" onClick={() => setIsLimitedEdition(!isLimitedEdition)}>
-                                <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${isLimitedEdition ? 'bg-primary-black border-primary-black' : 'border-primary-dark-gray/20'}`}>
+                                <div className={`w-6 h-6 rounded border flex items-center justify-center transition-all ${isLimitedEdition ? 'bg-[#3B82F6] border-[#3B82F6]' : 'border-[#27272A]'}`}>
                                     {isLimitedEdition && <FaTimes className="text-white text-xs" />}
                                 </div>
-                                <span className="text-xs font-black uppercase tracking-widest text-primary-black">Limited Edition Asset</span>
+                                <span className="text-xs font-black uppercase tracking-widest text-[#FAFAFA]">Limited Edition Asset</span>
                             </div>
                         </div>
                     </section>
 
+
                     {/* Variants */}
-                    <section className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
+                    <section className="bg-[#121215] p-10 rounded-xl border border-[#27272A]">
                         <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-xl font-black uppercase tracking-tight flex items-center gap-3">
-                                <FaLayerGroup className="text-accent-anime" /> Morphological Variants
+                            <h3 className="text-xl font-black uppercase tracking-tight flex items-center gap-3 text-[#FAFAFA]">
+                                <FaLayerGroup className="text-[#3B82F6]" /> Morphological Variants
                             </h3>
                             <button
                                 type="button"
                                 onClick={() => setHasVariants(!hasVariants)}
-                                className={`w-14 h-8 rounded-full transition-all relative ${hasVariants ? 'bg-accent-anime shadow-lg shadow-accent-anime/30' : 'bg-bg-light'}`}
+                                className={`w-14 h-8 rounded-full transition-all relative ${hasVariants ? 'bg-[#3B82F6] shadow-[0_0_15px_rgba(59,130,246,0.2)]' : 'bg-[#18181B] border border-[#27272A]'}`}
                             >
-                                <div className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-sm transition-transform ${hasVariants ? 'translate-x-6' : 'translate-x-0'}`} />
+                                <div className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-transform ${hasVariants ? 'translate-x-6' : 'translate-x-0'}`} />
                             </button>
                         </div>
 
                         {hasVariants && (
                             <div className="space-y-6 animate-fadeIn">
                                 <div className="grid grid-cols-3 gap-4">
-                                    <select className="col-span-1 h-12 bg-bg-light/30 rounded-xl px-4 text-xs font-black outline-none border border-transparent focus:border-primary-black" id="var-size">
+                                    <select className="col-span-1 h-12 bg-[#18181B] text-[#FAFAFA] rounded-lg px-4 text-xs font-black outline-none border border-[#27272A] focus:border-[#3B82F6]" id="var-size">
                                         {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
                                     </select>
-                                    <input type="number" className="col-span-1 h-12 bg-bg-light/30 rounded-xl px-4 text-xs font-black outline-none border border-transparent focus:border-primary-black" placeholder="Stock" id="var-stock" />
+                                    <input type="number" className="col-span-1 h-12 bg-[#18181B] text-[#FAFAFA] rounded-lg px-4 text-xs font-black outline-none border border-[#27272A] focus:border-[#3B82F6]" placeholder="Stock" id="var-stock" />
                                     <button
                                         type="button"
                                         onClick={() => {
@@ -327,16 +330,16 @@ const ProductEditor: React.FC = () => {
                                                 (document.getElementById('var-stock') as HTMLInputElement).value = '';
                                             }
                                         }}
-                                        className="col-span-1 bg-primary-black text-white rounded-xl flex items-center justify-center hover:bg-accent-anime transition-all"
+                                        className="col-span-1 bg-[#3B82F6] text-white rounded-lg flex items-center justify-center hover:bg-[#3B82F6]/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.1)]"
                                     >
                                         <FaPlus />
                                     </button>
                                 </div>
                                 <div className="space-y-3">
                                     {variants.map((v, i) => (
-                                        <div key={i} className="flex items-center justify-between p-4 rounded-xl border border-bg-light">
-                                            <span className="font-black text-xs">{v.name} - {v.stock} UNITS</span>
-                                            <button onClick={() => setVariants(variants.filter((_, idx) => idx !== i))} className="text-primary-dark-gray/40 hover:text-red-500">
+                                        <div key={i} className="flex items-center justify-between p-4 rounded-lg border border-[#27272A] bg-[#18181B]/50">
+                                            <span className="font-black text-xs text-[#FAFAFA]">{v.name} - {v.stock} UNITS</span>
+                                            <button onClick={() => setVariants(variants.filter((_, idx) => idx !== i))} className="text-[#71717A] hover:text-[#EF4444] transition-colors">
                                                 <FaTimes size={12} />
                                             </button>
                                         </div>
@@ -345,18 +348,19 @@ const ProductEditor: React.FC = () => {
                             </div>
                         )}
                     </section>
+
                 </div>
 
                 {/* Right Column - Organization & Media */}
                 <div className="space-y-8">
                     {/* Media Setup */}
-                    <section className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                        <h3 className="text-xl font-black uppercase tracking-tight mb-4">Visual Identity</h3>
-                        <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-6">
-                            <p className="text-xs font-bold text-blue-600 flex items-center gap-2">
+                    <section className="bg-[#121215] p-10 rounded-xl border border-[#27272A]">
+                        <h3 className="text-xl font-black uppercase tracking-tight mb-4 text-[#FAFAFA]">Visual Identity</h3>
+                        <div className="bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-lg p-4 mb-6">
+                            <p className="text-xs font-bold text-[#3B82F6] flex items-center gap-2">
                                 ⚠️ Images must be SQUARE (1:1 ratio)
                             </p>
-                            <p className="text-[10px] text-primary-dark-gray/60 mt-1">
+                            <p className="text-[10px] text-[#71717A] mt-1">
                                 Max 5MB per image. JPG, PNG, or WebP only.
                             </p>
                         </div>
@@ -369,12 +373,13 @@ const ProductEditor: React.FC = () => {
                         />
                     </section>
 
+
                     {/* Taxonomy */}
-                    <section className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                        <h3 className="text-xl font-black uppercase tracking-tight mb-8">Taxonomy</h3>
+                    <section className="bg-[#121215] p-10 rounded-xl border border-[#27272A]">
+                        <h3 className="text-xl font-black uppercase tracking-tight mb-8 text-[#FAFAFA]">Taxonomy</h3>
                         <div className="space-y-6">
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 block">Sector</label>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Sector</label>
                                 <select
                                     value={categoryId}
                                     onChange={e => {
@@ -383,27 +388,27 @@ const ProductEditor: React.FC = () => {
                                         const name = dbCategories.find(c => c.id === id)?.name || '';
                                         setCategory(name);
                                     }}
-                                    className="w-full h-12 px-6 rounded-xl bg-bg-light/30 font-black text-xs outline-none cursor-pointer border border-transparent focus:border-primary-black"
+                                    className="w-full h-12 px-6 rounded-lg bg-[#18181B] font-black text-xs outline-none cursor-pointer border border-[#27272A] focus:border-[#3B82F6] text-[#FAFAFA]"
                                 >
                                     {dbCategories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
                                 </select>
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 block">Tags</label>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Tags</label>
                                 <div className="flex gap-2 mb-4">
                                     <input
                                         type="text"
                                         value={tagInput}
                                         onChange={e => setTagInput(e.target.value)}
                                         onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                                        className="flex-1 h-12 px-6 rounded-xl bg-bg-light/30 font-bold text-xs outline-none border border-transparent focus:border-primary-black"
+                                        className="flex-1 h-12 px-6 rounded-lg bg-[#18181B] font-bold text-xs outline-none border border-[#27272A] focus:border-[#3B82F6] text-[#FAFAFA]"
                                         placeholder="Add label..."
                                     />
-                                    <button type="button" onClick={addTag} className="w-12 h-12 rounded-xl bg-bg-light flex items-center justify-center text-primary-dark-gray"><FaTag size={12} /></button>
+                                    <button type="button" onClick={addTag} className="w-12 h-12 rounded-lg bg-[#18181B] border border-[#27272A] flex items-center justify-center text-[#71717A] hover:text-[#FAFAFA] transition-colors"><FaTag size={12} /></button>
                                 </div>
                                 <div className="flex flex-wrap gap-2">
                                     {tags.map(tag => (
-                                        <span key={tag} className="px-3 py-1 bg-primary-black text-white rounded-full text-[10px] font-black flex items-center gap-2">
+                                        <span key={tag} className="px-3 py-1 bg-[#18181B] text-[#3B82F6] border border-[#3B82F6]/30 rounded-full text-[10px] font-black flex items-center gap-2">
                                             {tag}
                                             <FaTimes className="cursor-pointer" size={8} onClick={() => setTags(tags.filter(t => t !== tag))} />
                                         </span>
@@ -412,28 +417,30 @@ const ProductEditor: React.FC = () => {
                             </div>
                         </div>
                     </section>
+
                 </div>
             </div>
 
             {/* Action Bar */}
-            <div className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-primary-white/80 backdrop-blur-xl border border-white/20 p-4 rounded-full shadow-2xl flex items-center gap-4 z-50">
+            <div className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-[#121215]/80 backdrop-blur-xl border border-[#27272A] p-4 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center gap-4 z-50">
                 <button
                     onClick={() => handleSave('draft')}
                     disabled={loading}
-                    className="px-10 py-4 font-black uppercase tracking-widest text-xs text-primary-dark-gray hover:text-primary-black transition-all"
+                    className="px-10 py-4 font-black uppercase tracking-widest text-xs text-[#71717A] hover:text-[#FAFAFA] transition-all"
                 >
                     Save Draft
                 </button>
-                <div className="w-px h-8 bg-primary-dark-gray/20" />
+                <div className="w-px h-8 bg-[#27272A]" />
                 <button
                     onClick={() => handleSave('pending')}
                     disabled={loading}
-                    className="px-10 py-4 bg-primary-black text-white rounded-full font-black uppercase tracking-widest text-xs flex items-center gap-3 hover:bg-accent-anime transition-all shadow-xl shadow-accent-anime/20"
+                    className="px-10 py-4 bg-[#3B82F6] text-white rounded-lg font-black uppercase tracking-widest text-xs flex items-center gap-3 hover:bg-[#3B82F6]/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)]"
                 >
                     {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
                     {isEditMode ? 'Authorize Update' : 'Initialize Mission'}
                 </button>
             </div>
+
         </div>
     );
 };

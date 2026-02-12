@@ -269,16 +269,11 @@ const Profile: React.FC = () => {
                         <div className="space-y-8 animate-fadeIn">
                             <div className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
                                 <div className="flex flex-col md:flex-row items-center gap-10 mb-10">
-                                    <div className="relative group cursor-pointer">
-                                        <AvatarUpload
-                                            currentAvatarUrl={profile.avatar_url}
-                                            userId={user?.id || ''}
-                                            onUploadComplete={handleAvatarUpdate}
-                                        />
-                                        <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
-                                            <FaCamera className="text-white text-xl" />
-                                        </div>
-                                    </div>
+                                    <AvatarUpload
+                                        currentAvatarUrl={profile.avatar_url}
+                                        userId={user?.id || ''}
+                                        onUploadComplete={handleAvatarUpdate}
+                                    />
                                     <div className="text-center md:text-left">
                                         <h3 className="text-3xl font-black uppercase tracking-tight text-primary-black mb-1">{profile.full_name || 'Incognito User'}</h3>
                                         <p className="text-primary-dark-gray/60 font-medium mb-4">{profile.username ? `@${profile.username}` : 'No username assigned'}</p>

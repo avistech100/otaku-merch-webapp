@@ -7,7 +7,7 @@ const CreatorDashboardLayout: React.FC = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
     return (
-        <div className="admin-theme">
+        <div className="creator-theme">
             <CreatorSidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
 
             <div className="lg:ml-[260px] flex flex-col min-h-screen">
@@ -24,11 +24,22 @@ const CreatorDashboardLayout: React.FC = () => {
                     background: 'var(--bg-primary)',
                     borderBottom: '1px solid var(--border)'
                 }}>
-                    <h1 style={{
-                        font: 'var(--font-h3)',
-                        color: 'var(--text-primary)'
-                    }}>Creator Dashboard</h1>
+                    <div className="flex items-center gap-4">
+                        <button
+                            className="lg:hidden p-2 text-primary hover:bg-white/5 rounded-lg"
+                            onClick={() => setIsMobileMenuOpen(true)}
+                        >
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                        <h1 style={{
+                            font: 'var(--font-h3)',
+                            color: 'var(--text-primary)'
+                        }}>Creator Dashboard</h1>
+                    </div>
                 </header>
+
 
                 {/* Main Content */}
                 <main style={{
