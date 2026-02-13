@@ -63,16 +63,16 @@ const CreatorProducts: React.FC = () => {
         {
             header: 'Asset Control',
             accessor: (row) => (
-                <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-lg bg-[#18181B] overflow-hidden border border-[#27272A] shadow-sm">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded bg-[var(--bg-elevated)] overflow-hidden border border-[var(--border)] shadow-sm">
                         <img src={row.image_url || 'https://via.placeholder.com/150'} alt={row.title} className="w-full h-full object-cover" />
                     </div>
                     <div>
-                        <p className="font-extrabold text-[#FAFAFA] text-sm uppercase tracking-tight">{row.title}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                            <span className="text-[9px] uppercase font-black tracking-widest text-[#71717A]">{row.category}</span>
-                            <span className="w-1 h-1 rounded-full bg-[#27272A]" />
-                            <span className="text-[9px] uppercase font-black tracking-widest text-[#71717A]">ID: {row.id.slice(0, 8)}</span>
+                        <p className="font-extrabold text-[var(--text-primary)] text-xs uppercase tracking-tight">{row.title}</p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-[9px] uppercase font-black tracking-widest text-[var(--text-muted)]">{row.category}</span>
+                            <span className="w-0.5 h-0.5 rounded-full bg-[var(--border)]" />
+                            <span className="text-[9px] uppercase font-black tracking-widest text-[var(--text-muted)]">ID: {row.id.slice(0, 8)}</span>
                         </div>
                     </div>
                 </div>
@@ -83,8 +83,8 @@ const CreatorProducts: React.FC = () => {
             header: 'Valuation',
             accessor: (row) => (
                 <div className="flex flex-col">
-                    <span className="font-black text-[#FAFAFA]">${row.price.toFixed(2)}</span>
-                    <span className="text-[10px] text-[#71717A] font-bold">BASE_UNIT</span>
+                    <span className="font-black text-[var(--text-primary)] text-sm">${row.price.toFixed(2)}</span>
+                    <span className="text-[9px] text-[var(--text-muted)] font-bold">BASE_UNIT</span>
                 </div>
             )
 
@@ -132,49 +132,49 @@ const CreatorProducts: React.FC = () => {
 
     return (
         <div className="animate-fadeIn pb-20">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-                <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-[#FAFAFA] mb-2">My Arsenal</h1>
-                    <p className="text-[#71717A] font-medium uppercase tracking-[0.2em] text-xs">Inventory Synchronized. Ready for deployment.</p>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 md:mb-8 gap-4">
+                <div className="flex-1">
+                    <h1 className="text-xl md:text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] mb-1">My Arsenal</h1>
+                    <p className="text-[var(--text-muted)] font-medium uppercase tracking-[0.2em] text-[9px] md:text-[10px]">Inventory Synchronized. Ready for deployment.</p>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-3">
                     <button
                         onClick={() => navigate('/creator/products/new')}
-                        className="bg-[#3B82F6] text-white px-10 py-5 rounded-lg font-black uppercase tracking-widest text-xs flex items-center gap-3 shadow-[0_0_20px_rgba(59,130,246,0.2)] hover:bg-[#3B82F6]/90 transition-all group"
+                        className="w-full sm:w-auto bg-[var(--accent-primary)] text-white px-5 md:px-6 py-2.5 md:py-3 rounded-md font-black uppercase tracking-widest text-[9px] md:text-[10px] flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all group"
                     >
-                        <FaPlus className="group-hover:rotate-90 transition-transform" /> New Drop
+                        <FaPlus className="group-hover:rotate-90 transition-transform text-xs" /> <span>New Drop</span>
                     </button>
                 </div>
             </div>
 
-            <section className="bg-[#121215] p-8 rounded-xl border border-[#27272A] transition-all overflow-hidden">
+            <section className="bg-[var(--bg-secondary)] p-0 rounded-lg border border-[var(--border)] transition-all overflow-hidden">
 
                 <DataTable
                     columns={columns}
                     data={products}
                     isLoading={loading}
                     actions={(row) => (
-                        <div className="flex items-center justify-end gap-3">
+                        <div className="flex items-center justify-end gap-2 text-right">
                             <button
                                 onClick={() => navigate(`/product/${row.id}`)}
-                                className="w-10 h-10 flex items-center justify-center hover:bg-[#18181B] rounded-lg text-[#71717A] hover:text-[#FAFAFA] transition-all border border-transparent hover:border-[#27272A]"
+                                className="w-8 h-8 flex items-center justify-center hover:bg-[var(--bg-elevated)] rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all border border-transparent hover:border-[var(--border)]"
                                 title="View Landing Page"
                             >
-                                <FaExternalLinkAlt size={14} />
+                                <FaExternalLinkAlt size={12} />
                             </button>
                             <button
                                 onClick={() => navigate(`/creator/products/edit/${row.id}`)}
-                                className="w-10 h-10 flex items-center justify-center hover:bg-[#18181B] rounded-lg text-[#71717A] hover:text-[#FAFAFA] transition-all border border-transparent hover:border-[#27272A]"
+                                className="w-8 h-8 flex items-center justify-center hover:bg-[var(--bg-elevated)] rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all border border-transparent hover:border-[var(--border)]"
                                 title="Edit Configuration"
                             >
-                                <FaEdit size={14} />
+                                <FaEdit size={12} />
                             </button>
                             <button
                                 onClick={() => handleDelete(row)}
-                                className="w-10 h-10 flex items-center justify-center hover:bg-[#EF4444]/10 rounded-lg text-[#71717A] hover:text-[#EF4444] transition-all border border-transparent hover:border-[#EF4444]/20"
+                                className="w-8 h-8 flex items-center justify-center hover:bg-[#EF4444]/10 rounded text-[var(--text-muted)] hover:text-[#EF4444] transition-all border border-transparent hover:border-[#EF4444]/20"
                                 title="Decommission"
                             >
-                                <FaTrash size={14} />
+                                <FaTrash size={12} />
                             </button>
                         </div>
                     )}

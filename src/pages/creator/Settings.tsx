@@ -110,21 +110,23 @@ const CreatorSettings: React.FC = () => {
 
     return (
         <div className="max-w-4xl mx-auto animate-fadeIn pb-20">
-            <h1 className="text-4xl font-black uppercase tracking-tighter text-primary-black mb-2">Store Configuration</h1>
-            <p className="text-primary-dark-gray/60 font-medium mb-12">Establish your digital presence.</p>
+            <div className="mb-6 md:mb-8">
+                <h1 className="text-xl md:text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] mb-1">Store Configuration</h1>
+                <p className="text-[var(--text-muted)] font-medium text-xs md:text-sm">Establish your digital presence.</p>
+            </div>
 
             <form onSubmit={handleSave} className="space-y-12">
 
                 {/* Branding Section */}
-                <section className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5">
-                    <h3 className="text-xl font-black uppercase tracking-tight mb-8 flex items-center gap-2">
-                        <span className="w-2 h-8 bg-accent-crypto rounded-full"></span>
+                <section className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)]">
+                    <h3 className="text-base md:text-lg font-black uppercase tracking-tight mb-4 md:mb-6 flex items-center gap-2 text-[var(--text-primary)]">
+                        <span className="w-1 md:w-1.5 h-4 md:h-6 bg-[var(--accent-crypto)] rounded-full"></span>
                         Branding Assets
                     </h3>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div className="col-span-1">
-                            <label className="block text-xs font-black uppercase tracking-widest text-primary-dark-gray mb-4">Store Logo (1:1)</label>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+                        <div className="lg:col-span-1">
+                            <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">Store Logo (1:1)</label>
                             <FileUpload
                                 onFilesSelected={(files) => setNewLogo(files[0])}
                                 maxFiles={1}
@@ -133,8 +135,8 @@ const CreatorSettings: React.FC = () => {
                                 onRemoveExisting={() => setLogo(null)}
                             />
                         </div>
-                        <div className="col-span-2">
-                            <label className="block text-xs font-black uppercase tracking-widest text-primary-dark-gray mb-4">Store Banner (4:1)</label>
+                        <div className="lg:col-span-2">
+                            <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">Store Banner (4:1)</label>
                             <FileUpload
                                 onFilesSelected={(files) => setNewBanner(files[0])}
                                 maxFiles={1}
@@ -147,41 +149,41 @@ const CreatorSettings: React.FC = () => {
                 </section>
 
                 {/* Profile Info */}
-                <section className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5">
-                    <h3 className="text-xl font-black uppercase tracking-tight mb-8 flex items-center gap-2">
-                        <span className="w-2 h-8 bg-accent-anime rounded-full"></span>
+                <section className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)]">
+                    <h3 className="text-base md:text-lg font-black uppercase tracking-tight mb-4 md:mb-6 flex items-center gap-2 text-[var(--text-primary)]">
+                        <span className="w-1 md:w-1.5 h-4 md:h-6 bg-[var(--accent-anime)] rounded-full"></span>
                         Store Details
                     </h3>
 
-                    <div className="space-y-6">
+                    <div className="space-y-4">
                         <div>
-                            <label className="block text-xs font-black uppercase tracking-widest text-primary-dark-gray mb-2">Store Name</label>
+                            <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Store Name</label>
                             <input
                                 type="text"
                                 value={storeName}
                                 onChange={e => setStoreName(e.target.value)}
-                                className="w-full h-14 px-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-bold outline-none"
+                                className="w-full h-10 md:h-12 px-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--text-primary)] focus:bg-[var(--bg-secondary)] transition-all font-bold outline-none text-xs md:text-sm text-[var(--text-primary)]"
                                 placeholder="Enter your store name"
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-black uppercase tracking-widest text-primary-dark-gray mb-2">Bio / Description</label>
+                            <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Bio / Description</label>
                             <textarea
                                 value={bio}
                                 onChange={e => setBio(e.target.value)}
-                                className="w-full h-32 p-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-medium outline-none resize-none"
+                                className="w-full h-24 p-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--text-primary)] focus:bg-[var(--bg-secondary)] transition-all font-medium outline-none resize-none text-xs md:text-sm text-[var(--text-primary)]"
                                 placeholder="Tell us about yourself and your art..."
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-black uppercase tracking-widest text-primary-dark-gray mb-2">Contact Email</label>
+                            <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Contact Email</label>
                             <div className="relative">
-                                <FaEnvelope className="absolute left-6 top-1/2 -translate-y-1/2 text-primary-dark-gray/40" />
+                                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] tex-xs" />
                                 <input
                                     type="email"
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
-                                    className="w-full h-14 pl-14 pr-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-bold outline-none"
+                                    className="w-full h-10 md:h-12 pl-10 pr-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--text-primary)] focus:bg-[var(--bg-secondary)] transition-all font-bold outline-none text-xs md:text-sm text-[var(--text-primary)]"
                                     placeholder="business@example.com"
                                 />
                             </div>
@@ -190,40 +192,40 @@ const CreatorSettings: React.FC = () => {
                 </section>
 
                 {/* Social Links */}
-                <section className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5">
-                    <h3 className="text-xl font-black uppercase tracking-tight mb-8 flex items-center gap-2">
-                        <span className="w-2 h-8 bg-black rounded-full"></span>
+                <section className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)]">
+                    <h3 className="text-base md:text-lg font-black uppercase tracking-tight mb-4 md:mb-6 flex items-center gap-2 text-[var(--text-primary)]">
+                        <span className="w-1 md:w-1.5 h-4 md:h-6 bg-black rounded-full"></span>
                         Connections
                     </h3>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                         <div className="relative">
-                            <FaTwitter className="absolute left-6 top-1/2 -translate-y-1/2 text-primary-dark-gray/40" />
+                            <FaTwitter className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] text-xs" />
                             <input
                                 type="text"
                                 value={socials.twitter}
                                 onChange={e => setSocials({ ...socials, twitter: e.target.value })}
-                                className="w-full h-14 pl-14 pr-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-bold outline-none"
+                                className="w-full h-10 md:h-12 pl-10 pr-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--text-primary)] focus:bg-[var(--bg-secondary)] transition-all font-bold outline-none text-xs md:text-sm text-[var(--text-primary)]"
                                 placeholder="Twitter Handle"
                             />
                         </div>
                         <div className="relative">
-                            <FaInstagram className="absolute left-6 top-1/2 -translate-y-1/2 text-primary-dark-gray/40" />
+                            <FaInstagram className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] text-xs" />
                             <input
                                 type="text"
                                 value={socials.instagram}
                                 onChange={e => setSocials({ ...socials, instagram: e.target.value })}
-                                className="w-full h-14 pl-14 pr-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-bold outline-none"
+                                className="w-full h-10 md:h-12 pl-10 pr-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--text-primary)] focus:bg-[var(--bg-secondary)] transition-all font-bold outline-none text-xs md:text-sm text-[var(--text-primary)]"
                                 placeholder="Instagram Handle"
                             />
                         </div>
                         <div className="relative">
-                            <FaGlobe className="absolute left-6 top-1/2 -translate-y-1/2 text-primary-dark-gray/40" />
+                            <FaGlobe className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] text-xs" />
                             <input
                                 type="text"
                                 value={socials.website}
                                 onChange={e => setSocials({ ...socials, website: e.target.value })}
-                                className="w-full h-14 pl-14 pr-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black focus:bg-primary-white transition-all font-bold outline-none"
+                                className="w-full h-10 md:h-12 pl-10 pr-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--text-primary)] focus:bg-[var(--bg-secondary)] transition-all font-bold outline-none text-xs md:text-sm text-[var(--text-primary)]"
                                 placeholder="Website URL"
                             />
                         </div>
@@ -233,7 +235,7 @@ const CreatorSettings: React.FC = () => {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="fixed bottom-10 right-10 z-50 px-8 py-4 bg-primary-black text-primary-white rounded-full font-black uppercase tracking-widest shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-3"
+                    className="fixed bottom-6 right-6 z-50 px-5 md:px-6 py-2.5 md:py-3 bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-full font-black uppercase tracking-widest shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-2 text-[10px] md:text-xs border border-[var(--border)] hover:border-[var(--accent-primary)]"
                 >
                     {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
                     Save Changes

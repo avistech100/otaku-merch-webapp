@@ -103,54 +103,54 @@ const Inventory: React.FC = () => {
 
     return (
         <div className="space-y-10 animate-fadeIn pb-20">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-primary-black mb-2">Inventory Logic</h1>
-                    <p className="text-primary-dark-gray/60 font-medium uppercase tracking-[0.2em] text-xs">Stock Level Synchronization & Valuation Terminal.</p>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div className="flex-1">
+                    <h1 className="text-xl md:text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] mb-1">Inventory Logic</h1>
+                    <p className="text-[var(--text-muted)] font-medium uppercase tracking-[0.2em] text-[9px] md:text-[10px]">Stock Level Synchronization & Valuation Terminal.</p>
                 </div>
-                <div className="flex gap-4">
-                    <button className="px-8 py-4 rounded-full bg-bg-light font-black text-xs uppercase tracking-widest flex items-center gap-3 hover:bg-primary-black hover:text-white transition-all shadow-lg shadow-black/5">
+                <div className="flex gap-3">
+                    <button className="w-full sm:w-auto px-5 md:px-6 py-2.5 md:py-3 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] font-black text-[9px] md:text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[var(--accent-primary)] hover:text-white transition-all text-[var(--text-secondary)]">
                         <FaDownload /> CSV Export
                     </button>
                 </div>
             </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="bg-primary-black p-10 rounded-[40px] text-white shadow-2xl relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent-anime/10 rounded-full blur-3xl -mr-16 -mt-16" />
-                    <FaCalculator className="text-3xl text-accent-crypto mb-6" />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-white/40 mb-1">Total Inventory Value</p>
-                    <p className="text-4xl font-black tracking-tighter">${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg border border-[var(--border)] text-[var(--text-primary)] shadow-sm relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--accent-primary)]/10 rounded-full blur-2xl -mr-12 -mt-12" />
+                    <FaCalculator className="text-xl md:text-2xl text-[var(--accent-secondary)] mb-4" />
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Total Inventory Value</p>
+                    <p className="text-xl md:text-2xl lg:text-3xl font-black tracking-tighter">${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>
                 </div>
 
-                <div className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                    <FaBox className="text-3xl text-accent-anime mb-6" />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Active Assets</p>
-                    <p className="text-4xl font-black tracking-tighter text-primary-black">{inventory.length}</p>
+                <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)]">
+                    <FaBox className="text-xl md:text-2xl text-[var(--accent-primary)] mb-4" />
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Active Assets</p>
+                    <p className="text-xl md:text-2xl lg:text-3xl font-black tracking-tighter text-[var(--text-primary)]">{inventory.length}</p>
                 </div>
 
-                <div className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                    <FaHistory className="text-3xl text-red-500 mb-6" />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Critical Stock</p>
-                    <p className="text-4xl font-black tracking-tighter text-primary-black">{lowStockCount}</p>
+                <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)] sm:col-span-2 lg:col-span-1">
+                    <FaHistory className="text-xl md:text-2xl text-[var(--error)] mb-4" />
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Critical Stock</p>
+                    <p className="text-xl md:text-2xl lg:text-3xl font-black tracking-tighter text-[var(--text-primary)]">{lowStockCount}</p>
                 </div>
             </div>
 
             {/* Critical Stock Alerts */}
             {lowStockCount > 0 && (
-                <div className="bg-red-50 border border-red-100 p-8 rounded-[40px] flex flex-col md:flex-row items-center gap-8 animate-pulse">
-                    <div className="w-16 h-16 rounded-[20px] bg-red-500 text-white flex items-center justify-center shrink-0 shadow-lg shadow-red-500/30">
-                        <FaExclamationTriangle size={24} />
+                <div className="bg-red-900/10 border border-red-500/20 p-4 md:p-6 rounded-lg flex flex-col md:flex-row items-center gap-4 md:gap-6 animate-pulse text-center md:text-left">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-red-500/20 text-red-500 flex items-center justify-center shrink-0">
+                        <FaExclamationTriangle className="text-lg md:text-xl" />
                     </div>
                     <div>
-                        <h4 className="text-xl font-black text-red-800 uppercase tracking-tight mb-2">Replenishment Required</h4>
-                        <p className="text-sm text-red-600 font-medium">System reports {lowStockCount} items below safe operational density. Restock protocols recommended to maintain market presence.</p>
+                        <h4 className="text-base md:text-lg font-black text-red-500 uppercase tracking-tight mb-1">Replenishment Required</h4>
+                        <p className="text-xs text-red-400 font-medium">System reports {lowStockCount} items below safe operational density. Restock protocols recommended.</p>
                     </div>
                 </div>
             )}
 
-            <section className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
+            <section className="bg-[var(--bg-secondary)] p-0 rounded-lg shadow-sm border border-[var(--border)]">
                 <DataTable
                     columns={columns}
                     data={inventory}
@@ -158,7 +158,7 @@ const Inventory: React.FC = () => {
                     actions={(row) => (
                         <button
                             onClick={() => navigate(`/creator/products/edit/${row.id}`)}
-                            className="w-10 h-10 flex items-center justify-center hover:bg-bg-light rounded-xl text-primary-dark-gray hover:text-primary-black transition-all"
+                            className="w-8 h-8 flex items-center justify-center hover:bg-[var(--bg-elevated)] rounded-md text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
                         >
                             <FaEdit />
                         </button>

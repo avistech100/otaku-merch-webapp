@@ -90,29 +90,31 @@ const Analytics: React.FC = () => {
 
     return (
         <div className="space-y-8 animate-fadeIn pb-20">
-            <div>
-                <h1 className="text-4xl font-black uppercase tracking-tighter text-primary-black mb-2">Analytics</h1>
-                <p className="text-primary-dark-gray/60 font-medium">Deep dive into your performance metrics.</p>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div className="flex-1">
+                    <h1 className="text-xl md:text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] mb-1">Analytics</h1>
+                    <p className="text-[var(--text-muted)] font-medium text-xs md:text-sm">Deep dive into your performance metrics.</p>
+                </div>
             </div>
 
             {/* Summary Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 {summaryCards.map((card, i) => (
-                    <div key={i} className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light group hover:-translate-y-1 transition-all">
-                        <div className={`w-12 h-12 rounded-2xl ${card.color} text-white flex items-center justify-center mb-6 shadow-lg`}>
-                            <card.icon />
+                    <div key={i} className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)] group hover:-translate-y-1 transition-all">
+                        <div className={`w-8 h-8 md:w-10 md:h-10 rounded-lg ${card.color} text-white flex items-center justify-center mb-3 md:mb-4 shadow-sm`}>
+                            <card.icon size={14} />
                         </div>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">{card.label}</p>
-                        <p className="text-3xl font-black text-primary-black tracking-tight">{card.value}</p>
+                        <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">{card.label}</p>
+                        <p className="text-xl md:text-2xl font-black text-[var(--text-primary)] tracking-tight">{card.value}</p>
                     </div>
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                 {/* Revenue Chart */}
-                <div className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                    <h3 className="text-xl font-black uppercase tracking-tight mb-8">Revenue Growth</h3>
-                    <div className="h-[350px]">
+                <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)]">
+                    <h3 className="text-base md:text-lg font-black uppercase tracking-tight mb-4 md:mb-6 text-[var(--text-primary)]">Revenue Growth</h3>
+                    <div className="h-[200px] md:h-[300px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={revenueData}>
                                 <defs>
@@ -121,22 +123,22 @@ const Analytics: React.FC = () => {
                                         <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
-                                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} tickFormatter={(value) => `$${value}`} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
+                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 'bold', fill: 'var(--text-muted)' }} />
+                                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 'bold', fill: 'var(--text-muted)' }} tickFormatter={(value) => `$${value}`} />
                                 <Tooltip
-                                    contentStyle={{ borderRadius: '24px', border: 'none', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
+                                    contentStyle={{ borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-elevated)', color: 'var(--text-primary)' }}
                                 />
-                                <Area type="monotone" dataKey="value" stroke="#10B981" strokeWidth={4} fillOpacity={1} fill="url(#colorRev)" />
+                                <Area type="monotone" dataKey="value" stroke="#10B981" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
 
                 {/* Top Products Chart */}
-                <div className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                    <h3 className="text-xl font-black uppercase tracking-tight mb-8">Top Selling Assets</h3>
-                    <div className="h-[350px]">
+                <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)]">
+                    <h3 className="text-base md:text-lg font-black uppercase tracking-tight mb-4 md:mb-6 text-[var(--text-primary)]">Top Selling Assets</h3>
+                    <div className="h-[200px] md:h-[300px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={topProducts} layout="vertical">
                                 <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0f0f0" />
@@ -146,12 +148,12 @@ const Analytics: React.FC = () => {
                                     type="category"
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fontSize: 10, fontWeight: 'bold' }}
-                                    width={100}
+                                    tick={{ fontSize: 9, fontWeight: 'bold', fill: 'var(--text-muted)' }}
+                                    width={80}
                                 />
                                 <Tooltip
                                     cursor={{ fill: 'transparent' }}
-                                    contentStyle={{ borderRadius: '24px', border: 'none', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
+                                    contentStyle={{ borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-elevated)', color: 'var(--text-primary)' }}
                                 />
                                 <Bar dataKey="revenue" radius={[0, 10, 10, 0]} barSize={20}>
                                     {topProducts.map((_, index) => (

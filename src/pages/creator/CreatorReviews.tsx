@@ -125,41 +125,41 @@ const Reviews: React.FC = () => {
 
     return (
         <div className="space-y-10 animate-fadeIn pb-20">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-primary-black mb-2">Feedback Terminal</h1>
-                    <p className="text-primary-dark-gray/60 font-medium uppercase tracking-[0.2em] text-xs">Processing consumer transmissions and performance ratings.</p>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div className="flex-1">
+                    <h1 className="text-xl md:text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] mb-1">Feedback Terminal</h1>
+                    <p className="text-[var(--text-muted)] font-medium uppercase tracking-[0.2em] text-[10px]">Processing consumer transmissions and performance ratings.</p>
                 </div>
-                <div className="flex gap-4">
-                    <button className="px-8 py-4 rounded-full bg-bg-light font-black text-xs uppercase tracking-widest flex items-center gap-3 hover:bg-primary-black hover:text-white transition-all shadow-lg shadow-black/5">
+                <div className="flex gap-3">
+                    <button className="w-full sm:w-auto px-4 md:px-6 py-2 md:py-3 rounded-full bg-[var(--bg-elevated)] font-black text-[9px] md:text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all shadow-sm">
                         <FaFilter /> Advanced Filter
                     </button>
                 </div>
             </div>
 
             {/* Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="bg-primary-black p-10 rounded-[40px] text-white shadow-2xl relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent-crypto/10 rounded-full blur-3xl -mr-16 -mt-16" />
-                    <FaStarHalfAlt className="text-3xl text-accent-crypto mb-6" />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-1">Mean Asset Rating</p>
-                    <p className="text-5xl font-black tracking-tighter">{avgRating}<span className="text-xl text-white/20">/5.0</span></p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg border border-[var(--border)] text-[var(--text-primary)] shadow-sm relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--accent-crypto)]/10 rounded-full blur-2xl -mr-12 -mt-12" />
+                    <FaStarHalfAlt className="text-xl md:text-2xl text-[var(--accent-crypto)] mb-3 md:mb-4" />
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Mean Asset Rating</p>
+                    <p className="text-2xl md:text-3xl font-black tracking-tighter">{avgRating}<span className="text-sm md:text-base text-[var(--text-muted)]">/5.0</span></p>
                 </div>
 
-                <div className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                    <FaReply className="text-3xl text-accent-anime mb-6" />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Awaiting Response</p>
-                    <p className="text-5xl font-black tracking-tighter text-primary-black">{awaitingCount}</p>
+                <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)]">
+                    <FaReply className="text-xl md:text-2xl text-[var(--accent-anime)] mb-3 md:mb-4" />
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Awaiting Response</p>
+                    <p className="text-2xl md:text-3xl font-black tracking-tighter text-[var(--text-primary)]">{awaitingCount}</p>
                 </div>
 
-                <div className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                    <FaCheckCircle className="text-3xl text-green-500 mb-6" />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Total Intelligence</p>
-                    <p className="text-5xl font-black tracking-tighter text-primary-black">{reviews.length}</p>
+                <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)] sm:col-span-2 lg:col-span-1">
+                    <FaCheckCircle className="text-xl md:text-2xl text-green-500 mb-3 md:mb-4" />
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Total Intelligence</p>
+                    <p className="text-2xl md:text-3xl font-black tracking-tighter text-[var(--text-primary)]">{reviews.length}</p>
                 </div>
             </div>
 
-            <section className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
+            <section className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)]">
                 <DataTable
                     columns={columns}
                     data={reviews}
@@ -167,7 +167,7 @@ const Reviews: React.FC = () => {
                     actions={(row) => (
                         <button
                             onClick={() => setReplyingTo(row.id)}
-                            className="bg-primary-black text-white px-6 py-3 rounded-full font-black uppercase tracking-widest text-[10px] flex items-center gap-2 hover:bg-accent-anime transition-all"
+                            className="bg-[var(--accent-primary)] text-white px-3 md:px-4 py-1.5 md:py-2 rounded-full font-black uppercase tracking-widest text-[9px] flex items-center gap-1.5 hover:bg-[var(--accent-secondary)] transition-all"
                         >
                             <FaReply /> Respond
                         </button>
@@ -177,33 +177,33 @@ const Reviews: React.FC = () => {
 
             {/* Reply Modal */}
             {replyingTo && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-primary-black/60 backdrop-blur-md">
-                    <div className="bg-primary-white w-full max-w-lg rounded-[50px] p-10 shadow-2xl animate-slideUp border border-white/20">
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="w-12 h-12 rounded-2xl bg-accent-anime/10 text-accent-anime flex items-center justify-center">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                    <div className="bg-[var(--bg-secondary)] w-full max-w-lg rounded-lg p-6 shadow-2xl animate-slideUp border border-[var(--border)]">
+                        <div className="flex items-center gap-3 mb-4 md:mb-6">
+                            <div className="w-8 h-8 rounded-lg bg-[var(--accent-anime)]/10 text-[var(--accent-anime)] flex items-center justify-center">
                                 <FaReply />
                             </div>
-                            <div>
-                                <h3 className="text-2xl font-black uppercase tracking-tight text-primary-black">Encryption Terminal</h3>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40">Responding to {reviews.find(r => r.id === replyingTo)?.profiles?.display_name}</p>
+                            <div className="flex-1 min-w-0">
+                                <h3 className="text-lg font-black uppercase tracking-tight text-[var(--text-primary)] truncate">Encryption Terminal</h3>
+                                <p className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] truncate">Responding to {reviews.find(r => r.id === replyingTo)?.profiles?.display_name}</p>
                             </div>
                         </div>
                         <textarea
-                            className="w-full h-48 p-8 bg-bg-light/30 rounded-[30px] border-2 border-transparent focus:border-primary-black outline-none font-medium text-primary-black resize-none transition-all"
+                            className="w-full h-32 p-3 bg-[var(--bg-elevated)] rounded-md border border-[var(--border)] focus:border-[var(--accent-primary)] outline-none font-medium text-[var(--text-primary)] resize-none transition-all text-xs md:text-sm"
                             placeholder="Enter your cryptographic response..."
                             value={replyText}
                             onChange={(e) => setReplyText(e.target.value)}
                         />
-                        <div className="flex gap-4 mt-10">
+                        <div className="flex flex-col sm:flex-row gap-2 md:gap-3 mt-4 md:mt-6">
                             <button
                                 onClick={() => setReplyingTo(null)}
-                                className="flex-1 py-5 rounded-3xl bg-bg-light font-black text-xs uppercase tracking-widest text-primary-dark-gray hover:bg-primary-dark-gray hover:text-white transition-all"
+                                className="order-2 sm:order-1 flex-1 py-3 rounded-md bg-[var(--bg-elevated)] font-black text-[9px] md:text-[10px] uppercase tracking-widest text-[var(--text-muted)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all border border-[var(--border)]"
                             >
                                 Abort
                             </button>
                             <button
                                 onClick={() => handleReply(replyingTo)}
-                                className="flex-1 py-5 rounded-3xl bg-primary-black text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-black/20 hover:bg-accent-anime transition-all"
+                                className="order-1 sm:order-2 flex-1 py-3 rounded-md bg-[var(--accent-primary)] text-white font-black text-[9px] md:text-[10px] uppercase tracking-widest shadow-lg hover:bg-[var(--accent-primary)]/90 transition-all"
                             >
                                 Broadcast
                             </button>

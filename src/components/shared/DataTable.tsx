@@ -32,25 +32,25 @@ const DataTable = <T extends { id: any }>({
 
     if (isLoading) {
         return (
-            <div className="w-full bg-primary-white rounded-[40px] p-8 shadow-xl shadow-black/5 animate-pulse">
-                <div className="h-10 bg-bg-light/50 rounded-xl mb-4"></div>
+            <div className="w-full bg-[var(--bg-secondary)] rounded-lg p-3 md:p-6 shadow-sm border border-[var(--border)] animate-pulse">
+                <div className="h-8 bg-[var(--bg-elevated)] rounded-md mb-3"></div>
                 {[1, 2, 3, 4, 5].map(i => (
-                    <div key={i} className="h-16 bg-bg-light/30 rounded-xl mb-2"></div>
+                    <div key={i} className="h-10 md:h-12 bg-[var(--bg-elevated)]/50 rounded-md mb-2"></div>
                 ))}
             </div>
         );
     }
 
     return (
-        <div className="w-full admin-table-container rounded-[40px] overflow-hidden border border-bg-light/10 shadow-xl shadow-black/5">
+        <div className="w-full admin-table-container rounded-lg border border-[var(--border)] shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
                 <table className="w-full">
                     <thead>
-                        <tr className="border-b border-bg-light/10 bg-bg-light/5">
+                        <tr className="border-b border-[var(--border)] bg-[var(--bg-elevated)]/50">
                             {columns.map((col, i) => (
                                 <th
                                     key={i}
-                                    className={`p-6 text-left text-xs font-black uppercase tracking-widest text-primary-dark-gray/40 ${col.className || ''}`}
+                                    className={`p-3 md:p-4 text-left text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] ${col.className || ''}`}
                                 >
                                     <div className="flex items-center gap-2">
                                         {col.header}
@@ -58,13 +58,13 @@ const DataTable = <T extends { id: any }>({
                                     </div>
                                 </th>
                             ))}
-                            {actions && <th className="p-6 text-right text-xs font-black uppercase tracking-widest text-primary-dark-gray/40">Actions</th>}
+                            {actions && <th className="p-3 md:p-4 text-right text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] whitespace-nowrap">Actions</th>}
                         </tr>
                     </thead>
                     <tbody>
                         {data.length === 0 ? (
                             <tr>
-                                <td colSpan={columns.length + (actions ? 1 : 0)} className="p-10 text-center text-primary-dark-gray/40 font-medium italic">
+                                <td colSpan={columns.length + (actions ? 1 : 0)} className="p-8 md:p-12 text-center text-[var(--text-muted)] font-medium italic text-xs">
                                     No records found.
                                 </td>
                             </tr>
@@ -73,15 +73,15 @@ const DataTable = <T extends { id: any }>({
                                 <tr
                                     key={row.id}
                                     onClick={() => onRowClick && onRowClick(row)}
-                                    className={`border-b border-bg-light/5 last:border-0 hover:bg-bg-light/10 transition-colors ${onRowClick ? 'cursor-pointer' : ''}`}
+                                    className={`border-b border-[var(--border)] last:border-0 hover:bg-[var(--bg-elevated)] transition-colors ${onRowClick ? 'cursor-pointer' : ''}`}
                                 >
                                     {columns.map((col, i) => (
-                                        <td key={i} className="p-6 text-sm font-bold">
+                                        <td key={i} className="px-3 py-2 md:px-4 md:py-3 text-xs font-bold whitespace-nowrap lg:whitespace-normal text-[var(--text-secondary)]">
                                             {typeof col.accessor === 'function' ? col.accessor(row) : (row[col.accessor] as React.ReactNode)}
                                         </td>
                                     ))}
                                     {actions && (
-                                        <td className="p-6 text-right">
+                                        <td className="px-3 py-2 md:px-4 md:py-3 text-right whitespace-nowrap">
                                             {actions(row)}
                                         </td>
                                     )}
@@ -94,23 +94,23 @@ const DataTable = <T extends { id: any }>({
 
             {/* Pagination */}
             {pagination && pagination.totalPages > 1 && (
-                <div className="p-6 border-t border-bg-light flex items-center justify-between">
+                <div className="p-4 border-t border-[var(--border)] flex items-center justify-between">
                     <button
                         disabled={pagination.currentPage === 1}
                         onClick={() => pagination.onPageChange(pagination.currentPage - 1)}
-                        className="p-2 rounded-full hover:bg-bg-light disabled:opacity-30 transition-all font-black text-xs uppercase tracking-widest flex items-center gap-2"
+                        className="p-1.5 rounded-full hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] disabled:opacity-30 transition-all font-black text-[9px] md:text-[10px] uppercase tracking-widest flex items-center gap-1 text-[var(--text-muted)]"
                     >
-                        <FaChevronLeft /> Prev
+                        <FaChevronLeft size={10} /> Prev
                     </button>
-                    <span className="text-xs font-black uppercase tracking-widest text-primary-dark-gray">
+                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">
                         Page {pagination.currentPage} of {pagination.totalPages}
                     </span>
                     <button
                         disabled={pagination.currentPage === pagination.totalPages}
                         onClick={() => pagination.onPageChange(pagination.currentPage + 1)}
-                        className="p-2 rounded-full hover:bg-bg-light disabled:opacity-30 transition-all font-black text-xs uppercase tracking-widest flex items-center gap-2"
+                        className="p-1.5 rounded-full hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] disabled:opacity-30 transition-all font-black text-[9px] md:text-[10px] uppercase tracking-widest flex items-center gap-1 text-[var(--text-muted)]"
                     >
-                        Next <FaChevronRight />
+                        Next <FaChevronRight size={10} />
                     </button>
                 </div>
             )}

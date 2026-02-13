@@ -91,46 +91,46 @@ const CreatorDashboard: React.FC = () => {
     return (
         <div className="space-y-10 animate-fadeIn pb-20">
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-[#FAFAFA] mb-2">Command Center</h1>
-                    <p className="text-[#A1A1AA] font-medium uppercase tracking-[0.2em] text-xs">Vanguard Protocol Active. Welcome back, Pilot.</p>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div className="flex-1">
+                    <h1 className="text-xl md:text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] mb-1">Command Center</h1>
+                    <p className="text-[var(--text-muted)] font-medium uppercase tracking-[0.2em] text-[9px] md:text-[10px]">Vanguard Protocol Active. Welcome back, Pilot.</p>
                 </div>
-                <div className="flex gap-4">
-                    <button onClick={() => navigate('/creator/products/new')} className="bg-[#3B82F6] text-white px-8 py-4 rounded-lg font-black uppercase tracking-widest text-[10px] flex items-center gap-2 shadow-[0_0_20px_rgba(59,130,246,0.2)] hover:bg-[#3B82F6]/90 transition-all">
-                        <FaPlus /> Initialize Drop
+                <div className="flex gap-3">
+                    <button onClick={() => navigate('/creator/products/new')} className="w-full sm:w-auto bg-[var(--accent-primary)] text-white px-5 md:px-6 py-2.5 md:py-3 rounded-md font-black uppercase tracking-widest text-[9px] md:text-[10px] flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all">
+                        <FaPlus /> <span className="whitespace-nowrap">Initialize Drop</span>
                     </button>
                 </div>
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                 {cards.map((card, i) => (
-                    <div key={i} className="bg-[#121215] p-8 rounded-xl border border-[#27272A] group hover:border-[#3B82F6]/30 transition-all duration-300">
-                        <div className={`w-12 h-12 rounded-lg ${card.bg} ${card.color} flex items-center justify-center mb-6 border border-white/5`}>
-                            <card.icon size={18} />
+                    <div key={i} className="bg-[var(--bg-secondary)] p-4 md:p-5 rounded-lg border border-[var(--border)] group hover:border-[var(--accent-primary)]/30 transition-all duration-300">
+                        <div className={`w-8 h-8 md:w-10 md:h-10 rounded-md ${card.bg} ${card.color} flex items-center justify-center mb-3 md:mb-4 border border-white/5`}>
+                            <card.icon size={14} />
                         </div>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-1">{card.title}</p>
-                        <p className="text-4xl font-black text-[#FAFAFA] tracking-tighter">{card.value}</p>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">{card.title}</p>
+                        <p className="text-xl md:text-2xl lg:text-3xl font-black text-[var(--text-primary)] tracking-tighter">{card.value}</p>
                     </div>
                 ))}
             </div>
 
             {/* Main Dashboard Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Revenue Visualization */}
-                <div className="lg:col-span-2 bg-[#121215] p-10 rounded-xl border border-[#27272A]">
-                    <div className="flex items-center justify-between mb-10">
+                <div className="lg:col-span-2 bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg border border-[var(--border)]">
+                    <div className="flex items-center justify-between mb-6 md:mb-8">
                         <div>
-                            <h3 className="text-2xl font-black uppercase tracking-tight text-[#FAFAFA]">Income Trajectory</h3>
-                            <p className="text-[10px] font-black uppercase tracking-widest text-[#71717A]">Last 30 Days of Operational Data</p>
+                            <h3 className="text-lg md:text-xl font-black uppercase tracking-tight text-[var(--text-primary)]">Income Trajectory</h3>
+                            <p className="text-[8px] md:text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">Operational Log: 30D</p>
                         </div>
-                        <div className="flex items-center gap-2 px-4 py-2 bg-[#10B981]/10 text-[#10B981] rounded-lg border border-[#10B981]/20">
-                            <FaArrowUp size={10} />
-                            <span className="text-[10px] font-black">+12.5%</span>
+                        <div className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-[#10B981]/10 text-[#10B981] rounded-lg border border-[#10B981]/20">
+                            <FaArrowUp size={8} />
+                            <span className="text-[9px] md:text-[10px] font-black">+12.5%</span>
                         </div>
                     </div>
-                    <div className="h-[400px] w-full">
+                    <div className="h-[250px] md:h-[300px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData}>
                                 <defs>
@@ -140,49 +140,49 @@ const CreatorDashboard: React.FC = () => {
                                     </linearGradient>
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#27272A" />
-                                <XAxis dataKey="name" tick={{ fontSize: 10, fontWeight: 'bold', fill: '#71717A' }} axisLine={false} tickLine={false} dy={10} />
-                                <YAxis tick={{ fontSize: 10, fontWeight: 'bold', fill: '#71717A' }} axisLine={false} tickLine={false} dx={-10} tickFormatter={(val) => `$${val}`} />
+                                <XAxis dataKey="name" tick={{ fontSize: 9, fontWeight: 'bold', fill: '#A1A1AA' }} axisLine={false} tickLine={false} dy={10} />
+                                <YAxis tick={{ fontSize: 9, fontWeight: 'bold', fill: '#A1A1AA' }} axisLine={false} tickLine={false} dx={-10} tickFormatter={(val) => `$${val}`} />
                                 <Tooltip
-                                    contentStyle={{ borderRadius: '8px', border: '1px solid #27272A', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', background: '#18181B', color: '#FAFAFA' }}
+                                    contentStyle={{ borderRadius: '6px', border: '1px solid #27272A', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', background: '#18181B', color: '#FAFAFA', fontSize: '11px' }}
                                     itemStyle={{ color: '#3B82F6' }}
                                     cursor={{ stroke: '#3B82F6', strokeWidth: 1 }}
                                 />
-                                <Area type="monotone" dataKey="sales" stroke="#3B82F6" strokeWidth={4} fillOpacity={1} fill="url(#colorSales)" />
+                                <Area type="monotone" dataKey="sales" stroke="#3B82F6" strokeWidth={3} fillOpacity={1} fill="url(#colorSales)" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
 
                 {/* Right Panel - Recent Activity & Top Creators */}
-                <div className="space-y-10">
-                    <div className="bg-[#121215] p-10 rounded-xl border border-[#27272A] h-full">
-                        <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-xl font-black uppercase tracking-tight text-[#FAFAFA] flex items-center gap-3">
-                                <FaFire className="text-[#A855F7]" /> Recent Logic
+                <div className="space-y-4 md:space-y-6">
+                    <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg border border-[var(--border)] h-full">
+                        <div className="flex items-center justify-between mb-4 md:mb-6">
+                            <h3 className="text-base md:text-lg font-black uppercase tracking-tight text-[var(--text-primary)] flex items-center gap-2">
+                                <FaFire className="text-[var(--accent-secondary)]" /> Recent Logic
                             </h3>
-                            <button className="text-[10px] font-black uppercase tracking-widest text-[#3B82F6] hover:underline" onClick={() => navigate('/creator/orders')}>View All</button>
+                            <button className="text-[9px] font-black uppercase tracking-widest text-[var(--accent-primary)] hover:underline" onClick={() => navigate('/creator/orders')}>View All</button>
                         </div>
-                        <div className="space-y-8">
+                        <div className="space-y-6">
                             {recentOrders.length > 0 ? recentOrders.map((order, i) => (
-                                <div key={i} className="flex items-center gap-5 group cursor-pointer" onClick={() => navigate(`/creator/orders/${order.orders.id}`)}>
-                                    <div className="w-12 h-12 rounded-lg bg-[#18181B] flex items-center justify-center text-[10px] font-black shrink-0 border border-[#27272A] group-hover:border-[#3B82F6]/50 transition-all text-[#71717A]">
+                                <div key={i} className="flex items-center gap-4 group cursor-pointer" onClick={() => navigate(`/creator/orders/${order.orders.id}`)}>
+                                    <div className="w-10 h-10 rounded bg-[var(--bg-elevated)] flex items-center justify-center text-[9px] font-black shrink-0 border border-[var(--border)] group-hover:border-[var(--accent-primary)]/50 transition-all text-[var(--text-muted)]">
                                         ORD
                                     </div>
                                     <div className="flex-1 overflow-hidden">
-                                        <p className="font-extrabold text-sm text-[#FAFAFA] group-hover:text-[#3B82F6] transition-colors truncate uppercase tracking-tight">#{order.orders.id.slice(0, 8)} - {order.product_title}</p>
-                                        <p className="text-[9px] text-[#71717A] uppercase font-black tracking-widest">{new Date(order.created_at).toLocaleDateString()}</p>
+                                        <p className="font-extrabold text-xs text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors truncate uppercase tracking-tight">#{order.orders.id.slice(0, 8)} - {order.product_title}</p>
+                                        <p className="text-[9px] text-[var(--text-muted)] uppercase font-black tracking-widest">{new Date(order.created_at).toLocaleDateString()}</p>
                                     </div>
-                                    <span className="text-[#10B981] font-black text-sm shrink-0">+${order.creator_earnings.toFixed(2)}</span>
+                                    <span className="text-[#10B981] font-black text-xs shrink-0">+${order.creator_earnings.toFixed(2)}</span>
                                 </div>
                             )) : (
-                                <div className="text-center py-20">
-                                    <p className="text-[#71717A] font-black uppercase text-[10px] tracking-widest">No Transmissions Recorded</p>
+                                <div className="text-center py-10">
+                                    <p className="text-[var(--text-muted)] font-black uppercase text-[9px] tracking-widest">No Transmissions Recorded</p>
                                 </div>
                             )}
                         </div>
                         <button
                             onClick={() => navigate('/creator/analytics')}
-                            className="w-full mt-10 py-5 rounded-lg bg-[#18181B] border border-[#27272A] text-[#FAFAFA] font-black text-[10px] uppercase tracking-widest hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5 transition-all"
+                            className="w-full mt-6 py-3 rounded bg-[var(--bg-elevated)] border border-[var(--border)] text-[var(--text-primary)] font-black text-[9px] uppercase tracking-widest hover:border-[var(--accent-primary)]/50 hover:bg-[var(--accent-primary)]/5 transition-all"
                         >
                             Intelligence Report
                         </button>

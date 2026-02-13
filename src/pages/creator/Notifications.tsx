@@ -58,27 +58,27 @@ const CreatorNotifications: React.FC = () => {
 
     return (
         <div className="animate-fadeIn pb-20 max-w-4xl">
-            <h1 className="text-5xl font-black uppercase tracking-tighter text-primary-black mb-10">Alert Feed</h1>
+            <h1 className="text-xl md:text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] mb-6 md:mb-8">Alert Feed</h1>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
                 {notifications.length > 0 ? notifications.map((n) => (
                     <div
                         key={n.id}
-                        className={`p-6 rounded-[32px] border transition-all flex gap-6 ${n.is_read ? 'bg-primary-white border-bg-light opacity-60' : 'bg-primary-white border-accent-anime shadow-lg shadow-accent-anime/5'}`}
+                        className={`p-3 md:p-4 rounded-lg border transition-all flex gap-3 md:gap-4 ${n.is_read ? 'bg-[var(--bg-secondary)] border-[var(--border)] opacity-60' : 'bg-[var(--bg-elevated)] border-[var(--accent-anime)] shadow-sm shadow-[var(--accent-anime)]/10'}`}
                     >
-                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${n.type === 'order' ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600'}`}>
-                            {n.type === 'order' ? <FaCheck /> : <FaBell />}
+                        <div className={`w-8 h-8 md:w-10 md:h-10 rounded-md flex items-center justify-center shrink-0 ${n.type === 'order' ? 'bg-green-500/10 text-green-500' : 'bg-blue-500/10 text-blue-500'}`}>
+                            {n.type === 'order' ? <FaCheck className="text-xs md:text-sm" /> : <FaBell className="text-xs md:text-sm" />}
                         </div>
-                        <div className="flex-1">
-                            <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-black text-primary-black uppercase text-sm tracking-tight">{n.title}</h3>
-                                <span className="text-[10px] uppercase font-black tracking-widest text-primary-dark-gray/30">{new Date(n.created_at).toLocaleDateString()}</span>
+                        <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-start mb-1 gap-2">
+                                <h3 className="font-black text-[var(--text-primary)] uppercase text-[10px] md:text-xs tracking-tight truncate">{n.title}</h3>
+                                <span className="text-[8px] md:text-[9px] uppercase font-black tracking-widest text-[var(--text-muted)] shrink-0">{new Date(n.created_at).toLocaleDateString()}</span>
                             </div>
-                            <p className="text-xs text-primary-dark-gray/60 font-medium leading-relaxed">{n.message}</p>
+                            <p className="text-[10px] md:text-[11px] text-[var(--text-secondary)] font-medium leading-relaxed">{n.message}</p>
                             {!n.is_read && (
                                 <button
                                     onClick={() => markAsRead(n.id)}
-                                    className="mt-4 text-[9px] font-black uppercase tracking-widest text-accent-anime hover:underline"
+                                    className="mt-2 text-[8px] font-black uppercase tracking-widest text-[var(--accent-anime)] hover:underline"
                                 >
                                     Acknowledge Transmission
                                 </button>
@@ -86,15 +86,15 @@ const CreatorNotifications: React.FC = () => {
                         </div>
                         <button
                             onClick={() => deleteNotification(n.id)}
-                            className="w-10 h-10 flex items-center justify-center text-primary-dark-gray/20 hover:text-red-500 transition-colors"
+                            className="w-8 h-8 flex items-center justify-center text-[var(--text-muted)] hover:text-red-500 transition-colors"
                         >
-                            <FaTrash size={12} />
+                            <FaTrash size={10} />
                         </button>
                     </div>
                 )) : (
-                    <div className="text-center py-40 bg-bg-light/30 rounded-[50px] border-2 border-dashed border-bg-light">
-                        <FaBell size={40} className="mx-auto mb-6 text-primary-dark-gray/10" />
-                        <p className="font-black uppercase tracking-widest text-[10px] text-primary-dark-gray/40">No Signal Detected</p>
+                    <div className="text-center py-12 md:py-20 bg-[var(--bg-secondary)] rounded-lg border border-dashed border-[var(--border)]">
+                        <FaBell className="mx-auto mb-3 md:mb-4 text-[var(--text-muted)]/20 text-2xl md:text-4xl" />
+                        <p className="font-black uppercase tracking-widest text-[8px] md:text-[9px] text-[var(--text-muted)]">No Signal Detected</p>
                     </div>
                 )}
             </div>

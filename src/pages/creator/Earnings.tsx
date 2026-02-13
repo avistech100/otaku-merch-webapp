@@ -155,15 +155,15 @@ const Earnings: React.FC = () => {
     return (
         <div className="space-y-8 animate-fadeIn">
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <h1 className="text-4xl font-black uppercase tracking-tighter text-primary-black mb-2">Earnings</h1>
-                    <p className="text-primary-dark-gray/60 font-medium">Manage your wealth and payouts.</p>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div className="flex-1">
+                    <h1 className="text-xl md:text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] mb-1">Earnings</h1>
+                    <p className="text-[var(--text-muted)] font-medium text-xs md:text-sm">Manage your wealth and payouts.</p>
                 </div>
                 <button
                     onClick={handlePayoutRequest}
                     disabled={requestingPayout || stats.available_balance < 50}
-                    className="btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full sm:w-auto bg-[var(--accent-primary)] text-white px-5 md:px-6 py-2.5 md:py-3 rounded-md font-black uppercase tracking-widest text-[9px] md:text-[10px] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:bg-blue-600 transition-all"
                 >
                     {requestingPayout ? <FaSpinner className="animate-spin" /> : <FaArrowUp />}
                     Withdraw Funds
@@ -171,30 +171,30 @@ const Earnings: React.FC = () => {
             </div>
 
             {/* Balances Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-primary-black p-8 rounded-[40px] text-primary-white shadow-2xl relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent-crypto/20 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-accent-crypto/30 transition-colors" />
-                    <FaWallet className="text-3xl text-accent-crypto mb-6" />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-white/40 mb-1">Available for Payout</p>
-                    <p className="text-4xl font-black tracking-tight">${stats.available_balance.toFixed(2)}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg border border-[var(--border)] text-[var(--text-primary)] shadow-sm relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--accent-crypto)]/20 rounded-full blur-2xl -mr-12 -mt-12 group-hover:bg-[var(--accent-crypto)]/30 transition-colors" />
+                    <FaWallet className="text-xl md:text-2xl text-[var(--accent-crypto)] mb-4" />
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Available for Payout</p>
+                    <p className="text-2xl md:text-3xl font-black tracking-tight">${stats.available_balance.toFixed(2)}</p>
                 </div>
 
-                <div className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                    <FaHistory className="text-3xl text-accent-anime mb-6" />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Pending Clearance</p>
-                    <p className="text-4xl font-black tracking-tight text-primary-black">${stats.pending_balance.toFixed(2)}</p>
+                <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)]">
+                    <FaHistory className="text-xl md:text-2xl text-[var(--accent-anime)] mb-4" />
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Pending Clearance</p>
+                    <p className="text-2xl md:text-3xl font-black tracking-tight text-[var(--text-primary)]">${stats.pending_balance.toFixed(2)}</p>
                 </div>
 
-                <div className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                    <FaLandmark className="text-3xl text-accent-crypto mb-6" />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Lifetime Earnings</p>
-                    <p className="text-4xl font-black tracking-tight text-primary-black">${stats.total_earnings.toFixed(2)}</p>
+                <div className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)] sm:col-span-2 lg:col-span-1">
+                    <FaLandmark className="text-xl md:text-2xl text-[var(--accent-crypto)] mb-4" />
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1">Lifetime Earnings</p>
+                    <p className="text-2xl md:text-3xl font-black tracking-tight text-[var(--text-primary)]">${stats.total_earnings.toFixed(2)}</p>
                 </div>
             </div>
 
             {/* Transactions Section */}
-            <section className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                <h3 className="text-xl font-black uppercase tracking-tight mb-8">Transaction History</h3>
+            <section className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg shadow-sm border border-[var(--border)]">
+                <h3 className="text-base md:text-lg font-black uppercase tracking-tight mb-4 md:mb-6 text-[var(--text-primary)]">Transaction History</h3>
                 <DataTable
                     columns={columns}
                     data={transactions}

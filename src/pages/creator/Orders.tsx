@@ -133,15 +133,14 @@ const CreatorOrders: React.FC = () => {
 
     return (
         <div className="animate-fadeIn pb-20">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-                <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-[#FAFAFA] mb-2">Order Terminal</h1>
-                    <p className="text-[#71717A] font-medium uppercase tracking-[0.2em] text-xs">Tracking global deployments and asset distribution.</p>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 md:mb-8 gap-4">
+                <div className="flex-1">
+                    <h1 className="text-xl md:text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] mb-1">Order Terminal</h1>
+                    <p className="text-[var(--text-muted)] font-medium uppercase tracking-[0.2em] text-[9px] md:text-[10px]">Tracking global deployments and asset distribution.</p>
                 </div>
             </div>
 
-            <section className="bg-[#121215] p-8 rounded-xl border border-[#27272A] transition-all overflow-hidden text-[#FAFAFA]">
-
+            <section className="bg-[var(--bg-secondary)] p-0 rounded-lg border border-[var(--border)] transition-all overflow-hidden text-[var(--text-primary)]">
                 <DataTable
                     columns={columns}
                     data={orders}
@@ -149,9 +148,9 @@ const CreatorOrders: React.FC = () => {
                     actions={(row) => (
                         <button
                             onClick={() => navigate(`/creator/orders/${row.id}`)}
-                            className="bg-[#18181B] border border-[#27272A] text-[#FAFAFA] px-6 py-3 rounded-lg font-black uppercase tracking-widest text-[10px] flex items-center gap-2 hover:border-[#3B82F6]/50 transition-all shadow-lg"
+                            className="bg-[var(--bg-elevated)] border border-[var(--border)] text-[var(--text-primary)] px-4 py-2 rounded font-black uppercase tracking-widest text-[9px] flex items-center justify-center gap-2 hover:border-[var(--accent-primary)]/50 transition-all shadow-sm"
                         >
-                            <FaEye className="text-[#3B82F6]" /> Inspect
+                            <FaEye className="text-[var(--accent-primary)]" /> Inspect
                         </button>
                     )}
 

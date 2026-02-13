@@ -10,20 +10,16 @@ const CreatorDashboardLayout: React.FC = () => {
         <div className="creator-theme">
             <CreatorSidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
 
-            <div className="lg:ml-[260px] flex flex-col min-h-screen">
+            <div className="lg:ml-56 flex flex-col min-h-screen">
                 {/* Creator Control Header */}
-                <header style={{
-                    height: '72px',
-                    padding: '0 32px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    position: 'sticky',
-                    top: 0,
-                    zIndex: 30,
-                    background: 'var(--bg-primary)',
-                    borderBottom: '1px solid var(--border)'
-                }}>
+                <header
+                    className="sticky top-0 z-30 flex items-center justify-between px-4 md:px-6 border-b transition-all duration-200"
+                    style={{
+                        height: '56px',
+                        background: 'var(--bg-primary)',
+                        borderBottom: '1px solid var(--border)'
+                    }}
+                >
                     <div className="flex items-center gap-4">
                         <button
                             className="lg:hidden p-2 text-primary hover:bg-white/5 rounded-lg"
@@ -36,19 +32,15 @@ const CreatorDashboardLayout: React.FC = () => {
                         <h1 style={{
                             font: 'var(--font-h3)',
                             color: 'var(--text-primary)'
-                        }}>Creator Dashboard</h1>
+                        }} className="text-sm md:text-lg uppercase font-black tracking-widest">Creator Dashboard</h1>
                     </div>
                 </header>
 
 
                 {/* Main Content */}
-                <main style={{
-                    flex: 1,
-                    padding: '32px',
-                    maxWidth: '1400px',
-                    margin: '0 auto',
-                    width: '100%'
-                }}>
+                <main
+                    className="flex-1 p-4 md:p-6 w-full mx-auto max-w-[1280px]"
+                >
                     <Outlet />
                 </main>
             </div>

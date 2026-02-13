@@ -190,13 +190,13 @@ const ProductEditor: React.FC = () => {
     return (
         <div className="max-w-5xl mx-auto animate-fadeIn pb-32">
             {/* Header */}
-            <div className="flex items-center gap-6 mb-12">
-                <button onClick={() => navigate('/creator/products')} className="w-14 h-14 rounded-full bg-[#121215] border border-[#27272A] shadow-lg flex items-center justify-center text-[#FAFAFA] hover:border-[#3B82F6] transition-all group">
-                    <FaArrowLeft className="group-hover:-translate-x-1 transition-transform" />
+            <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
+                <button onClick={() => navigate('/creator/products')} className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[var(--bg-secondary)] border border-[var(--border)] shadow-sm flex items-center justify-center text-[var(--text-primary)] hover:border-[var(--accent-primary)] transition-all group shrink-0">
+                    <FaArrowLeft className="group-hover:-translate-x-1 transition-transform text-xs md:text-sm" />
                 </button>
-                <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-[#FAFAFA] mb-2">{isEditMode ? 'Modify Asset' : 'New Drop Injection'}</h1>
-                    <p className="text-[#71717A] font-medium uppercase tracking-[0.2em] text-xs">ID: {id || 'NEW_ENTRY_GENESIS'}</p>
+                <div className="min-w-0">
+                    <h1 className="text-xl md:text-3xl font-black uppercase tracking-tighter text-[var(--text-primary)] mb-0.5 md:mb-1 truncate">{isEditMode ? 'Modify Asset' : 'New Drop Injection'}</h1>
+                    <p className="text-[var(--text-muted)] font-medium uppercase tracking-[0.2em] text-[9px] md:text-[10px] truncate">ID: {id || 'NEW_ENTRY_GENESIS'}</p>
                 </div>
             </div>
 
@@ -205,29 +205,29 @@ const ProductEditor: React.FC = () => {
                 {/* Left Column - Main Info */}
                 <div className="lg:col-span-2 space-y-8">
                     {/* Basic Data */}
-                    <section className="bg-[#121215] p-10 rounded-xl border border-[#27272A]">
-                        <h3 className="text-xl font-black uppercase tracking-tight mb-8 flex items-center gap-3 text-[#FAFAFA]">
-                            <FaBox className="text-[#3B82F6]" /> Core Specifications
+                    <section className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg border border-[var(--border)]">
+                        <h3 className="text-base md:text-lg font-black uppercase tracking-tight mb-4 md:mb-6 flex items-center gap-3 text-[var(--text-primary)]">
+                            <FaBox className="text-[var(--accent-primary)]" /> Core Specifications
                         </h3>
-                        <div className="space-y-6">
+                        <div className="space-y-4">
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Product Title</label>
+                                <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1 block">Product Title</label>
                                 <input
                                     type="text"
                                     required
                                     value={title}
                                     onChange={e => setTitle(e.target.value)}
-                                    className="w-full h-14 px-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-bold outline-none text-[#FAFAFA]"
+                                    className="w-full h-10 md:h-12 px-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--accent-primary)] transition-all font-bold outline-none text-[var(--text-primary)] text-xs md:text-sm"
                                     placeholder="e.g. NAKAMOTO GENESIS HOODIE"
                                 />
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Description & Lore</label>
+                                <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1 block">Description & Lore</label>
                                 <textarea
                                     required
                                     value={description}
                                     onChange={e => setDescription(e.target.value)}
-                                    className="w-full h-48 p-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-medium outline-none resize-none text-[#FAFAFA] placeholder-[#71717A]"
+                                    className="w-full h-32 p-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--accent-primary)] transition-all font-medium outline-none resize-none text-[var(--text-primary)] placeholder-[var(--text-muted)] text-xs md:text-sm"
                                     placeholder="Describe materials, fit, and the story behind this piece..."
                                 />
                             </div>
@@ -236,52 +236,52 @@ const ProductEditor: React.FC = () => {
 
 
                     {/* Inventory & Pricing */}
-                    <section className="bg-[#121215] p-10 rounded-xl border border-[#27272A]">
-                        <h3 className="text-xl font-black uppercase tracking-tight mb-8 flex items-center gap-3 text-[#FAFAFA]">
-                            <FaLayerGroup className="text-[#A855F7]" /> Logistics & Valuation
+                    <section className="bg-[var(--bg-secondary)] p-4 md:p-6 rounded-lg border border-[var(--border)]">
+                        <h3 className="text-base md:text-lg font-black uppercase tracking-tight mb-4 md:mb-6 flex items-center gap-3 text-[var(--text-primary)]">
+                            <FaLayerGroup className="text-[var(--accent-secondary)]" /> Logistics & Valuation
                         </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Listing Price ($)</label>
+                                <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1 block">Listing Price ($)</label>
                                 <input
                                     type="number"
                                     required
                                     step="0.01"
                                     value={price}
                                     onChange={e => setPrice(e.target.value)}
-                                    className="w-full h-14 px-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-bold outline-none text-[#FAFAFA]"
+                                    className="w-full h-10 md:h-12 px-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--accent-primary)] transition-all font-bold outline-none text-[var(--text-primary)] text-xs md:text-sm"
                                     placeholder="0.00"
                                 />
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Compare Price ($)</label>
+                                <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1 block">Compare Price ($)</label>
                                 <input
                                     type="number"
                                     step="0.01"
                                     value={comparePrice}
                                     onChange={e => setComparePrice(e.target.value)}
-                                    className="w-full h-14 px-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-bold outline-none text-[#FAFAFA]"
+                                    className="w-full h-10 md:h-12 px-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--accent-primary)] transition-all font-bold outline-none text-[var(--text-primary)] text-xs md:text-sm"
                                     placeholder="0.00 (Optional)"
                                 />
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">SKU / Serial Number</label>
+                                <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1 block">SKU / Serial Number</label>
                                 <input
                                     type="text"
                                     value={sku}
                                     onChange={e => setSku(e.target.value)}
-                                    className="w-full h-14 px-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-bold outline-none text-[#FAFAFA]"
+                                    className="w-full h-10 md:h-12 px-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--accent-primary)] transition-all font-bold outline-none text-[var(--text-primary)] text-xs md:text-sm"
                                     placeholder="OTKU-GEN-001"
                                 />
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Total Inventory Units</label>
+                                <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1 block">Total Inventory Units</label>
                                 <input
                                     type="number"
                                     required
                                     value={stockQuantity}
                                     onChange={e => setStockQuantity(e.target.value)}
-                                    className="w-full h-14 px-6 rounded-lg bg-[#18181B] border border-[#27272A] focus:border-[#3B82F6] transition-all font-bold outline-none text-[#FAFAFA]"
+                                    className="w-full h-10 md:h-12 px-4 rounded-md bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--accent-primary)] transition-all font-bold outline-none text-[var(--text-primary)] text-xs md:text-sm"
                                     placeholder="0"
                                 />
                             </div>
@@ -299,9 +299,9 @@ const ProductEditor: React.FC = () => {
 
 
                     {/* Variants */}
-                    <section className="bg-[#121215] p-10 rounded-xl border border-[#27272A]">
-                        <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-xl font-black uppercase tracking-tight flex items-center gap-3 text-[#FAFAFA]">
+                    <section className="bg-[#121215] p-6 md:p-10 rounded-xl border border-[#27272A]">
+                        <div className="flex items-center justify-between mb-6 md:mb-8">
+                            <h3 className="text-lg md:text-xl font-black uppercase tracking-tight flex items-center gap-3 text-[#FAFAFA]">
                                 <FaLayerGroup className="text-[#3B82F6]" /> Morphological Variants
                             </h3>
                             <button
@@ -315,11 +315,11 @@ const ProductEditor: React.FC = () => {
 
                         {hasVariants && (
                             <div className="space-y-6 animate-fadeIn">
-                                <div className="grid grid-cols-3 gap-4">
-                                    <select className="col-span-1 h-12 bg-[#18181B] text-[#FAFAFA] rounded-lg px-4 text-xs font-black outline-none border border-[#27272A] focus:border-[#3B82F6]" id="var-size">
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <select className="h-12 bg-[#18181B] text-[#FAFAFA] rounded-lg px-4 text-xs font-black outline-none border border-[#27272A] focus:border-[#3B82F6]" id="var-size">
                                         {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
                                     </select>
-                                    <input type="number" className="col-span-1 h-12 bg-[#18181B] text-[#FAFAFA] rounded-lg px-4 text-xs font-black outline-none border border-[#27272A] focus:border-[#3B82F6]" placeholder="Stock" id="var-stock" />
+                                    <input type="number" className="h-12 bg-[#18181B] text-[#FAFAFA] rounded-lg px-4 text-xs font-black outline-none border border-[#27272A] focus:border-[#3B82F6]" placeholder="Stock" id="var-stock" />
                                     <button
                                         type="button"
                                         onClick={() => {
@@ -330,7 +330,7 @@ const ProductEditor: React.FC = () => {
                                                 (document.getElementById('var-stock') as HTMLInputElement).value = '';
                                             }
                                         }}
-                                        className="col-span-1 bg-[#3B82F6] text-white rounded-lg flex items-center justify-center hover:bg-[#3B82F6]/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.1)]"
+                                        className="h-12 bg-[#3B82F6] text-white rounded-lg flex items-center justify-center hover:bg-[#3B82F6]/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.1)]"
                                     >
                                         <FaPlus />
                                     </button>
@@ -354,14 +354,11 @@ const ProductEditor: React.FC = () => {
                 {/* Right Column - Organization & Media */}
                 <div className="space-y-8">
                     {/* Media Setup */}
-                    <section className="bg-[#121215] p-10 rounded-xl border border-[#27272A]">
-                        <h3 className="text-xl font-black uppercase tracking-tight mb-4 text-[#FAFAFA]">Visual Identity</h3>
-                        <div className="bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-lg p-4 mb-6">
-                            <p className="text-xs font-bold text-[#3B82F6] flex items-center gap-2">
-                                ⚠️ Images must be SQUARE (1:1 ratio)
-                            </p>
-                            <p className="text-[10px] text-[#71717A] mt-1">
-                                Max 5MB per image. JPG, PNG, or WebP only.
+                    <section className="bg-[#121215] p-6 md:p-10 rounded-xl border border-[#27272A]">
+                        <h3 className="text-lg md:text-xl font-black uppercase tracking-tight mb-4 text-[#FAFAFA]">Visual Identity</h3>
+                        <div className="bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-lg p-3 md:p-4 mb-6">
+                            <p className="text-[10px] md:text-xs font-bold text-[#3B82F6] flex items-center gap-2">
+                                ⚠️ SQUARE IMAGES (1:1) REQUIRED
                             </p>
                         </div>
                         <FileUpload
@@ -375,8 +372,8 @@ const ProductEditor: React.FC = () => {
 
 
                     {/* Taxonomy */}
-                    <section className="bg-[#121215] p-10 rounded-xl border border-[#27272A]">
-                        <h3 className="text-xl font-black uppercase tracking-tight mb-8 text-[#FAFAFA]">Taxonomy</h3>
+                    <section className="bg-[#121215] p-6 md:p-10 rounded-xl border border-[#27272A]">
+                        <h3 className="text-lg md:text-xl font-black uppercase tracking-tight mb-6 md:mb-8 text-[#FAFAFA]">Taxonomy</h3>
                         <div className="space-y-6">
                             <div>
                                 <label className="text-[10px] font-black uppercase tracking-widest text-[#71717A] mb-2 block">Sector</label>
@@ -422,22 +419,22 @@ const ProductEditor: React.FC = () => {
             </div>
 
             {/* Action Bar */}
-            <div className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-[#121215]/80 backdrop-blur-xl border border-[#27272A] p-4 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center gap-4 z-50">
+            <div className="fixed bottom-4 md:bottom-6 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 bg-[var(--bg-secondary)]/90 backdrop-blur-md border border-[var(--border)] p-2 md:p-3 rounded-lg shadow-2xl flex items-center justify-between md:justify-start gap-2 md:gap-3 z-50">
                 <button
                     onClick={() => handleSave('draft')}
                     disabled={loading}
-                    className="px-10 py-4 font-black uppercase tracking-widest text-xs text-[#71717A] hover:text-[#FAFAFA] transition-all"
+                    className="flex-1 md:flex-none px-4 md:px-6 py-2 md:py-3 font-black uppercase tracking-widest text-[9px] md:text-[10px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
                 >
-                    Save Draft
+                    Draft
                 </button>
-                <div className="w-px h-8 bg-[#27272A]" />
+                <div className="hidden md:block w-px h-6 bg-[var(--border)]" />
                 <button
                     onClick={() => handleSave('pending')}
                     disabled={loading}
-                    className="px-10 py-4 bg-[#3B82F6] text-white rounded-lg font-black uppercase tracking-widest text-xs flex items-center gap-3 hover:bg-[#3B82F6]/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                    className="flex-[2] md:flex-none px-6 md:px-8 py-2 md:py-3 bg-[var(--accent-primary)] text-white rounded font-black uppercase tracking-widest text-[9px] md:text-[10px] flex items-center justify-center gap-2 hover:bg-[var(--accent-primary)]/90 transition-all shadow-lg"
                 >
                     {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
-                    {isEditMode ? 'Authorize Update' : 'Initialize Mission'}
+                    <span className="whitespace-nowrap">{isEditMode ? 'Authorize' : 'Initialize'}</span>
                 </button>
             </div>
 
