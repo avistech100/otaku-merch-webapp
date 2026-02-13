@@ -64,112 +64,112 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             />
 
             {/* Modal Card */}
-            <div className="relative w-full max-w-md bg-primary-white rounded-[40px] overflow-hidden shadow-2xl animate-slideUp">
+            <div className="relative w-full max-w-sm bg-primary-white rounded-[32px] overflow-hidden shadow-2xl animate-slideUp border border-bg-light">
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute top-6 right-6 text-primary-dark-gray/40 hover:text-primary-black transition-all z-10"
+                    className="absolute top-4 right-4 text-primary-dark-gray/40 hover:text-primary-black transition-all z-10"
                 >
-                    <FaTimes size={24} />
+                    <FaTimes size={18} />
                 </button>
 
                 {/* Header Art */}
-                <div className="h-32 bg-primary-black relative flex items-center justify-center overflow-hidden">
-                    <div className="absolute inset-0 opacity-30">
+                <div className="h-24 bg-primary-black relative flex items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 opacity-40">
                         <img
                             src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=800"
-                            alt="Mantis"
+                            alt="Auth Header"
                             className="w-full h-full object-cover"
                         />
                     </div>
-                    <h2 className="text-3xl font-black text-primary-white tracking-widest relative z-10">
+                    <h2 className="text-xl font-black text-primary-white tracking-widest relative z-10">
                         OTAKU <span className="text-accent-anime">MERCH</span>
                     </h2>
                 </div>
 
-                <div className="p-10">
-                    <div className="text-center mb-8">
-                        <h3 className="text-2xl font-black mb-2 tracking-tighter uppercase text-primary-black">
+                <div className="p-8">
+                    <div className="text-center mb-6">
+                        <h3 className="text-xl font-black mb-1 tracking-tighter uppercase text-primary-black">
                             {isLogin ? 'Welcome Back' : 'Create Account'}
                         </h3>
-                        <p className="text-primary-dark-gray/60 font-medium text-sm">
-                            {isLogin ? 'Login to access your personalized drop alerts.' : 'Join the elite vanguard of digital fashion.'}
+                        <p className="text-primary-dark-gray/60 font-bold text-[10px] uppercase tracking-wider">
+                            {isLogin ? 'ENTER CLEARANCE KEY' : 'JOIN THE VANGUARD'}
                         </p>
                     </div>
 
-                    <form onSubmit={handleAuth} className="space-y-4">
+                    <form onSubmit={handleAuth} className="space-y-3">
                         {!isLogin && (
                             <div className="relative">
-                                <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-primary-dark-gray/30" />
+                                <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-dark-gray/30" size={14} />
                                 <input
                                     type="text"
                                     placeholder="Full Name"
                                     required
                                     value={fullName}
                                     onChange={(e) => setFullName(e.target.value)}
-                                    className="input-text w-full pl-12 font-bold"
+                                    className="w-full h-11 pl-10 pr-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs"
                                 />
                             </div>
                         )}
                         <div className="relative">
-                            <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-primary-dark-gray/30" />
+                            <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-dark-gray/30" size={14} />
                             <input
                                 type="email"
                                 placeholder="Email Address"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="input-text w-full pl-12 font-bold"
+                                className="w-full h-11 pl-10 pr-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs"
                             />
                         </div>
                         <div className="relative">
-                            <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary-dark-gray/30" />
+                            <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-dark-gray/30" size={14} />
                             <input
                                 type="password"
                                 placeholder="Password"
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="input-text w-full pl-12 font-bold"
+                                className="w-full h-11 pl-10 pr-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs"
                             />
                         </div>
 
                         {error && (
-                            <p className="text-accent-anime text-xs font-bold text-center animate-pulse">{error}</p>
+                            <p className="text-accent-anime text-[10px] font-black text-center uppercase tracking-widest animate-pulse">{error}</p>
                         )}
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full btn-primary h-16 rounded-full font-black uppercase tracking-widest shadow-xl shadow-accent-anime/20 flex items-center justify-center gap-3"
+                            className="w-full bg-primary-black text-primary-white h-11 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-accent-anime transition-all shadow-lg flex items-center justify-center gap-2 mt-2"
                         >
                             {loading ? <FaSpinner className="animate-spin" /> : (isLogin ? 'Login' : 'Signup')}
                         </button>
                     </form>
 
-                    <div className="mt-8">
-                        <div className="relative flex items-center justify-center mb-6">
+                    <div className="mt-6">
+                        <div className="relative flex items-center justify-center mb-4">
                             <div className="border-t border-bg-light w-full"></div>
-                            <span className="bg-primary-white px-4 text-[10px] font-black text-primary-dark-gray/30 uppercase tracking-[0.2em] absolute">Or continue with</span>
+                            <span className="bg-primary-white px-3 text-[9px] font-black text-primary-dark-gray/30 uppercase tracking-[0.2em] absolute">Or continue with</span>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
-                            <button className="flex items-center justify-center gap-2 h-12 rounded-full border-2 border-bg-light font-bold text-sm hover:border-primary-black transition-all text-primary-black">
+                        <div className="grid grid-cols-2 gap-3">
+                            <button className="flex items-center justify-center gap-2 h-10 rounded-xl border border-bg-light font-black text-[10px] hover:border-primary-black transition-all text-primary-black uppercase tracking-widest">
                                 <FaGoogle className="text-red-500" /> Google
                             </button>
-                            <button className="flex items-center justify-center gap-2 h-12 rounded-full border-2 border-bg-light font-bold text-sm hover:border-primary-black transition-all text-primary-black">
+                            <button className="flex items-center justify-center gap-2 h-10 rounded-xl border border-bg-light font-black text-[10px] hover:border-primary-black transition-all text-primary-black uppercase tracking-widest">
                                 <FaGithub /> GitHub
                             </button>
                         </div>
                     </div>
 
-                    <p className="mt-8 text-center text-sm font-medium text-primary-dark-gray/60">
-                        {isLogin ? "Don't have an account?" : "Already have an account?"}{' '}
+                    <p className="mt-6 text-center text-[10px] font-bold text-primary-dark-gray/40 uppercase tracking-widest">
+                        {isLogin ? "No account?" : "Already member?"}{' '}
                         <button
                             onClick={() => setIsLogin(!isLogin)}
-                            className="text-accent-anime font-black uppercase tracking-widest text-xs ml-1 hover:underline"
+                            className="text-accent-anime font-black hover:underline"
                         >
-                            {isLogin ? 'Sign Up' : 'Login'}
+                            {isLogin ? 'SIGN UP' : 'LOGIN'}
                         </button>
                     </p>
                 </div>

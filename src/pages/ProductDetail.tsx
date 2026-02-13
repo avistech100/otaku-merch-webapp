@@ -148,22 +148,22 @@ const ProductDetail: React.FC = () => {
                 <FaChevronLeft size={12} /> BACK TO COLLECTION
             </Link>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
                 {/* Left: Images */}
-                <div className="space-y-6">
-                    <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-bg-light border border-bg-light shadow-sm">
+                <div className="space-y-4">
+                    <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-bg-light border border-bg-light shadow-sm">
                         <img
                             src={product.images[activeImage]}
                             alt={product.title}
                             className="w-full h-full object-cover transition-opacity duration-300"
                         />
                     </div>
-                    <div className="grid grid-cols-4 gap-4">
+                    <div className="grid grid-cols-5 gap-3">
                         {product.images.map((img: string, idx: number) => (
                             <button
                                 key={idx}
                                 onClick={() => setActiveImage(idx)}
-                                className={`aspect-square rounded-xl overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-accent-anime' : 'border-transparent hover:border-bg-light'}`}
+                                className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-accent-anime' : 'border-transparent hover:border-bg-light'}`}
                             >
                                 <img src={img} alt={`${product.title} view ${idx}`} className="w-full h-full object-cover" />
                             </button>
@@ -172,40 +172,40 @@ const ProductDetail: React.FC = () => {
                 </div>
 
                 {/* Right: Info */}
-                <div className="flex flex-col justify-center">
-                    <div className="mb-8">
-                        <div className="flex items-center gap-3 mb-4">
+                <div className="flex flex-col">
+                    <div className="mb-6">
+                        <div className="flex items-center gap-3 mb-2">
                             {product.isLimited && (
-                                <span className="badge-limited">LIMITED EDITION</span>
+                                <span className="badge-limited text-[10px] px-2 py-0.5">LIMITED EDITION</span>
                             )}
-                            <span className="text-accent-crypto font-black text-xs uppercase tracking-widest">{product.category}</span>
+                            <span className="text-accent-crypto font-black text-[10px] uppercase tracking-widest">{product.category}</span>
                         </div>
-                        <h1 className="text-5xl font-black mb-4 tracking-tighter uppercase leading-none text-primary-black">{product.title}</h1>
-                        <div className="flex items-center gap-6">
-                            <p className="text-4xl font-black text-primary-black">${Number(product.price).toFixed(2)}</p>
-                            <div className="flex items-center gap-1 text-accent-warning">
-                                <FaStar /> <span className="text-primary-black font-bold ml-1">4.9</span> <span className="text-primary-dark-gray/60 font-medium ml-1 text-sm">(Verified)</span>
+                        <h1 className="text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase leading-none text-primary-black">{product.title}</h1>
+                        <div className="flex items-center gap-4">
+                            <p className="text-3xl font-black text-primary-black">${Number(product.price).toFixed(2)}</p>
+                            <div className="flex items-center gap-1 text-accent-warning text-sm">
+                                <FaStar /> <span className="text-primary-black font-bold ml-1">4.9</span> <span className="text-primary-dark-gray/60 font-medium ml-1 text-xs">(Verified)</span>
                             </div>
                         </div>
                     </div>
 
-                    <p className="text-primary-dark-gray/60 text-lg mb-10 leading-relaxed font-medium">
+                    <p className="text-primary-dark-gray/70 text-sm mb-8 leading-relaxed font-medium">
                         {product.description}
                     </p>
 
                     {/* Size Selector */}
                     {product.sizes.length > 0 && (
-                        <div className="mb-10">
-                            <div className="flex justify-between items-end mb-4">
-                                <h4 className="font-black text-sm uppercase tracking-widest text-primary-black">Select Size</h4>
-                                <button className="text-primary-dark-gray/60 text-xs font-bold underline hover:text-primary-black">Size Guide</button>
+                        <div className="mb-8">
+                            <div className="flex justify-between items-end mb-3">
+                                <h4 className="font-black text-xs uppercase tracking-widest text-primary-black">Select Size</h4>
+                                <button className="text-primary-dark-gray/60 text-[10px] font-bold underline hover:text-primary-black">Size Guide</button>
                             </div>
-                            <div className="flex flex-wrap gap-3">
+                            <div className="flex flex-wrap gap-2">
                                 {product.sizes.map((size: string) => (
                                     <button
                                         key={size}
                                         onClick={() => setSelectedSize(size)}
-                                        className={`w-14 h-14 rounded-full border-2 font-black transition-all flex items-center justify-center
+                                        className={`w-10 h-10 rounded-lg border-2 font-black text-xs transition-all flex items-center justify-center
                         ${selectedSize === size ? 'border-accent-anime bg-accent-anime text-primary-white' : 'border-bg-light hover:border-primary-black text-primary-black'}`}
                                     >
                                         {size}
@@ -216,46 +216,46 @@ const ProductDetail: React.FC = () => {
                     )}
 
                     {/* Quantity & Add to Cart */}
-                    <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                        <div className="flex items-center border-2 border-bg-light rounded-full px-4 py-3 h-16 sm:w-40 justify-between text-primary-black font-bold">
-                            <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="hover:text-accent-anime transition-all p-2"><FaMinus size={12} /></button>
-                            <span className="font-black text-xl">{quantity}</span>
-                            <button onClick={() => setQuantity(quantity + 1)} className="hover:text-accent-anime transition-all p-2"><FaPlus size={12} /></button>
+                    <div className="flex flex-col sm:flex-row gap-3 mb-8">
+                        <div className="flex items-center border border-bg-light rounded-xl px-3 py-2 h-12 w-32 justify-between text-primary-black font-bold">
+                            <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="hover:text-accent-anime transition-all p-1"><FaMinus size={10} /></button>
+                            <span className="font-black text-lg">{quantity}</span>
+                            <button onClick={() => setQuantity(quantity + 1)} className="hover:text-accent-anime transition-all p-1"><FaPlus size={10} /></button>
                         </div>
                         <button
                             onClick={handleAddToCart}
-                            className="flex-1 btn-primary h-16 rounded-full flex items-center justify-center gap-3 uppercase tracking-widest shadow-xl shadow-black/10"
+                            className="flex-1 btn-primary h-12 rounded-xl flex items-center justify-center gap-2 uppercase tracking-widest text-xs shadow-lg shadow-black/5"
                         >
                             Add to Cart
                         </button>
                     </div>
 
-                    <button className="w-full bg-accent-anime text-primary-white font-black text-lg h-16 rounded-full hover:brightness-110 shadow-xl shadow-accent-anime/20 transition-all uppercase tracking-widest">
+                    <button className="w-full bg-accent-anime text-primary-white font-black text-sm h-12 rounded-xl hover:brightness-110 shadow-lg shadow-accent-anime/20 transition-all uppercase tracking-widest mb-8">
                         Buy Now
                     </button>
 
                     {/* Creator Badge */}
-                    <div className="flex items-center gap-4 p-6 bg-bg-light/50 rounded-3xl border border-bg-light">
-                        <div className="w-12 h-12 bg-primary-white rounded-full overflow-hidden shadow-sm">
+                    <div className="flex items-center gap-3 p-4 bg-bg-light/30 rounded-2xl border border-bg-light">
+                        <div className="w-10 h-10 bg-primary-white rounded-full overflow-hidden shadow-sm">
                             <img src={product.creatorAvatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${product.creatorId || 'default'}`} alt="Creator" />
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-accent-crypto uppercase tracking-widest">Verified Creator</p>
-                            <h4 className="font-bold flex items-center gap-2 uppercase text-primary-black">{product.creatorName} <FaCheck className="text-accent-crypto" size={10} /></h4>
+                            <p className="text-[9px] font-black text-accent-crypto uppercase tracking-widest">Verified Creator</p>
+                            <h4 className="font-bold flex items-center gap-1 uppercase text-primary-black text-xs">{product.creatorName} <FaCheck className="text-accent-crypto" size={8} /></h4>
                         </div>
-                        <Link to={`/products`} className="ml-auto text-xs font-black border-b border-primary-black hover:text-accent-crypto hover:border-accent-crypto transition-all">VIEW ALL PRODUCTS</Link>
+                        <Link to={`/products`} className="ml-auto text-[10px] font-black border-b border-primary-black hover:text-accent-crypto hover:border-accent-crypto transition-all">VIEW ALL</Link>
                     </div>
                 </div>
             </div>
 
             {/* Tabs Section */}
-            <section className="mb-24 animate-slideUp">
-                <div className="flex border-b border-bg-light mb-10 overflow-x-auto whitespace-nowrap scrollbar-hide">
+            <section className="mb-16 animate-slideUp">
+                <div className="flex border-b border-bg-light mb-8 overflow-x-auto whitespace-nowrap scrollbar-hide">
                     {['Description', 'Materials', 'Reviews', 'Design Story'].map(tab => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
-                            className={`px-10 py-5 font-black text-sm uppercase tracking-widest border-b-2 transition-all
+                            className={`px-6 py-3 font-black text-xs uppercase tracking-widest border-b-2 transition-all
                 ${activeTab === tab ? 'border-accent-anime text-primary-black' : 'border-transparent text-primary-dark-gray/40 hover:text-primary-black'}`}
                         >
                             {tab}
@@ -264,16 +264,16 @@ const ProductDetail: React.FC = () => {
                 </div>
                 <div className="max-w-3xl">
                     {activeTab === 'Description' && (
-                        <div className="space-y-6 text-primary-dark-gray/70 text-lg font-medium leading-relaxed">
+                        <div className="space-y-4 text-primary-dark-gray/70 text-sm font-medium leading-relaxed">
                             <p>{product.description}</p>
                             <p>Crafted for the digital vanguard, this piece combines street aesthetics with high-grade fabrication.</p>
                         </div>
                     )}
                     {activeTab === 'Materials' && (
-                        <p className="text-primary-dark-gray/70 text-lg font-medium leading-relaxed">{product.details.materials}</p>
+                        <p className="text-primary-dark-gray/70 text-sm font-medium leading-relaxed">{product.details.materials}</p>
                     )}
                     {activeTab === 'Design Story' && (
-                        <p className="text-primary-dark-gray/70 text-lg font-medium leading-relaxed">{product.details.designStory}</p>
+                        <p className="text-primary-dark-gray/70 text-sm font-medium leading-relaxed">{product.details.designStory}</p>
                     )}
                     {activeTab === 'Reviews' && (
                         <CommentSection productId={id!} />

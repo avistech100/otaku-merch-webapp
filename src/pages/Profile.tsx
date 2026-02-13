@@ -263,10 +263,10 @@ const Profile: React.FC = () => {
 
     return (
         <div className="layout-container py-12 animate-fadeIn pb-32">
-            <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-end mb-12">
+            <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-end mb-8">
                 <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-primary-black">Command Center</h1>
-                    <p className="text-primary-dark-gray/60 font-medium uppercase tracking-[0.2em] text-xs">Node: {user?.id.slice(0, 12).toUpperCase()}</p>
+                    <h1 className="text-3xl font-black uppercase tracking-tighter text-primary-black">Command Center</h1>
+                    <p className="text-primary-dark-gray/60 font-medium uppercase tracking-[0.2em] text-[10px]">Node: {user?.id.slice(0, 12).toUpperCase()}</p>
                 </div>
             </div>
 
@@ -277,21 +277,21 @@ const Profile: React.FC = () => {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`w-full flex items-center gap-4 p-5 rounded-2xl font-black uppercase text-xs tracking-widest transition-all ${activeTab === tab.id
-                                ? 'bg-primary-black text-white shadow-xl translate-x-1'
+                            className={`w-full flex items-center gap-3 p-3 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all ${activeTab === tab.id
+                                ? 'bg-primary-black text-white shadow-lg translate-x-1'
                                 : 'bg-primary-white border border-bg-light text-primary-dark-gray hover:border-primary-black'
                                 }`}
                         >
-                            <tab.icon size={16} />
+                            <tab.icon size={14} />
                             {tab.label}
                         </button>
                     ))}
 
                     <button
                         onClick={signOut}
-                        className="w-full flex items-center gap-4 p-5 rounded-2xl font-black uppercase text-xs tracking-widest text-red-500 hover:bg-red-50 transition-all mt-8"
+                        className="w-full flex items-center gap-3 p-3 rounded-xl font-black uppercase text-[10px] tracking-widest text-red-500 hover:bg-red-50 transition-all mt-6"
                     >
-                        <FaTrashAlt size={16} /> Disconnect
+                        <FaTrashAlt size={14} /> Disconnect
                     </button>
                 </div>
 
@@ -299,53 +299,53 @@ const Profile: React.FC = () => {
                 <div className="lg:col-span-3">
                     {/* =================== IDENTITY TAB =================== */}
                     {activeTab === 'general' && (
-                        <div className="space-y-8 animate-fadeIn">
-                            <div className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                                <div className="flex flex-col md:flex-row items-center gap-10 mb-10">
+                        <div className="space-y-6 animate-fadeIn">
+                            <div className="bg-primary-white p-6 rounded-3xl shadow-xl shadow-black/5 border border-bg-light">
+                                <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
                                     <AvatarUpload
                                         currentAvatarUrl={profile.avatar_url}
                                         userId={user?.id || ''}
                                         onUploadComplete={handleAvatarUpdate}
                                     />
                                     <div className="text-center md:text-left">
-                                        <h3 className="text-3xl font-black uppercase tracking-tight text-primary-black mb-1">{profile.full_name || 'Incognito User'}</h3>
-                                        <p className="text-primary-dark-gray/60 font-medium mb-4">{profile.username ? `@${profile.username}` : 'No username assigned'}</p>
-                                        <div className="flex gap-2">
-                                            <span className="px-3 py-1 bg-accent-anime/10 text-accent-anime rounded-full text-[9px] font-black uppercase">Standard Citizen</span>
+                                        <h3 className="text-2xl font-black uppercase tracking-tight text-primary-black mb-1">{profile.full_name || 'Incognito User'}</h3>
+                                        <p className="text-primary-dark-gray/60 font-medium mb-3 text-sm">{profile.username ? `@${profile.username}` : 'No username assigned'}</p>
+                                        <div className="flex gap-2 justify-center md:justify-start">
+                                            <span className="px-2 py-0.5 bg-accent-anime/10 text-accent-anime rounded-full text-[9px] font-black uppercase">Standard Citizen</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <form onSubmit={handleUpdateProfile} className="space-y-8">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <form onSubmit={handleUpdateProfile} className="space-y-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
-                                            <label className="block text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-3 ml-2">Public Designation</label>
+                                            <label className="block text-[9px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 ml-2">Public Designation</label>
                                             <input
                                                 type="text"
                                                 value={profile.full_name}
                                                 onChange={e => setProfile({ ...profile, full_name: e.target.value })}
-                                                className="w-full h-14 px-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black outline-none font-bold transition-all text-sm"
+                                                className="w-full h-12 px-4 rounded-xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black outline-none font-bold transition-all text-xs"
                                                 placeholder="e.g. Satoshi Nakamoto"
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-3 ml-2">Cyber Identifier</label>
+                                            <label className="block text-[9px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 ml-2">Cyber Identifier</label>
                                             <input
                                                 type="text"
                                                 value={profile.username}
                                                 onChange={e => setProfile({ ...profile, username: e.target.value })}
-                                                className="w-full h-14 px-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black outline-none font-bold transition-all text-sm"
+                                                className="w-full h-12 px-4 rounded-xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black outline-none font-bold transition-all text-xs"
                                                 placeholder="@crypto_lord"
                                             />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-3 ml-2">Transmission Bio</label>
+                                        <label className="block text-[9px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2 ml-2">Transmission Bio</label>
                                         <textarea
                                             value={profile.bio}
                                             onChange={e => setProfile({ ...profile, bio: e.target.value })}
-                                            className="w-full h-40 p-6 rounded-2xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black outline-none font-medium transition-all text-sm resize-none"
+                                            className="w-full h-32 p-4 rounded-xl bg-bg-light/30 border-2 border-transparent focus:border-primary-black outline-none font-medium transition-all text-xs resize-none"
                                             placeholder="Declare your affiliation and intent..."
                                         />
                                     </div>
@@ -353,7 +353,7 @@ const Profile: React.FC = () => {
                                     <button
                                         type="submit"
                                         disabled={saving}
-                                        className="h-16 px-12 bg-primary-black text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-accent-anime hover:scale-105 transition-all disabled:opacity-50 flex items-center justify-center gap-3 shadow-xl"
+                                        className="h-12 px-8 bg-primary-black text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-accent-anime hover:scale-105 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
                                     >
                                         {saving ? <FaSpinner className="animate-spin" /> : <FaSave />} Synchronize Identity
                                     </button>
@@ -364,109 +364,95 @@ const Profile: React.FC = () => {
 
                     {/* =================== ORDER HISTORY TAB =================== */}
                     {activeTab === 'orders' && (
-                        <div className="space-y-8 animate-fadeIn">
-                            <div className="bg-primary-white p-10 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light">
-                                <div className="flex items-center justify-between mb-10">
-                                    <h3 className="text-2xl font-black uppercase tracking-tight text-primary-black flex items-center gap-3">
-                                        <FaShoppingBag className="text-accent-anime" /> Order History
+                        <div className="space-y-6 animate-fadeIn">
+                            <div className="bg-primary-white p-6 rounded-3xl shadow-xl shadow-black/5 border border-bg-light">
+                                <div className="flex items-center justify-between mb-6">
+                                    <h3 className="text-xl font-black uppercase tracking-tight text-primary-black flex items-center gap-2">
+                                        <FaShoppingBag className="text-accent-anime" size={16} /> Order History
                                     </h3>
-                                    <span className="text-xs font-black uppercase tracking-widest text-primary-dark-gray/40">
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40">
                                         {orders.length} order{orders.length !== 1 ? 's' : ''}
                                     </span>
                                 </div>
 
                                 {orders.length > 0 ? (
-                                    <div className="space-y-4">
+                                    <div className="space-y-3">
                                         {orders.map(order => {
                                             const badge = getStatusBadge(order.status);
                                             const isExpanded = expandedOrderId === order.id;
                                             const items = orderItems[order.id] || [];
 
                                             return (
-                                                <div key={order.id} className="rounded-3xl border border-bg-light overflow-hidden hover:border-accent-anime/30 transition-all">
+                                                <div key={order.id} className="rounded-2xl border border-bg-light overflow-hidden hover:border-accent-anime/30 transition-all">
                                                     {/* Order Header - Clickable */}
                                                     <button
                                                         onClick={() => fetchOrderItems(order.id)}
-                                                        className="w-full p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 text-left hover:bg-bg-light/20 transition-colors"
+                                                        className="w-full p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 text-left hover:bg-bg-light/20 transition-colors"
                                                     >
-                                                        <div className="flex items-center gap-5">
-                                                            <div className="w-12 h-12 rounded-2xl bg-bg-light/50 flex items-center justify-center text-primary-dark-gray/40">
-                                                                <FaReceipt size={18} />
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="w-10 h-10 rounded-xl bg-bg-light/50 flex items-center justify-center text-primary-dark-gray/40">
+                                                                <FaReceipt size={14} />
                                                             </div>
                                                             <div>
-                                                                <p className="font-black text-sm uppercase tracking-tight text-primary-black">
+                                                                <p className="font-black text-xs uppercase tracking-tight text-primary-black">
                                                                     {order.order_number || `#${order.id.slice(0, 8).toUpperCase()}`}
                                                                 </p>
-                                                                <p className="text-[10px] font-bold text-primary-dark-gray/40 uppercase tracking-widest mt-1">
+                                                                <p className="text-[9px] font-bold text-primary-dark-gray/40 uppercase tracking-widest mt-0.5">
                                                                     {new Date(order.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                                                                 </p>
                                                             </div>
                                                         </div>
 
-                                                        <div className="flex items-center gap-4">
-                                                            <span className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${badge.color}`}>
+                                                        <div className="flex items-center gap-3">
+                                                            <span className={`px-2 py-1 rounded-full text-[8px] font-black uppercase tracking-widest border ${badge.color}`}>
                                                                 {badge.label}
                                                             </span>
-                                                            <span className="font-black text-lg text-primary-black tracking-tight">
+                                                            <span className="font-black text-sm text-primary-black tracking-tight">
                                                                 ${(order.total || 0).toFixed(2)}
                                                             </span>
                                                             <div className={`transition-transform duration-300 text-primary-dark-gray/30 ${isExpanded ? 'rotate-180' : ''}`}>
-                                                                <FaChevronDown size={12} />
+                                                                <FaChevronDown size={10} />
                                                             </div>
                                                         </div>
                                                     </button>
 
                                                     {/* Expanded Order Details */}
                                                     {isExpanded && (
-                                                        <div className="border-t border-bg-light bg-bg-light/10 p-6 animate-fadeIn">
+                                                        <div className="border-t border-bg-light bg-bg-light/10 p-4 animate-fadeIn">
                                                             {/* Order Meta */}
-                                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                                                                <div className="bg-primary-white p-4 rounded-2xl border border-bg-light">
+                                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                                                                <div className="bg-primary-white p-3 rounded-xl border border-bg-light">
                                                                     <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Subtotal</p>
-                                                                    <p className="font-black text-primary-black">${(order.subtotal || 0).toFixed(2)}</p>
+                                                                    <p className="font-black text-xs text-primary-black">${(order.subtotal || 0).toFixed(2)}</p>
                                                                 </div>
-                                                                <div className="bg-primary-white p-4 rounded-2xl border border-bg-light">
+                                                                <div className="bg-primary-white p-3 rounded-xl border border-bg-light">
                                                                     <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Shipping</p>
-                                                                    <p className="font-black text-primary-black">${(order.shipping || 0).toFixed(2)}</p>
+                                                                    <p className="font-black text-xs text-primary-black">${(order.shipping || 0).toFixed(2)}</p>
                                                                 </div>
-                                                                <div className="bg-primary-white p-4 rounded-2xl border border-bg-light">
+                                                                <div className="bg-primary-white p-3 rounded-xl border border-bg-light">
                                                                     <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Payment</p>
-                                                                    <p className={`font-black ${order.payment_status === 'paid' ? 'text-emerald-600' : 'text-yellow-600'}`}>
+                                                                    <p className={`font-black text-xs ${order.payment_status === 'paid' ? 'text-emerald-600' : 'text-yellow-600'}`}>
                                                                         {(order.payment_status || 'pending').toUpperCase()}
                                                                     </p>
                                                                 </div>
-                                                                <div className="bg-primary-white p-4 rounded-2xl border border-bg-light">
+                                                                <div className="bg-primary-white p-3 rounded-xl border border-bg-light">
                                                                     <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Total</p>
-                                                                    <p className="font-black text-accent-anime text-lg">${(order.total || 0).toFixed(2)}</p>
+                                                                    <p className="font-black text-accent-anime text-xs">${(order.total || 0).toFixed(2)}</p>
                                                                 </div>
                                                             </div>
 
-                                                            {/* Shipping Address */}
-                                                            {order.shipping_address && (
-                                                                <div className="bg-primary-white p-4 rounded-2xl border border-bg-light mb-6">
-                                                                    <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2">Shipping Address</p>
-                                                                    <p className="font-bold text-sm text-primary-black">{order.shipping_address.full_name || order.shipping_address.firstName}</p>
-                                                                    <p className="text-xs text-primary-dark-gray/60">
-                                                                        {order.shipping_address.address_line1 || order.shipping_address.address}
-                                                                        {order.shipping_address.city ? `, ${order.shipping_address.city}` : ''}
-                                                                        {order.shipping_address.state ? `, ${order.shipping_address.state}` : ''}
-                                                                        {order.shipping_address.postal_code ? ` ${order.shipping_address.postal_code}` : order.shipping_address.zip ? ` ${order.shipping_address.zip}` : ''}
-                                                                    </p>
-                                                                </div>
-                                                            )}
-
                                                             {/* Order Items */}
                                                             <div>
-                                                                <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-3">Items</p>
+                                                                <p className="text-[8px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2">Items</p>
                                                                 {loadingItems === order.id ? (
-                                                                    <div className="flex items-center justify-center py-8">
+                                                                    <div className="flex items-center justify-center py-4">
                                                                         <FaSpinner className="animate-spin text-primary-dark-gray/30" />
                                                                     </div>
                                                                 ) : items.length > 0 ? (
-                                                                    <div className="space-y-3">
+                                                                    <div className="space-y-2">
                                                                         {items.map((item: any) => (
-                                                                            <div key={item.id} className="flex items-center gap-4 p-3 bg-primary-white rounded-2xl border border-bg-light">
-                                                                                <div className="w-14 h-14 rounded-xl bg-bg-light overflow-hidden shrink-0">
+                                                                            <div key={item.id} className="flex items-center gap-3 p-2 bg-primary-white rounded-xl border border-bg-light">
+                                                                                <div className="w-10 h-10 rounded-lg bg-bg-light overflow-hidden shrink-0">
                                                                                     <img
                                                                                         src={item.products?.image_url || item.product_image || 'https://via.placeholder.com/56'}
                                                                                         alt={item.products?.title || item.product_title}
@@ -474,18 +460,18 @@ const Profile: React.FC = () => {
                                                                                     />
                                                                                 </div>
                                                                                 <div className="flex-1 min-w-0">
-                                                                                    <p className="font-black text-xs uppercase tracking-tight text-primary-black truncate">{item.products?.title || item.product_title}</p>
-                                                                                    <div className="flex items-center gap-2 mt-1">
-                                                                                        {item.variant && <span className="text-[9px] font-bold text-primary-dark-gray/40 uppercase">{item.variant}</span>}
-                                                                                        <span className="text-[9px] font-bold text-primary-dark-gray/40 uppercase">Qty: {item.quantity}</span>
+                                                                                    <p className="font-black text-[10px] uppercase tracking-tight text-primary-black truncate">{item.products?.title || item.product_title}</p>
+                                                                                    <div className="flex items-center gap-2 mt-0.5">
+                                                                                        {item.variant && <span className="text-[8px] font-bold text-primary-dark-gray/40 uppercase">{item.variant}</span>}
+                                                                                        <span className="text-[8px] font-bold text-primary-dark-gray/40 uppercase">Qty: {item.quantity}</span>
                                                                                     </div>
                                                                                 </div>
-                                                                                <p className="font-black text-primary-black">${((item.price || item.subtotal || 0) * (item.quantity || 1)).toFixed(2)}</p>
+                                                                                <p className="font-black text-xs text-primary-black">${((item.price || item.subtotal || 0) * (item.quantity || 1)).toFixed(2)}</p>
                                                                             </div>
                                                                         ))}
                                                                     </div>
                                                                 ) : (
-                                                                    <p className="text-xs text-primary-dark-gray/40 py-4 text-center">No item details available</p>
+                                                                    <p className="text-[10px] text-primary-dark-gray/40 py-2 text-center">No item details available</p>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -495,16 +481,9 @@ const Profile: React.FC = () => {
                                         })}
                                     </div>
                                 ) : (
-                                    <div className="py-24 text-center border-4 border-dashed border-bg-light rounded-[40px]">
-                                        <FaBox className="text-6xl text-primary-dark-gray/10 mx-auto mb-6" />
-                                        <p className="font-black uppercase tracking-widest text-sm text-primary-dark-gray/40">No orders found</p>
-                                        <p className="text-xs text-primary-dark-gray/30 mt-2 mb-8">Start shopping to see your order history here</p>
-                                        <button
-                                            onClick={() => navigate('/products')}
-                                            className="px-10 py-5 bg-primary-black text-white rounded-full font-black uppercase text-xs tracking-widest hover:bg-accent-anime transition-all shadow-xl"
-                                        >
-                                            Browse Products
-                                        </button>
+                                    <div className="py-16 text-center border-2 border-dashed border-bg-light rounded-[32px]">
+                                        <FaBox className="text-4xl text-primary-dark-gray/10 mx-auto mb-4" />
+                                        <p className="font-black uppercase tracking-widest text-xs text-primary-dark-gray/40">No orders found</p>
                                     </div>
                                 )}
                             </div>

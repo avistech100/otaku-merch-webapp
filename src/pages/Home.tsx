@@ -32,7 +32,7 @@ const Home: React.FC = () => {
                     `)
                     .eq('status', 'approved')
                     .order('created_at', { ascending: false })
-                    .limit(3);
+                    .limit(35);
 
                 if (prodData) {
                     // Map to existing Product type structure if needed
@@ -83,64 +83,58 @@ const Home: React.FC = () => {
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-black via-primary-black/50 to-transparent"></div>
 
-                <div className="layout-container relative z-10">
+                <div className="layout-container relative z-10 flex flex-col justify-center h-full">
                     <div className="max-w-2xl animate-slideUp">
-                        <span className="inline-block bg-accent-anime text-primary-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-[0.2em] mb-6">
+                        <span className="inline-block bg-accent-anime text-primary-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-[0.2em] mb-4">
                             Exclusive Drop: Nakamoto Genesis
                         </span>
-                        <h1 className="text-6xl md:text-8xl font-black text-primary-white leading-none mb-8 tracking-tighter">
+                        <h1 className="text-5xl md:text-7xl font-black text-primary-white leading-none mb-6 tracking-tighter">
                             WEAR THE <br />
                             <span className="text-accent-anime underline decoration-white/20 underline-offset-8 italic">FUTURE.</span>
                         </h1>
-                        <p className="text-xl text-primary-white/70 mb-10 leading-relaxed font-medium">
+                        <p className="text-lg text-primary-white/70 mb-8 leading-relaxed font-medium max-w-lg">
                             Premium Web3 and Anime apparel for the digital vanguard. Limited editions. Verified creators.
                         </p>
-                        <div className="flex flex-wrap gap-4">
+                        <div className="flex flex-wrap gap-3">
                             <Link
                                 to="/products"
-                                className="bg-primary-white text-primary-black font-black px-10 py-5 rounded-full hover:bg-accent-anime hover:text-primary-white transition-all flex items-center gap-2 group"
+                                className="bg-primary-white text-primary-black font-black text-sm px-8 py-3 rounded-full hover:bg-accent-anime hover:text-primary-white transition-all flex items-center gap-2 group uppercase tracking-widest"
                             >
-                                SHOP COLLECTION <FaArrowRight className="group-hover:translate-x-2 transition-transform" />
+                                Shop Collection <FaArrowRight className="group-hover:translate-x-1 transition-transform" size={12} />
                             </Link>
                             <button
                                 onClick={() => setIsCreatorModalOpen(true)}
-                                className="bg-accent-crypto text-primary-white font-black px-10 py-5 rounded-full hover:bg-accent-anime transition-all flex items-center gap-2"
+                                className="bg-accent-crypto text-primary-white font-black text-sm px-8 py-3 rounded-full hover:bg-accent-anime transition-all flex items-center gap-2 uppercase tracking-widest"
                             >
-                                <FaStore /> BECOME A CREATOR
+                                <FaStore size={12} /> Join as Creator
                             </button>
-                            <Link
-                                to="/products"
-                                className="bg-primary-dark-gray text-primary-white border border-primary-dark-gray/30 font-black px-10 py-5 rounded-full hover:bg-primary-black transition-all"
-                            >
-                                VIEW CREATORS
-                            </Link>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Categories */}
-            <section className="layout-container layout-section">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <section className="layout-container py-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {categories.slice(0, 2).map((cat) => (
                         <Link
                             key={cat.id}
                             to={`/products?category=${cat.name}`}
-                            className="group relative h-[400px] rounded-3xl overflow-hidden bg-bg-light shadow-sm hover:shadow-xl transition-all duration-500"
+                            className="group relative h-[300px] rounded-2xl overflow-hidden bg-bg-light shadow-sm hover:shadow-lg transition-all duration-300"
                         >
                             <img
                                 src={cat.slug === 'crypto-brands' ? "https://images.unsplash.com/photo-1622633054716-a618ee4e14f6?auto=format&fit=crop&q=80&w=800" : "https://images.unsplash.com/photo-1541562232579-512a21360020?auto=format&fit=crop&q=80&w=800"}
                                 alt={cat.name}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80"
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-90"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-primary-black/80 to-transparent flex flex-col justify-end p-10">
-                                <div className="flex items-center gap-3 mb-4">
+                            <div className="absolute inset-0 bg-gradient-to-t from-primary-black/90 via-primary-black/20 to-transparent flex flex-col justify-end p-6">
+                                <div className="flex items-center gap-2 mb-2">
                                     {getIcon(cat.icon)}
-                                    <span className="text-primary-white/60 font-black tracking-widest text-xs uppercase">{cat.type === 'crypto' ? 'Curated Drop' : 'Seasonal Drop'}</span>
+                                    <span className="text-primary-white/80 font-black tracking-widest text-[10px] uppercase">{cat.type === 'crypto' ? 'Curated Drop' : 'Seasonal Drop'}</span>
                                 </div>
-                                <h2 className="text-4xl font-black text-primary-white mb-4 tracking-tighter uppercase">{cat.name}</h2>
-                                <p className="text-primary-white/70 mb-6 font-medium">{cat.description}</p>
-                                <span className="text-primary-white font-bold border-b-2 border-accent-anime w-fit pb-1 group-hover:pr-4 transition-all uppercase tracking-widest text-xs">EXPLORE NOW</span>
+                                <h2 className="text-3xl font-black text-primary-white mb-2 tracking-tighter uppercase">{cat.name}</h2>
+                                <p className="text-primary-white/70 mb-4 font-medium text-sm line-clamp-2 pr-4">{cat.description}</p>
+                                <span className="text-primary-white font-bold border-b border-accent-anime w-fit pb-0.5 group-hover:text-accent-anime transition-all uppercase tracking-widest text-[10px]">EXPLORE NOW</span>
                             </div>
                         </Link>
                     ))}
@@ -149,18 +143,18 @@ const Home: React.FC = () => {
 
             {/* New Arrivals */}
             {featuredProducts.length > 0 && (
-                <section className="bg-bg-card layout-section border-y border-bg-light">
+                <section className="bg-bg-card py-12 border-y border-bg-light">
                     <div className="layout-container">
-                        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                        <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
                             <div>
-                                <div className="flex items-center gap-2 mb-4 text-accent-anime">
-                                    <FaFire />
-                                    <span className="font-black text-xs uppercase tracking-widest">Trending Now</span>
+                                <div className="flex items-center gap-2 mb-1 text-accent-anime">
+                                    <FaFire size={12} />
+                                    <span className="font-black text-[10px] uppercase tracking-widest">Trending Now</span>
                                 </div>
-                                <h2 className="text-5xl font-black mb-0 tracking-tighter uppercase text-primary-black">NEW ARRIVALS</h2>
+                                <h2 className="text-3xl font-black mb-0 tracking-tighter uppercase text-primary-black">NEW ARRIVALS</h2>
                             </div>
-                            <Link to="/products" className="font-bold flex items-center gap-2 hover:text-accent-anime transition-all text-primary-black">
-                                VIEW ALL PRODUCTS <FaArrowRight size={14} />
+                            <Link to="/products" className="text-xs font-bold flex items-center gap-2 hover:text-accent-anime transition-all text-primary-black uppercase tracking-widest">
+                                SEE ALL <FaArrowRight size={10} />
                             </Link>
                         </div>
 
@@ -174,33 +168,33 @@ const Home: React.FC = () => {
             )}
 
             {/* Creator Spotlight */}
-            <section className="layout-container layout-section">
-                <div className="bg-primary-black text-primary-white rounded-[40px] p-12 md:p-20 overflow-hidden relative shadow-2xl">
-                    <div className="absolute top-0 right-0 w-1/2 h-full opacity-20 pointer-events-none">
-                        <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800" alt="Pattern" className="w-full h-full object-cover" />
+            <section className="layout-container py-12">
+                <div className="bg-primary-black text-primary-white rounded-3xl p-8 md:p-12 overflow-hidden relative shadow-xl">
+                    <div className="absolute top-0 right-0 w-2/3 h-full opacity-20 pointer-events-none">
+                        <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800" alt="Pattern" className="w-full h-full object-cover grayscale" />
                     </div>
-                    <div className="md:w-1/2 relative z-10">
-                        <h3 className="text-primary-dark-gray font-black text-xs uppercase tracking-[0.3em] mb-6">Creator Spotlight</h3>
-                        <h2 className="text-5xl font-black mb-8 tracking-tighter leading-none">SATOSHI NAKAMOTO <br />CLONE</h2>
-                        <p className="text-primary-white/60 text-lg mb-10 leading-relaxed">
+                    <div className="md:w-3/5 relative z-10">
+                        <h3 className="text-primary-dark-gray font-black text-[10px] uppercase tracking-[0.3em] mb-4">Creator Spotlight</h3>
+                        <h2 className="text-4xl font-black mb-4 tracking-tighter leading-none">SATOSHI NAKAMOTO <br />CLONE</h2>
+                        <p className="text-primary-white/60 text-sm mb-8 leading-relaxed max-w-lg">
                             "My goal is to merge the digital and physical worlds through apparel. Every piece represents a milestone in the decentralization movement."
                         </p>
-                        <div className="flex items-center gap-8 mb-10">
+                        <div className="flex items-center gap-8 mb-8">
                             <div>
-                                <p className="text-3xl font-black">12.5k</p>
-                                <p className="text-primary-dark-gray text-xs font-bold uppercase tracking-widest">Followers</p>
+                                <p className="text-2xl font-black">12.5k</p>
+                                <p className="text-primary-dark-gray text-[9px] font-bold uppercase tracking-widest">Followers</p>
                             </div>
-                            <div className="w-px h-10 bg-primary-dark-gray/30"></div>
+                            <div className="w-px h-8 bg-primary-dark-gray/30"></div>
                             <div>
-                                <p className="text-3xl font-black">48</p>
-                                <p className="text-primary-dark-gray text-xs font-bold uppercase tracking-widest">Total Drops</p>
+                                <p className="text-2xl font-black">48</p>
+                                <p className="text-primary-dark-gray text-[9px] font-bold uppercase tracking-widest">Drops</p>
                             </div>
                         </div>
                         <Link
                             to="/products"
-                            className="bg-accent-anime text-primary-white font-black px-10 py-5 rounded-full hover:brightness-110 shadow-lg shadow-accent-anime/20 transition-all flex items-center gap-2 w-fit uppercase tracking-widest"
+                            className="bg-accent-anime text-primary-white font-black px-6 py-3 rounded-full hover:bg-white hover:text-primary-black shadow-lg transition-all flex items-center gap-2 w-fit uppercase tracking-widest text-[10px]"
                         >
-                            FOLLOW CREATOR
+                            View Profile
                         </Link>
                     </div>
                 </div>

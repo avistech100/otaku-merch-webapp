@@ -82,69 +82,70 @@ const Creator: React.FC = () => {
     return (
         <div className="animate-fadeIn">
             {/* Creator Banner */}
-            <div className="h-80 w-full relative">
-                <img src={creator.store_banner_url || 'https://via.placeholder.com/1500x500?text=NO+BANNER'} alt="Banner" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary-black via-primary-black/20 to-transparent"></div>
-                <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 md:left-24 md:translate-x-0 w-32 h-32 rounded-[40px] border-4 border-primary-white overflow-hidden bg-primary-white shadow-2xl">
+            <div className="h-64 w-full relative">
+                <img src={creator.store_banner_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1500'} alt="Banner" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary-black/80 via-primary-black/20 to-transparent"></div>
+                <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 md:left-24 md:translate-x-0 w-24 h-24 rounded-2xl border-4 border-primary-white overflow-hidden bg-primary-white shadow-xl">
                     <img src={creator.store_logo_url || creator.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.id}`} alt={creator.store_name} className="w-full h-full object-cover" />
                 </div>
             </div>
 
-            <div className="layout-container mt-24 mb-24">
-                <div className="flex flex-col md:flex-row justify-between items-start gap-12">
+            <div className="layout-container mt-16 mb-20">
+                <div className="flex flex-col md:flex-row justify-between items-start gap-10">
                     {/* Creator Details */}
                     <div className="md:w-1/3 animate-slideUp">
-                        <h1 className="text-4xl font-black mb-2 tracking-tighter uppercase flex items-center gap-2 text-primary-black">
-                            {creator.store_name || creator.full_name || 'Anonymous Creator'} <FaCheckCircle className="text-accent-crypto" size={20} />
+                        <h1 className="text-2xl font-black mb-1 tracking-tighter uppercase flex items-center gap-1.5 text-primary-black">
+                            {creator.store_name || creator.full_name || 'Anonymous Creator'} <FaCheckCircle className="text-accent-crypto" size={16} />
                         </h1>
-                        <p className="text-primary-dark-gray/60 mb-6 font-medium leading-relaxed">{creator.store_description || creator.bio || 'No bio available.'}</p>
+                        <p className="text-[10px] text-primary-dark-gray/40 font-black uppercase tracking-[0.2em] mb-4">VERIFIED COLLABORATOR</p>
+                        <p className="text-primary-dark-gray/60 mb-6 font-medium leading-relaxed text-xs">{creator.store_description || creator.bio || 'No bio available.'}</p>
 
-                        <div className="flex flex-wrap gap-4 mb-8">
-                            <div className="bg-bg-light/50 border border-bg-light rounded-2xl px-6 py-4 shadow-sm">
-                                <p className="text-2xl font-black tracking-tight text-primary-black">{followerCount}</p>
-                                <p className="text-[10px] font-black text-primary-dark-gray/30 uppercase tracking-widest">Followers</p>
+                        <div className="flex flex-wrap gap-3 mb-6">
+                            <div className="bg-bg-light/30 border border-bg-light rounded-xl px-4 py-3 min-w-[100px]">
+                                <p className="text-lg font-black tracking-tight text-primary-black leading-none">{followerCount}</p>
+                                <p className="text-[8px] font-black text-primary-dark-gray/30 uppercase tracking-widest mt-1">Followers</p>
                             </div>
-                            <div className="bg-bg-light/50 border border-bg-light rounded-2xl px-6 py-4 shadow-sm">
-                                <p className="text-2xl font-black tracking-tight text-primary-black">{products.length}</p>
-                                <p className="text-[10px] font-black text-primary-dark-gray/30 uppercase tracking-widest">Active Drops</p>
+                            <div className="bg-bg-light/30 border border-bg-light rounded-xl px-4 py-3 min-w-[100px]">
+                                <p className="text-lg font-black tracking-tight text-primary-black leading-none">{products.length}</p>
+                                <p className="text-[8px] font-black text-primary-dark-gray/30 uppercase tracking-widest mt-1">Active Drops</p>
                             </div>
                         </div>
 
-                        <div className="flex gap-4 mb-10">
-                            {socialLinks.twitter && <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="p-4 bg-primary-black text-primary-white rounded-2xl hover:bg-accent-crypto hover:scale-105 transition-all"><FaTwitter /></a>}
-                            {socialLinks.instagram && <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="p-4 bg-primary-black text-primary-white rounded-2xl hover:bg-accent-anime hover:scale-105 transition-all"><FaInstagram /></a>}
-                            {socialLinks.website && <a href={socialLinks.website} target="_blank" rel="noopener noreferrer" className="p-4 bg-primary-black text-primary-white rounded-2xl hover:bg-accent-crypto hover:scale-105 transition-all"><FaGlobe /></a>}
+                        <div className="flex gap-3 mb-6">
+                            {socialLinks.twitter && <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="w-9 h-9 flex items-center justify-center bg-primary-black text-primary-white rounded-lg hover:bg-accent-crypto hover:scale-105 transition-all"><FaTwitter size={14} /></a>}
+                            {socialLinks.instagram && <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="w-9 h-9 flex items-center justify-center bg-primary-black text-primary-white rounded-lg hover:bg-accent-anime hover:scale-105 transition-all"><FaInstagram size={14} /></a>}
+                            {socialLinks.website && <a href={socialLinks.website} target="_blank" rel="noopener noreferrer" className="w-9 h-9 flex items-center justify-center bg-primary-black text-primary-white rounded-lg hover:bg-accent-crypto hover:scale-105 transition-all"><FaGlobe size={14} /></a>}
                         </div>
 
                         <button
                             onClick={toggleFollow}
                             disabled={followLoading}
-                            className={`w-full font-black py-4 rounded-full uppercase tracking-widest transition-all mb-12 flex items-center justify-center gap-2 shadow-lg ${isFollowing
-                                ? 'bg-bg-light text-primary-black border-2 border-primary-black hover:bg-red-50 hover:text-red-500 hover:border-red-500'
-                                : 'bg-accent-crypto text-primary-white hover:brightness-110 shadow-accent-crypto/20'
+                            className={`w-full font-black py-3 rounded-lg uppercase tracking-widest transition-all mb-8 flex items-center justify-center gap-2 text-[10px] shadow-lg ${isFollowing
+                                ? 'bg-bg-light text-primary-black border border-primary-black'
+                                : 'bg-primary-black text-primary-white hover:bg-accent-crypto'
                                 }`}
                         >
-                            {followLoading ? <FaSpinner className="animate-spin" /> : (isFollowing ? <><FaCheck /> FOLLOWING</> : <><FaPlus /> FOLLOW CREATOR</>)}
+                            {followLoading ? <FaSpinner className="animate-spin" /> : (isFollowing ? <><FaCheck size={10} /> FOLLOWING</> : <><FaPlus size={10} /> FOLLOW CREATOR</>)}
                         </button>
 
-                        <div className="space-y-6">
-                            <h4 className="font-black text-xs uppercase tracking-widest text-primary-dark-gray/30 border-b border-bg-light pb-2">Verified Status</h4>
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-accent-warning text-primary-black rounded-xl shadow-sm">
-                                    <FaTrophy size={18} />
+                        <div className="space-y-4">
+                            <h4 className="font-black text-[9px] uppercase tracking-widest text-primary-dark-gray/30 border-b border-bg-light pb-1.5">Verification Data</h4>
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 flex items-center justify-center bg-accent-warning/10 text-accent-warning rounded-lg">
+                                    <FaTrophy size={14} />
                                 </div>
                                 <div>
-                                    <p className="font-black text-sm uppercase text-primary-black">Verified Seller</p>
-                                    <p className="text-xs text-primary-dark-gray/40">Identity Confirmed</p>
+                                    <p className="font-black text-[10px] uppercase text-primary-black leading-none">Verified Seller</p>
+                                    <p className="text-[8px] text-primary-dark-gray/40 font-bold uppercase mt-1">Identity Confirmed</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-accent-crypto text-primary-white rounded-xl shadow-sm">
-                                    <FaCalendarAlt size={18} />
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 flex items-center justify-center bg-accent-crypto/10 text-accent-crypto rounded-lg">
+                                    <FaCalendarAlt size={14} />
                                 </div>
                                 <div>
-                                    <p className="font-black text-sm uppercase text-primary-black">Joined</p>
-                                    <p className="text-xs text-primary-dark-gray/40">{new Date(creator.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
+                                    <p className="font-black text-[10px] uppercase text-primary-black leading-none">Joined</p>
+                                    <p className="text-[8px] text-primary-dark-gray/40 font-bold uppercase mt-1">{new Date(creator.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
                                 </div>
                             </div>
                         </div>
@@ -152,14 +153,17 @@ const Creator: React.FC = () => {
 
                     {/* Creator Collection */}
                     <div className="md:w-2/3 animate-fadeIn">
-                        <h2 className="text-3xl font-black mb-10 tracking-tighter uppercase text-primary-black border-b border-bg-light pb-4">Current Collection</h2>
+                        <div className="flex justify-between items-center mb-6 border-b border-bg-light pb-3">
+                            <h2 className="text-xl font-black tracking-tighter uppercase text-primary-black">Collection</h2>
+                            <p className="text-[10px] font-black text-primary-dark-gray/30 uppercase tracking-[0.2em]">{products.length} PRODUCTS FOUND</p>
+                        </div>
                         {products.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 {products.map(p => <ProductCard key={p.id} product={p} />)}
                             </div>
                         ) : (
-                            <div className="text-center py-20 border-2 border-dashed border-bg-light rounded-[40px]">
-                                <p className="font-black uppercase tracking-widest text-primary-dark-gray/40 text-xs">No active drops available</p>
+                            <div className="text-center py-16 border-2 border-dashed border-bg-light rounded-3xl">
+                                <p className="font-black uppercase tracking-widest text-primary-dark-gray/40 text-[9px]">No active drops available</p>
                             </div>
                         )}
                     </div>

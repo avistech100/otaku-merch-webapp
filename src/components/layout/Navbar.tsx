@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaBars, FaTimes, FaSearch, FaUser, FaSignOutAlt, FaBell } from 'react-icons/fa';
 import { useCartStore } from '../../store/useCartStore';
 import { supabase } from '../../lib/supabase';
@@ -9,6 +9,7 @@ import AuthModal from '../auth/AuthModal';
 
 const Navbar: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [notifications, setNotifications] = useState<any[]>([]);
     const { user, signOut } = useAuth();
@@ -233,6 +234,22 @@ const Navbar: React.FC = () => {
             {/* Mobile Menu Overlay */}
             {isMenuOpen && (
                 <div className="md:hidden absolute top-full left-0 w-full bg-primary-white border-b border-bg-light p-6 flex flex-col gap-6 shadow-xl animate-fadeIn z-50">
+                    <div className="relative w-full">
+                        <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-dark-gray/50" size={16} />
+                        <input
+                            type="text"
+                            placeholder="Search merch..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full h-12 pl-10 pr-4 rounded-xl border-2 border-bg-light focus:outline-none focus:border-primary-black transition-all text-sm font-bold text-primary-black"
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    navigate(`/products?search=${searchTerm}`);
+                                    setIsMenuOpen(false);
+                                }
+                            }}
+                        />
+                    </div>
                     <Link to="/products" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-primary-black">SHOP ALL</Link>
                     <Link to="/products?category=Crypto Brands" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-primary-black">CRYPTO BRANDS</Link>
                     <Link to="/products?category=Anime Series" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold text-primary-black">ANIME SERIES</Link>

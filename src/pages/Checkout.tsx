@@ -157,19 +157,19 @@ const Checkout: React.FC = () => {
     };
 
     const renderStepIndicator = () => (
-        <div className="flex items-center justify-between max-w-xl mx-auto mb-16 relative">
-            <div className="absolute top-1/2 left-0 w-full h-1 bg-bg-light -translate-y-1/2 -z-10"></div>
+        <div className="flex items-center justify-between max-w-md mx-auto mb-12 relative">
+            <div className="absolute top-1/2 left-0 w-full h-0.5 bg-bg-light -translate-y-1/2 -z-10"></div>
             {[1, 2, 3].map((s) => (
                 <div
                     key={s}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-black transition-all duration-300 z-10
-            ${step >= s ? 'bg-accent-anime text-primary-white scale-110 shadow-lg shadow-accent-anime/40' : 'bg-primary-white border-2 border-bg-light text-primary-dark-gray/30'}`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs transition-all duration-300 z-10
+            ${step >= s ? 'bg-accent-anime text-primary-white scale-110 shadow-lg shadow-accent-anime/20' : 'bg-primary-white border border-bg-light text-primary-dark-gray/30'}`}
                 >
-                    {step > s ? <FaCheck size={14} /> : s}
+                    {step > s ? <FaCheck size={10} /> : s}
                 </div>
             ))}
             <div
-                className="absolute top-1/2 left-0 h-1 bg-accent-anime -translate-y-1/2 -z-10 transition-all duration-500"
+                className="absolute top-1/2 left-0 h-0.5 bg-accent-anime -translate-y-1/2 -z-10 transition-all duration-500"
                 style={{ width: `${((Math.min(step, 3) - 1) / 2) * 100}%` }}
             ></div>
         </div>
@@ -191,41 +191,41 @@ const Checkout: React.FC = () => {
     return (
         <div className="layout-container py-12 animate-fadeIn">
             <div className="max-w-4xl mx-auto">
-                <h1 className="text-5xl font-black mb-4 tracking-tighter uppercase text-center text-primary-black">Checkout</h1>
-                <p className="text-primary-dark-gray/60 text-center font-medium mb-12 uppercase tracking-[0.3em] text-xs">Secure Payment & Shipping</p>
+                <h1 className="text-3xl font-black mb-1 tracking-tighter uppercase text-center text-primary-black">Secure Checkout</h1>
+                <p className="text-primary-dark-gray/60 text-center font-bold mb-10 uppercase tracking-[0.2em] text-[10px]">Transmission Secure • Payload Verified</p>
 
                 {renderStepIndicator()}
 
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
                     <div className="lg:col-span-3">
                         {step === 1 && (
                             <div className="space-y-8 animate-fadeIn">
-                                <h2 className="text-3xl font-black tracking-tighter uppercase flex items-center gap-3 text-primary-black">
-                                    <FaShippingFast size={24} className="text-accent-crypto" /> Shipping Info
+                                <h2 className="text-xl font-black tracking-tighter uppercase flex items-center gap-2 text-primary-black">
+                                    <FaShippingFast size={18} className="text-accent-crypto" /> Shipping Info
                                 </h2>
 
                                 {/* Saved Addresses Selection */}
                                 {userAddresses.length > 0 && (
-                                    <div className="mb-8">
-                                        <h4 className="text-xs font-black uppercase tracking-widest text-primary-dark-gray/40 mb-4">Saved Locations</h4>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="mb-6">
+                                        <h4 className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-3">Saved Locations</h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                             {userAddresses.map(addr => (
                                                 <button
                                                     key={addr.id}
                                                     onClick={() => selectAddress(addr)}
-                                                    className={`p-4 rounded-2xl border-2 text-left transition-all relative ${selectedAddressId === addr.id
+                                                    className={`p-3 rounded-xl border-2 text-left transition-all relative ${selectedAddressId === addr.id
                                                         ? 'border-accent-anime bg-accent-anime/5'
                                                         : 'border-bg-light hover:border-primary-black'
                                                         }`}
                                                 >
                                                     {selectedAddressId === addr.id && (
-                                                        <div className="absolute top-4 right-4 text-accent-anime">
-                                                            <FaCheck />
+                                                        <div className="absolute top-3 right-3 text-accent-anime">
+                                                            <FaCheck size={10} />
                                                         </div>
                                                     )}
-                                                    <p className="font-black text-sm uppercase text-primary-black">{addr.full_name}</p>
-                                                    <p className="text-xs text-primary-dark-gray/60 mt-1">{addr.address_line1}</p>
-                                                    <p className="text-[10px] font-bold text-primary-dark-gray/40 uppercase mt-2">{addr.city}, {addr.state}</p>
+                                                    <p className="font-black text-xs uppercase text-primary-black">{addr.full_name}</p>
+                                                    <p className="text-[10px] text-primary-dark-gray/60 mt-0.5 line-clamp-1">{addr.address_line1}</p>
+                                                    <p className="text-[9px] font-bold text-primary-dark-gray/30 uppercase mt-2">{addr.city}, {addr.state}</p>
                                                 </button>
                                             ))}
                                             <button
@@ -237,31 +237,31 @@ const Checkout: React.FC = () => {
                                                         city: '', state: '', postal_code: '', country: 'Nigeria'
                                                     });
                                                 }}
-                                                className={`p-4 rounded-2xl border-2 border-dashed border-bg-light hover:border-accent-crypto hover:bg-accent-crypto/5 transition-all flex flex-col items-center justify-center gap-2 text-primary-dark-gray/40 hover:text-accent-crypto ${!selectedAddressId ? 'border-accent-crypto bg-accent-crypto/5 text-accent-crypto' : ''}`}
+                                                className={`p-3 rounded-xl border border-dashed border-bg-light hover:border-accent-crypto hover:bg-accent-crypto/5 transition-all flex flex-col items-center justify-center gap-1.5 text-primary-dark-gray/40 hover:text-accent-crypto ${!selectedAddressId ? 'border-accent-crypto bg-accent-crypto/5 text-accent-crypto' : ''}`}
                                             >
-                                                <FaPlus />
-                                                <span className="font-black text-[10px] uppercase tracking-widest">New Address</span>
+                                                <FaPlus size={12} />
+                                                <span className="font-black text-[9px] uppercase tracking-widest">New Address</span>
                                             </button>
                                         </div>
                                     </div>
                                 )}
 
-                                <div className="space-y-4">
-                                    <h4 className="text-xs font-black uppercase tracking-widest text-primary-dark-gray/40 mb-2">Contact & Destination</h4>
-                                    <input type="email" name="email" placeholder="Email Address" value={shippingInfo.email} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <input type="text" name="full_name" placeholder="Full Name" value={shippingInfo.full_name} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                        <input type="text" name="phone" placeholder="Phone Number" value={shippingInfo.phone} onChange={handleInputChange} className="input-text w-full font-bold" />
+                                <div className="space-y-3">
+                                    <h4 className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-1">Contact & Destination</h4>
+                                    <input type="email" name="email" placeholder="Email Address" value={shippingInfo.email} onChange={handleInputChange} className="w-full h-11 px-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs" />
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <input type="text" name="full_name" placeholder="Full Name" value={shippingInfo.full_name} onChange={handleInputChange} className="w-full h-11 px-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs" />
+                                        <input type="text" name="phone" placeholder="Phone" value={shippingInfo.phone} onChange={handleInputChange} className="w-full h-11 px-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs" />
                                     </div>
-                                    <input type="text" name="address_line1" placeholder="Street Address" value={shippingInfo.address_line1} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                    <input type="text" name="address_line2" placeholder="Apartment, Suite, etc. (Optional)" value={shippingInfo.address_line2} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <input type="text" name="city" placeholder="City" value={shippingInfo.city} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                        <input type="text" name="state" placeholder="State / Province" value={shippingInfo.state} onChange={handleInputChange} className="input-text w-full font-bold" />
+                                    <input type="text" name="address_line1" placeholder="Street Address" value={shippingInfo.address_line1} onChange={handleInputChange} className="w-full h-11 px-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs" />
+                                    <input type="text" name="address_line2" placeholder="Apartment (Optional)" value={shippingInfo.address_line2} onChange={handleInputChange} className="w-full h-11 px-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs" />
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <input type="text" name="city" placeholder="City" value={shippingInfo.city} onChange={handleInputChange} className="w-full h-11 px-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs" />
+                                        <input type="text" name="state" placeholder="State" value={shippingInfo.state} onChange={handleInputChange} className="w-full h-11 px-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs" />
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <input type="text" name="postal_code" placeholder="Postal Code" value={shippingInfo.postal_code} onChange={handleInputChange} className="input-text w-full font-bold" />
-                                        <select name="country" value={shippingInfo.country} onChange={handleInputChange} className="input-select w-full font-bold">
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <input type="text" name="postal_code" placeholder="Zip Code" value={shippingInfo.postal_code} onChange={handleInputChange} className="w-full h-11 px-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs" />
+                                        <select name="country" value={shippingInfo.country} onChange={handleInputChange} className="w-full h-11 px-4 rounded-xl bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs appearance-none cursor-pointer">
                                             <option value="Nigeria">Nigeria</option>
                                             <option value="USA">USA</option>
                                             <option value="UK">UK</option>
@@ -272,95 +272,95 @@ const Checkout: React.FC = () => {
 
                                 <button
                                     onClick={() => setStep(2)}
-                                    className="w-full btn-primary py-5 rounded-full uppercase tracking-widest shadow-xl shadow-black/10"
+                                    className="w-full bg-primary-black text-primary-white py-4 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-accent-anime transition-all shadow-lg"
                                     disabled={!shippingInfo.email || !shippingInfo.address_line1 || !shippingInfo.full_name || !shippingInfo.city}
                                 >
-                                    Continue to Payment
+                                    PROCEED TO PAYMENT
                                 </button>
                             </div>
                         )}
 
                         {step === 2 && (
                             <div className="space-y-8 animate-fadeIn">
-                                <h2 className="text-3xl font-black tracking-tighter uppercase flex items-center gap-3 text-primary-black">
-                                    <FaCreditCard size={24} className="text-accent-anime" /> Payment Method
+                                <h2 className="text-xl font-black tracking-tighter uppercase flex items-center gap-2 text-primary-black">
+                                    <FaCreditCard size={18} className="text-accent-anime" /> Payment Method
                                 </h2>
-                                <div className="grid grid-cols-1 gap-4 mb-8">
-                                    <div className="border-2 border-accent-anime rounded-3xl p-6 bg-accent-anime/5 cursor-pointer">
-                                        <div className="flex justify-between items-center mb-1">
-                                            <p className="font-black text-primary-black">Paystack</p>
-                                            <FaCheck className="text-accent-anime" />
+                                <div className="grid grid-cols-1 gap-3 mb-6">
+                                    <div className="border border-accent-anime rounded-2xl p-4 bg-accent-anime/5 cursor-pointer">
+                                        <div className="flex justify-between items-center mb-0.5">
+                                            <p className="font-black text-sm text-primary-black">PAYSTACK SECURE</p>
+                                            <FaCheck size={10} className="text-accent-anime" />
                                         </div>
-                                        <p className="text-xs text-primary-dark-gray/60 font-bold">Secure Cards, Bank Transfer, USSD</p>
+                                        <p className="text-[10px] text-primary-dark-gray/60 font-bold uppercase tracking-widest">Cards, Bank, USSD</p>
                                     </div>
                                 </div>
-                                <div className="flex gap-4">
-                                    <button onClick={() => setStep(1)} className="flex-1 btn-secondary py-5 rounded-full uppercase tracking-widest">Back</button>
-                                    <button onClick={() => setStep(3)} className="flex-1 btn-primary py-5 rounded-full uppercase tracking-widest shadow-xl shadow-black/10">Review Order</button>
+                                <div className="flex gap-3">
+                                    <button onClick={() => setStep(1)} className="flex-1 bg-bg-light text-primary-black py-4 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-bg-dark transition-all">Back</button>
+                                    <button onClick={() => setStep(3)} className="flex-1 bg-primary-black text-primary-white py-4 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-accent-anime transition-all shadow-lg">Review Order</button>
                                 </div>
                             </div>
                         )}
 
                         {step === 3 && (
                             <div className="space-y-8 animate-fadeIn">
-                                <h2 className="text-3xl font-black tracking-tighter uppercase text-primary-black">Review & Confirm</h2>
-                                <div className="bg-bg-light/50 rounded-[32px] p-8 space-y-6 border border-bg-light">
+                                <h2 className="text-xl font-black tracking-tighter uppercase text-primary-black">Review & Confirm</h2>
+                                <div className="bg-bg-light/30 rounded-2xl p-6 space-y-4 border border-bg-light">
                                     <div>
-                                        <h4 className="text-[10px] font-black uppercase text-primary-dark-gray/40 tracking-widest mb-2">Shipping to</h4>
-                                        <p className="font-bold text-primary-black">{shippingInfo.full_name}</p>
-                                        <p className="text-sm text-primary-dark-gray/60">{shippingInfo.address_line1} {shippingInfo.address_line2}, {shippingInfo.city}, {shippingInfo.state} {shippingInfo.postal_code}</p>
-                                        <p className="text-sm text-primary-dark-gray/60">{shippingInfo.country} • {shippingInfo.phone}</p>
+                                        <h4 className="text-[9px] font-black uppercase text-primary-dark-gray/40 tracking-widest mb-1.5">Shipping to</h4>
+                                        <p className="font-bold text-xs text-primary-black uppercase">{shippingInfo.full_name}</p>
+                                        <p className="text-[10px] font-medium text-primary-dark-gray/60 leading-relaxed">{shippingInfo.address_line1} {shippingInfo.address_line2}, {shippingInfo.city}, {shippingInfo.state} {shippingInfo.postal_code}</p>
+                                        <p className="text-[10px] font-medium text-primary-dark-gray/60">{shippingInfo.country} • {shippingInfo.phone}</p>
                                     </div>
                                     <div>
-                                        <h4 className="text-[10px] font-black uppercase text-primary-dark-gray/40 tracking-widest mb-2">Payment</h4>
-                                        <p className="font-bold text-primary-black">Secure Payment via Paystack</p>
+                                        <h4 className="text-[9px] font-black uppercase text-primary-dark-gray/40 tracking-widest mb-1.5">Payment Method</h4>
+                                        <p className="font-bold text-xs text-primary-black uppercase">Paystack Secure Gateway</p>
                                     </div>
                                 </div>
                                 <button
                                     onClick={initiatePayment}
                                     disabled={loading}
-                                    className="w-full bg-accent-anime text-primary-white py-6 rounded-full font-black text-xl uppercase tracking-[0.2em] hover:brightness-110 shadow-xl shadow-accent-anime/20 transition-all flex items-center justify-center gap-3"
+                                    className="w-full bg-accent-anime text-primary-white py-5 rounded-xl font-black text-sm uppercase tracking-[0.2em] hover:brightness-110 shadow-lg shadow-accent-anime/20 transition-all flex items-center justify-center gap-2"
                                 >
-                                    {loading ? <FaSpinner className="animate-spin" /> : 'Pay Now'}
+                                    {loading ? <FaSpinner className="animate-spin" /> : 'SECURE CHECKOUT'}
                                 </button>
-                                <button onClick={() => setStep(2)} className="w-full text-primary-dark-gray/40 font-black uppercase tracking-widest text-xs hover:text-primary-black transition-all">Back to payment</button>
+                                <button onClick={() => setStep(2)} className="w-full text-primary-dark-gray/40 font-black uppercase tracking-widest text-[9px] hover:text-primary-black transition-all">Edit Payment</button>
                             </div>
                         )}
                     </div>
 
                     <div className="lg:col-span-2">
-                        <div className="bg-primary-white border border-bg-light rounded-[40px] p-8 shadow-2xl shadow-black/5 animate-slideUp">
-                            <h3 className="text-xl font-black mb-6 tracking-tight uppercase text-primary-black border-b border-bg-light pb-4">Order Summary</h3>
-                            <div className="space-y-4 mb-6">
+                        <div className="bg-primary-white border border-bg-light rounded-3xl p-6 shadow-xl shadow-black/5 animate-slideUp sticky top-24">
+                            <h3 className="text-sm font-black mb-4 tracking-tight uppercase text-primary-black border-b border-bg-light pb-2">Payload Summary</h3>
+                            <div className="space-y-3 mb-4">
                                 {items.map(item => (
-                                    <div key={`${item.id}-${item.selectedSize}`} className="flex gap-4 items-center">
-                                        <div className="w-12 h-15 bg-bg-light rounded-lg shrink-0 overflow-hidden shadow-sm">
+                                    <div key={`${item.id}-${item.selectedSize}`} className="flex gap-3 items-center">
+                                        <div className="w-10 h-12 bg-bg-light rounded-lg shrink-0 overflow-hidden shadow-sm border border-bg-light">
                                             <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="font-bold text-sm truncate uppercase text-primary-black">{item.title}</p>
-                                            <p className="text-[10px] text-primary-dark-gray/40 font-black uppercase tracking-widest">Size: {item.selectedSize} | Qty: {item.quantity}</p>
+                                            <p className="font-bold text-[10px] truncate uppercase text-primary-black">{item.title}</p>
+                                            <p className="text-[8px] text-primary-dark-gray/40 font-black uppercase tracking-widest">SIZE: {item.selectedSize} | QTY: {item.quantity}</p>
                                         </div>
-                                        <p className="font-black text-primary-black tracking-tight">${(item.price * item.quantity).toFixed(2)}</p>
+                                        <p className="font-black text-xs text-primary-black tracking-tight">${(item.price * item.quantity).toFixed(2)}</p>
                                     </div>
                                 ))}
                             </div>
-                            <div className="pt-6 border-t border-bg-light space-y-3">
-                                <div className="flex justify-between font-bold text-sm">
-                                    <span className="text-primary-dark-gray/40 tracking-widest uppercase">Subtotal</span>
+                            <div className="pt-4 border-t border-bg-light space-y-2">
+                                <div className="flex justify-between font-bold text-xs">
+                                    <span className="text-primary-dark-gray/40 tracking-widest uppercase text-[9px]">Subtotal</span>
                                     <span className="text-primary-black">${subtotal.toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between font-bold text-sm">
-                                    <span className="text-primary-dark-gray/40 tracking-widest uppercase">Shipping</span>
+                                <div className="flex justify-between font-bold text-xs">
+                                    <span className="text-primary-dark-gray/40 tracking-widest uppercase text-[9px]">Shipping</span>
                                     <span className="text-primary-black">$15.00</span>
                                 </div>
-                                <div className="flex justify-between items-center pt-4 font-black text-2xl tracking-tighter border-t border-bg-light mt-4 text-primary-black">
-                                    <span>TOTAL</span>
-                                    <span className="text-3xl">${(subtotal + 15).toFixed(2)}</span>
+                                <div className="flex justify-between items-center pt-3 border-t border-bg-light mt-3 text-primary-black">
+                                    <span className="font-black text-xs uppercase">Total</span>
+                                    <span className="font-black text-xl tracking-tighter">${(subtotal + 15).toFixed(2)}</span>
                                 </div>
                             </div>
-                            <div className="mt-8 flex items-center justify-center gap-2 text-primary-dark-gray/20 font-black text-[10px] uppercase tracking-widest">
-                                <FaLock /> SSL Secure Transaction
+                            <div className="mt-6 flex items-center justify-center gap-1.5 text-primary-dark-gray/20 font-black text-[8px] uppercase tracking-widest">
+                                <FaLock size={8} /> SSL SECURE TRANSACTION
                             </div>
                         </div>
                     </div>

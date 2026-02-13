@@ -123,32 +123,32 @@ const Products: React.FC = () => {
 
     return (
         <div className="layout-container py-12 animate-fadeIn">
-            <div className="flex flex-col gap-8 mb-12">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div className="flex flex-col gap-6 mb-8">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                     <div>
-                        <h1 className="text-5xl font-black mb-2 tracking-tighter uppercase text-primary-black">
-                            {searchParam ? `Results for "${searchParam}"` : selectedCategory === 'All' ? 'All Products' : selectedCategory}
+                        <h1 className="text-3xl font-black mb-1 tracking-tighter uppercase text-primary-black">
+                            {searchParam ? `Results: "${searchParam}"` : selectedCategory === 'All' ? 'All Products' : selectedCategory}
                         </h1>
-                        <p className="text-primary-dark-gray/60 font-medium">Showing {filteredProducts.length} items</p>
+                        <p className="text-primary-dark-gray/60 font-bold text-xs uppercase tracking-widest">{filteredProducts.length} items found</p>
                     </div>
 
                     {/* Filters & Sorting */}
-                    <div className="flex flex-wrap gap-4 w-full md:w-auto items-center">
+                    <div className="flex flex-wrap gap-3 w-full md:w-auto items-center">
                         {/* Price Range */}
-                        <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-gray-200">
-                            <span className="text-xs font-bold text-gray-500">Price:</span>
+                        <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-bg-light shadow-sm">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/60">Price</span>
                             <input
                                 type="number"
                                 value={priceRange[0]}
                                 onChange={e => setPriceRange([Number(e.target.value), priceRange[1]])}
-                                className="w-16 text-sm font-bold outline-none border-b border-gray-200 focus:border-black"
+                                className="w-12 text-xs font-bold outline-none border-b border-gray-200 focus:border-black text-center"
                             />
-                            <span className="text-gray-400">-</span>
+                            <span className="text-gray-300">-</span>
                             <input
                                 type="number"
                                 value={priceRange[1]}
                                 onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])}
-                                className="w-16 text-sm font-bold outline-none border-b border-gray-200 focus:border-black"
+                                className="w-12 text-xs font-bold outline-none border-b border-gray-200 focus:border-black text-center"
                             />
                         </div>
 
@@ -156,27 +156,27 @@ const Products: React.FC = () => {
                             <select
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="input-select pr-12 w-full cursor-pointer font-bold focus:ring-2 focus:ring-accent-crypto text-primary-black min-w-[140px]"
+                                className="appearance-none bg-white border border-bg-light pl-4 pr-10 py-2 rounded-xl text-xs font-black uppercase tracking-widest focus:outline-none focus:border-accent-crypto cursor-pointer min-w-[140px]"
                             >
                                 <option value="All">All Categories</option>
                                 {categories.map(cat => (
                                     <option key={cat.id} value={cat.name}>{cat.name}</option>
                                 ))}
                             </select>
-                            <FaChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-primary-dark-gray/30" size={12} />
+                            <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-primary-dark-gray/30" size={10} />
                         </div>
 
                         <div className="relative group flex-1 md:flex-none">
                             <select
                                 value={selectedSort}
                                 onChange={(e) => setSelectedSort(e.target.value)}
-                                className="input-select pr-12 w-full cursor-pointer font-bold focus:ring-2 focus:ring-accent-anime text-primary-black min-w-[160px]"
+                                className="appearance-none bg-white border border-bg-light pl-4 pr-10 py-2 rounded-xl text-xs font-black uppercase tracking-widest focus:outline-none focus:border-accent-anime cursor-pointer min-w-[160px]"
                             >
                                 <option>Newest</option>
                                 <option>Price: Low to High</option>
                                 <option>Price: High to Low</option>
                             </select>
-                            <FaChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-primary-dark-gray/30" size={12} />
+                            <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-primary-dark-gray/30" size={10} />
                         </div>
                     </div>
                 </div>

@@ -26,111 +26,111 @@ const Cart: React.FC = () => {
 
     return (
         <div className="layout-container py-12 animate-fadeIn">
-            <h1 className="text-5xl font-black mb-12 tracking-tighter uppercase text-primary-black">Shopping Cart</h1>
+            <h1 className="text-3xl font-black mb-8 tracking-tighter uppercase text-primary-black">Shopping Cart</h1>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Cart Items List */}
-                <div className="lg:col-span-2 space-y-8">
+                <div className="lg:col-span-2 space-y-4">
                     {items.map((item) => (
-                        <div key={`${item.id}-${item.selectedSize}`} className="flex flex-col sm:flex-row gap-6 pb-8 border-b border-bg-light last:border-0 animate-slideUp">
-                            <div className="w-full sm:w-40 aspect-[4/5] bg-bg-light rounded-2xl overflow-hidden shrink-0 shadow-sm">
+                        <div key={`${item.id}-${item.selectedSize}`} className="flex flex-col sm:flex-row gap-4 pb-4 border-b border-bg-light last:border-0 animate-slideUp">
+                            <div className="w-full sm:w-24 aspect-[4/5] bg-bg-light rounded-xl overflow-hidden shrink-0 shadow-sm border border-bg-light">
                                 <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                             </div>
 
-                            <div className="flex-1 flex flex-col justify-between py-2">
+                            <div className="flex-1 flex flex-col justify-between py-1">
                                 <div>
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 className="text-2xl font-black tracking-tight leading-tight uppercase text-primary-black">{item.title}</h3>
-                                        <p className="font-black text-2xl text-primary-black">${(item.price * item.quantity).toFixed(2)}</p>
+                                    <div className="flex justify-between items-start mb-1">
+                                        <h3 className="text-sm font-black tracking-tight uppercase text-primary-black leading-tight line-clamp-2 pr-4">{item.title}</h3>
+                                        <p className="font-black text-sm text-primary-black">${(item.price * item.quantity).toFixed(2)}</p>
                                     </div>
-                                    <p className="text-primary-dark-gray/40 font-bold text-sm uppercase mb-4 tracking-widest">
+                                    <p className="text-primary-dark-gray/40 font-bold text-[10px] uppercase mb-2 tracking-widest">
                                         Size: <span className="text-primary-black ml-1">{item.selectedSize}</span>
                                     </p>
                                 </div>
 
-                                <div className="flex justify-between items-center mt-6">
-                                    <div className="flex items-center border border-bg-light rounded-full px-3 py-1 gap-4 text-primary-black font-bold">
+                                <div className="flex justify-between items-center mt-2">
+                                    <div className="flex items-center border border-bg-light rounded-lg px-2 py-1 gap-3 text-primary-black font-bold h-8">
                                         <button
                                             onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1)}
-                                            className="text-primary-dark-gray/30 hover:text-accent-anime transition-all p-1"
+                                            className="text-primary-dark-gray/30 hover:text-accent-anime transition-all p-0.5"
                                         >
-                                            <FaMinus size={10} />
+                                            <FaMinus size={8} />
                                         </button>
-                                        <span className="font-black w-6 text-center">{item.quantity}</span>
+                                        <span className="font-black w-4 text-center text-xs">{item.quantity}</span>
                                         <button
                                             onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1)}
-                                            className="text-primary-dark-gray/30 hover:text-accent-anime transition-all p-1"
+                                            className="text-primary-dark-gray/30 hover:text-accent-anime transition-all p-0.5"
                                         >
-                                            <FaPlus size={10} />
+                                            <FaPlus size={8} />
                                         </button>
                                     </div>
                                     <button
                                         onClick={() => removeItem(item.id, item.selectedSize)}
-                                        className="flex items-center gap-2 text-primary-dark-gray/30 hover:text-accent-anime font-black transition-all text-xs uppercase tracking-widest"
+                                        className="flex items-center gap-1.5 text-primary-dark-gray/30 hover:text-red-500 font-bold transition-all text-[10px] uppercase tracking-widest"
                                     >
-                                        <FaTrash size={12} /> REMOVE
+                                        <FaTrash size={10} /> Remove
                                     </button>
                                 </div>
                             </div>
                         </div>
                     ))}
 
-                    <Link to="/products" className="inline-flex items-center gap-2 text-primary-black font-black text-sm uppercase tracking-widest hover:text-accent-anime transition-all pt-4">
-                        <FaArrowLeft size={10} /> CONTINUE SHOPPING
+                    <Link to="/products" className="inline-flex items-center gap-2 text-primary-black font-black text-[10px] uppercase tracking-widest hover:text-accent-anime transition-all pt-2">
+                        <FaArrowLeft size={8} /> Continue Shopping
                     </Link>
                 </div>
 
                 {/* Order Summary */}
-                <div className="bg-primary-white p-8 md:p-10 rounded-[40px] h-fit sticky top-32 border border-bg-light shadow-2xl shadow-black/5 animate-slideUp">
-                    <h2 className="text-3xl font-black mb-8 tracking-tighter uppercase text-primary-black">Summary</h2>
+                <div className="bg-primary-white p-6 rounded-3xl h-fit sticky top-24 border border-bg-light shadow-xl shadow-black/5 animate-slideUp">
+                    <h2 className="text-lg font-black mb-6 tracking-tighter uppercase text-primary-black">Order Summary</h2>
 
-                    <div className="space-y-4 mb-8">
-                        <div className="flex justify-between font-bold text-primary-black">
-                            <span className="text-primary-dark-gray/40 uppercase tracking-widest text-xs">Subtotal</span>
+                    <div className="space-y-3 mb-6">
+                        <div className="flex justify-between font-bold text-primary-black text-sm">
+                            <span className="text-primary-dark-gray/40 uppercase tracking-widest text-[10px]">Subtotal</span>
                             <span>${subtotal.toFixed(2)}</span>
                         </div>
-                        <div className="flex justify-between font-bold text-primary-black">
-                            <span className="text-primary-dark-gray/40 uppercase tracking-widest text-xs">Shipping</span>
+                        <div className="flex justify-between font-bold text-primary-black text-sm">
+                            <span className="text-primary-dark-gray/40 uppercase tracking-widest text-[10px]">Shipping</span>
                             <span>${shipping.toFixed(2)}</span>
                         </div>
-                        <div className="flex justify-between font-bold text-primary-black">
-                            <span className="text-primary-dark-gray/40 uppercase tracking-widest text-xs">Tax</span>
-                            <span className="italic opacity-50">At checkout</span>
+                        <div className="flex justify-between font-bold text-primary-black text-sm">
+                            <span className="text-primary-dark-gray/40 uppercase tracking-widest text-[10px]">Tax</span>
+                            <span className="italic opacity-50 text-[10px]">Calculated at checkout</span>
                         </div>
                     </div>
 
-                    <div className="py-6 border-t border-bg-light mb-8">
+                    <div className="py-4 border-t border-bg-light mb-6">
                         <div className="flex justify-between items-center text-primary-black">
-                            <span className="font-black text-xl uppercase tracking-tighter">Total</span>
-                            <span className="font-black text-3xl tracking-tighter">${total.toFixed(2)}</span>
+                            <span className="font-black text-sm uppercase tracking-tighter">Total</span>
+                            <span className="font-black text-xl tracking-tighter">${total.toFixed(2)}</span>
                         </div>
                     </div>
 
-                    <div className="mb-8">
-                        <label className="block text-xs font-black uppercase tracking-widest mb-3 text-primary-dark-gray/60">Promo Code</label>
-                        <div className="flex flex-col sm:flex-row gap-2">
+                    <div className="mb-6">
+                        <label className="block text-[10px] font-black uppercase tracking-widest mb-2 text-primary-dark-gray/60">Promo Code</label>
+                        <div className="flex gap-2">
                             <input
                                 type="text"
-                                placeholder="ENTER CODE"
-                                className="input-text flex-1 uppercase font-black text-sm min-w-0"
+                                placeholder="CODE"
+                                className="w-full h-10 px-3 rounded-lg bg-bg-light/30 border border-transparent focus:border-primary-black outline-none font-bold text-xs uppercase transition-all"
                             />
-                            <button className="bg-primary-black text-primary-white px-6 py-3 rounded-xl font-black hover:bg-primary-dark-gray transition-all whitespace-nowrap shrink-0">
-                                APPLY
+                            <button className="bg-primary-black text-primary-white px-4 h-10 rounded-lg font-black hover:bg-primary-dark-gray transition-all whitespace-nowrap text-[10px] uppercase">
+                                Apply
                             </button>
                         </div>
                     </div>
 
                     <Link
                         to="/checkout"
-                        className="block w-full bg-accent-anime text-primary-white font-black text-center py-5 rounded-full text-lg uppercase tracking-[0.2em] hover:brightness-110 shadow-xl shadow-accent-anime/20 transition-all"
+                        className="block w-full bg-accent-anime text-primary-white font-black text-center py-4 rounded-xl text-sm uppercase tracking-[0.2em] hover:brightness-110 shadow-lg shadow-accent-anime/20 transition-all"
                     >
-                        Checkout Now
+                        Checkout
                     </Link>
 
-                    <div className="mt-8 flex justify-center gap-4 opacity-20 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-700">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-4" />
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-6" />
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="Paypal" className="h-5" />
+                    <div className="mt-6 flex justify-center gap-3 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-3" />
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-5" />
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="Paypal" className="h-4" />
                     </div>
                 </div>
             </div>

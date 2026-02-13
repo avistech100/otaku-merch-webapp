@@ -60,31 +60,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </div>
 
             {/* Product Details */}
-            <div className="p-4 flex flex-col flex-grow">
-                <div className="flex justify-between items-start mb-2">
+            <div className="p-3 flex flex-col flex-grow">
+                <div className="flex justify-between items-start mb-1">
                     <div className="flex-grow min-w-0">
-                        <p className="text-[10px] font-bold text-primary-dark-gray/60 uppercase tracking-widest mb-1">
-                            {product.creatorBadge}
+                        <p className="text-[8px] font-black text-primary-dark-gray/30 uppercase tracking-[0.2em] mb-0.5">
+                            {product.creatorBadge || 'Verified Creator'}
                         </p>
-                        <h3 className="font-bold text-base group-hover:text-accent-crypto transition-all truncate pr-2 text-primary-black">
+                        <h3 className="font-normal text-xs group-hover:text-accent-crypto transition-all text-primary-black leading-tight">
                             {product.title}
                         </h3>
                     </div>
                 </div>
                 <div className="mt-auto">
-                    <p className="font-black text-lg text-primary-black">
+                    <p className="font-black text-base text-primary-black">
                         ${product.price.toFixed(2)}
                     </p>
-                    <div className="flex items-center gap-2 mt-3">
-                        <div className="w-5 h-5 bg-bg-light rounded-full overflow-hidden">
-                            <img
-                                src={product.creatorAvatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${product.creatorId}`}
-                                alt="Creator"
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <span className="text-[10px] text-primary-dark-gray/60 font-medium tracking-tight">by {product.creatorName}</span>
-                    </div>
                 </div>
             </div>
         </Link>

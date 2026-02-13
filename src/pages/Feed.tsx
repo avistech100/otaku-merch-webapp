@@ -68,36 +68,36 @@ const Feed: React.FC = () => {
 
     return (
         <div className="layout-container py-12 animate-fadeIn">
-            <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-end mb-12">
+            <div className="flex flex-col md:flex-row gap-2 justify-between items-start md:items-end mb-10">
                 <div>
-                    <h1 className="text-5xl font-black uppercase tracking-tighter text-primary-black">Vanguard Feed</h1>
-                    <p className="text-primary-dark-gray/60 font-medium uppercase tracking-[0.2em] text-xs">Intel from your followed creators</p>
+                    <h1 className="text-3xl font-black uppercase tracking-tighter text-primary-black">Vanguard Feed</h1>
+                    <p className="text-primary-dark-gray/40 font-black uppercase tracking-[0.2em] text-[10px]">Transmission intelligence from your perimeter</p>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                 {/* Sidebar: Following List */}
                 <div className="lg:col-span-1 hidden lg:block">
-                    <div className="bg-primary-white p-8 rounded-[40px] shadow-xl shadow-black/5 border border-bg-light sticky top-24">
-                        <h3 className="text-[10px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-6 border-b border-bg-light pb-4">
-                            FOLLOWING ({followedCreators.length})
+                    <div className="bg-primary-white p-6 rounded-3xl shadow-xl shadow-black/5 border border-bg-light sticky top-24">
+                        <h3 className="text-[9px] font-black uppercase tracking-widest text-primary-dark-gray/40 mb-5 border-b border-bg-light pb-3">
+                            ACTIVE FOLLOWS ({followedCreators.length})
                         </h3>
                         <div className="space-y-4">
                             {followedCreators.map(creator => (
                                 <Link key={creator.id} to={`/creator/${creator.id}`} className="flex items-center gap-3 hover:translate-x-1 transition-transform group">
-                                    <div className="w-10 h-10 rounded-full overflow-hidden bg-bg-light shadow-sm">
-                                        <img src={creator.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.id}`} alt={creator.username} />
+                                    <div className="w-9 h-9 rounded-xl overflow-hidden bg-bg-light shadow-sm border border-bg-light">
+                                        <img src={creator.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.id}`} alt={creator.username} className="w-full h-full object-cover" />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-xs font-black truncate group-hover:text-accent-anime transition-colors uppercase tracking-tight">
+                                        <p className="text-[11px] font-black truncate group-hover:text-accent-anime transition-colors uppercase tracking-tight">
                                             {creator.store_name || creator.full_name || 'Anonymous Creator'}
                                         </p>
-                                        <p className="text-[10px] font-medium text-primary-dark-gray/40">@{creator.username || 'user'}</p>
+                                        <p className="text-[9px] font-bold text-primary-dark-gray/30 uppercase">@{creator.username || 'unknown'}</p>
                                     </div>
                                 </Link>
                             ))}
                             {followedCreators.length === 0 && (
-                                <p className="text-[10px] font-bold text-primary-dark-gray/30 italic">No creators followed yet.</p>
+                                <p className="text-[9px] font-black text-primary-dark-gray/30 italic uppercase tracking-wider">No active perimeter intel.</p>
                             )}
                         </div>
                     </div>
@@ -106,7 +106,7 @@ const Feed: React.FC = () => {
                 {/* Main: Product Feed */}
                 <div className="lg:col-span-3">
                     {products.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {products.map(p => {
                                 const mappedProduct = {
                                     id: p.id,
@@ -132,17 +132,17 @@ const Feed: React.FC = () => {
                             })}
                         </div>
                     ) : (
-                        <div className="py-24 text-center bg-primary-white border-2 border-dashed border-bg-light rounded-[40px]">
-                            <FaFire className="text-6xl text-primary-dark-gray/10 mx-auto mb-6" />
-                            <h3 className="text-2xl font-black uppercase tracking-tight text-primary-black mb-4">Feed Offline</h3>
-                            <p className="font-medium text-primary-dark-gray/60 max-w-sm mx-auto mb-8">
-                                Follow creators to populate your command center with the latest drops and intelligence.
+                        <div className="py-20 text-center bg-primary-white border-2 border-dashed border-bg-light rounded-3xl p-8">
+                            <FaFire className="text-4xl text-primary-dark-gray/10 mx-auto mb-6" />
+                            <h3 className="text-xl font-black uppercase tracking-tighter text-primary-black mb-3">No Intel Available</h3>
+                            <p className="font-bold text-primary-dark-gray/40 uppercase tracking-widest text-[10px] max-w-xs mx-auto mb-8">
+                                Broaden your perimeter search to receive incoming drops.
                             </p>
                             <Link
                                 to="/products"
-                                className="px-10 py-5 bg-primary-black text-white rounded-full font-black uppercase text-xs tracking-widest hover:bg-accent-anime transition-all shadow-xl shadow-accent-anime/20"
+                                className="inline-block px-8 py-4 bg-primary-black text-white rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-accent-anime transition-all shadow-lg shadow-accent-anime/20"
                             >
-                                Discover Creators
+                                DISCOVER CREATORS
                             </Link>
                         </div>
                     )}
