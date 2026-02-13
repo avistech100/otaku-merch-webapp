@@ -12,84 +12,84 @@ const SiteSettings: React.FC = () => {
     };
 
     return (
-        <div className="space-y-10 max-w-4xl">
-            <div>
-                <h1 className="text-5xl font-black tracking-tighter text-white mb-2 uppercase">Core Configuration</h1>
-                <p className="text-white/40 font-bold tracking-widest uppercase text-xs flex items-center gap-2">
-                    <FaGlobe className="text-purple-500" /> Site-wide Parameters • Modify with Authority
+        <div className="space-y-6 max-w-3xl">
+            <div className="flex flex-col gap-1">
+                <h1 className="text-xl md:text-2xl font-black tracking-tighter text-[var(--text-primary)] uppercase">Core Configuration</h1>
+                <p className="text-[var(--text-muted)] font-bold tracking-widest uppercase text-[9px] flex items-center gap-2">
+                    <FaGlobe className="text-[var(--accent-primary)]" /> Site-wide Parameters • Modify with Authority
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-8">
+            <div className="grid grid-cols-1 gap-4">
                 {/* General Settings */}
-                <section className="bg-white/5 border border-white/5 p-10 rounded-[40px] shadow-2xl relative overflow-hidden">
-                    <div className="flex items-center gap-4 mb-10">
-                        <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-500">
-                            <FaCogs size={20} />
+                <section className="bg-[var(--bg-secondary)] border border-[var(--border)] p-5 rounded-lg shadow-sm">
+                    <div className="flex items-center gap-3 mb-5 border-b border-[var(--border)] pb-3">
+                        <div className="w-8 h-8 rounded-md bg-[var(--bg-elevated)] flex items-center justify-center text-[var(--accent-primary)]">
+                            <FaCogs size={14} />
                         </div>
-                        <h3 className="text-2xl font-black uppercase tracking-tight text-white">General Directives</h3>
+                        <h3 className="text-sm font-black uppercase tracking-tight text-[var(--text-primary)]">General Directives</h3>
                     </div>
 
-                    <div className="space-y-8">
+                    <div className="space-y-5">
                         <div>
-                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-3 ml-1">Platform Designation</label>
+                            <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1.5 ml-0.5">Platform Designation</label>
                             <input
                                 type="text"
                                 value={siteName}
                                 onChange={(e) => setSiteName(e.target.value)}
-                                className="w-full h-16 px-6 bg-white/5 border border-white/10 rounded-2xl text-white font-bold focus:border-purple-500 outline-none transition-all focus:bg-white/10"
+                                className="w-full h-10 px-3 bg-[var(--bg-primary)] border border-[var(--border)] rounded-md text-sm text-[var(--text-primary)] font-medium focus:border-[var(--accent-primary)] outline-none transition-all focus:bg-[var(--bg-elevated)]"
                             />
                         </div>
 
-                        <div className="flex items-center justify-between p-6 bg-white/5 rounded-3xl border border-white/5">
+                        <div className="flex items-center justify-between p-3 bg-[var(--bg-elevated)] rounded-md border border-[var(--border)]">
                             <div>
-                                <h4 className="font-black uppercase tracking-tight text-white mb-1">Maintenance Protocol</h4>
-                                <p className="text-xs text-white/40">Disable public access for scheduled maintenance.</p>
+                                <h4 className="font-bold uppercase tracking-tight text-[var(--text-primary)] text-xs mb-0.5">Maintenance Protocol</h4>
+                                <p className="text-[10px] text-[var(--text-muted)]">Disable public access for scheduled maintenance.</p>
                             </div>
                             <button
                                 onClick={() => setMaintenanceMode(!maintenanceMode)}
-                                className={`w-14 h-8 rounded-full transition-all relative ${maintenanceMode ? 'bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'bg-white/10'}`}
+                                className={`w-10 h-6 rounded-full transition-all relative ${maintenanceMode ? 'bg-[var(--error)] shadow-[0_0_8px_rgba(239,68,68,0.4)]' : 'bg-[var(--bg-secondary)] border border-[var(--border)]'}`}
                             >
-                                <div className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-transform ${maintenanceMode ? 'translate-x-6' : 'translate-x-0'}`} />
+                                <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${maintenanceMode ? 'translate-x-4' : 'translate-x-0'}`} />
                             </button>
                         </div>
                     </div>
                 </section>
 
                 {/* Economic Settings */}
-                <section className="bg-white/5 border border-white/5 p-10 rounded-[40px] shadow-2xl">
-                    <div className="flex items-center gap-4 mb-10">
-                        <div className="w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center text-green-500">
-                            <FaPercentage size={20} />
+                <section className="bg-[var(--bg-secondary)] border border-[var(--border)] p-5 rounded-lg shadow-sm">
+                    <div className="flex items-center gap-3 mb-5 border-b border-[var(--border)] pb-3">
+                        <div className="w-8 h-8 rounded-md bg-[var(--bg-elevated)] flex items-center justify-center text-[var(--accent-secondary)]">
+                            <FaPercentage size={14} />
                         </div>
-                        <h3 className="text-2xl font-black uppercase tracking-tight text-white">Economic Model</h3>
+                        <h3 className="text-sm font-black uppercase tracking-tight text-[var(--text-primary)]">Economic Model</h3>
                     </div>
 
-                    <div className="space-y-8">
+                    <div className="space-y-5">
                         <div>
-                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-3 ml-1">Platform Tax (%)</label>
+                            <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-1.5 ml-0.5">Platform Tax (%)</label>
                             <div className="relative">
                                 <input
                                     type="number"
                                     value={platformFee}
                                     onChange={(e) => setPlatformFee(Number(e.target.value))}
-                                    className="w-full h-16 px-6 bg-white/5 border border-white/10 rounded-2xl text-white font-black text-2xl focus:border-green-500 outline-none transition-all"
+                                    className="w-full h-10 px-3 bg-[var(--bg-primary)] border border-[var(--border)] rounded-md text-[var(--text-primary)] font-bold text-sm focus:border-[var(--accent-secondary)] outline-none transition-all"
                                 />
-                                <div className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 font-black">PERCENT</div>
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] font-black text-[9px] uppercase tracking-wider opacity-50">PERCENT</div>
                             </div>
-                            <p className="mt-3 text-[10px] text-white/20 font-bold uppercase tracking-widest flex items-center gap-2">
-                                <FaExclamationTriangle className="text-yellow-500" /> Changing this affects all future orders.
+                            <p className="mt-2 text-[9px] text-[var(--text-muted)] font-bold uppercase tracking-widest flex items-center gap-1.5 opacity-70">
+                                <FaExclamationTriangle className="text-[var(--warning)]" /> Changing this affects all future orders.
                             </p>
                         </div>
                     </div>
                 </section>
 
-                <div className="pt-6">
+                <div className="pt-2">
                     <button
                         onClick={handleSave}
-                        className="w-full h-20 bg-white text-black rounded-[28px] font-black uppercase tracking-[0.3em] text-sm hover:bg-purple-500 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-4 group"
+                        className="w-full h-10 bg-[var(--text-primary)] text-[var(--bg-primary)] rounded-md font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[var(--accent-primary)] hover:text-white transition-all shadow-lg flex items-center justify-center gap-2 group border border-transparent"
                     >
-                        <FaSave className="text-xl group-hover:scale-125 transition-transform" />
+                        <FaSave className="text-sm group-hover:scale-110 transition-transform" />
                         Execute Save Sequence
                     </button>
                 </div>

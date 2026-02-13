@@ -34,109 +34,47 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isMobileMenuOpen: _isMobile
     ];
 
     return (
-        <aside style={{
-            position: 'fixed',
-            left: 0,
-            top: 0,
-            height: '100vh',
-            width: '260px',
-            background: 'var(--bg-secondary)',
-            zIndex: 40,
-            display: 'flex',
-            flexDirection: 'column',
-            borderRight: '1px solid var(--border)'
-        }} className="hidden lg:flex">
+        <aside className="fixed left-0 top-0 h-screen w-56 bg-[var(--bg-secondary)] text-[var(--text-primary)] z-50 flex flex-col border-r border-[var(--border)] hidden lg:flex">
             {/* Admin Header */}
-            <div style={{
-                height: '72px',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 24px',
-                borderBottom: '1px solid var(--border)',
-                background: 'linear-gradient(135deg, rgba(124, 90, 237, 0.08), transparent)'
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: 'var(--radius-sm)',
-                        background: 'var(--accent-primary)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 4px 12px rgba(124, 90, 237, 0.3)'
-                    }}>
-                        <FaRocket style={{ color: 'white', fontSize: '16px' }} />
+            <div className="h-14 flex items-center px-6 border-b border-[var(--border)] bg-[var(--bg-secondary)]">
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-md bg-[var(--accent-primary)] flex items-center justify-center shadow-lg shadow-[var(--accent-primary)]/20">
+                        <FaRocket className="text-white text-xs" />
                     </div>
-                    <span style={{
-                        fontSize: '18px',
-                        fontWeight: 700,
-                        color: 'var(--text-primary)',
-                        letterSpacing: '-0.02em'
-                    }}>
-                        HQ <span style={{ color: 'var(--accent-primary)' }}>COMMAND</span>
+                    <span className="text-sm font-black tracking-tighter text-[var(--text-primary)]">
+                        HQ <span className="text-[var(--accent-primary)]">COMMAND</span>
                     </span>
                 </div>
             </div>
 
             {/* Navigation */}
-            <nav style={{
-                flex: 1,
-                overflowY: 'auto',
-                padding: '24px 16px'
-            }}>
-                <div className="admin-nav-label">Operations</div>
-                <div className="admin-nav-group">
-                    {navItems.map((item) => (
-                        <NavLink
-                            key={item.path}
-                            to={item.path}
-                            className={({ isActive }) => `admin-nav-item ${isActive ? 'active' : ''}`}
-                        >
-                            <item.icon />
-                            <span>{item.label}</span>
-                        </NavLink>
-                    ))}
-                </div>
+            <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+                <div className="px-3 py-2 text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] opacity-50">Operations</div>
+                {navItems.map((item) => (
+                    <NavLink
+                        key={item.path}
+                        to={item.path}
+                        className={({ isActive }) => `
+                            flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200 group relative
+                            ${isActive
+                                ? 'bg-[var(--bg-elevated)] text-[var(--accent-primary)] border-l-2 border-[var(--accent-primary)]'
+                                : 'hover:bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}
+                        `}
+                    >
+                        <item.icon className="text-sm transition-colors" />
+                        <span className="font-bold text-[10px] uppercase tracking-widest">{item.label}</span>
+                    </NavLink>
+                ))}
             </nav>
 
             {/* Admin Footer */}
-            <div style={{
-                padding: '16px',
-                borderTop: '1px solid var(--border)',
-                background: 'rgba(0, 0, 0, 0.2)'
-            }}>
+            <div className="p-3 border-t border-[var(--border)] bg-[var(--bg-secondary)]">
                 <button
                     onClick={handleLogout}
-                    style={{
-                        width: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '12px',
-                        padding: '12px 20px',
-                        borderRadius: 'var(--radius-sm)',
-                        background: 'rgba(255, 92, 124, 0.1)',
-                        border: '1px solid rgba(255, 92, 124, 0.2)',
-                        color: 'var(--error)',
-                        cursor: 'pointer',
-                        transition: 'all 150ms',
-                        fontSize: '12px',
-                        fontWeight: 600,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.05em'
-                    }}
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 92, 124, 0.15)';
-                        e.currentTarget.style.transform = 'scale(0.98)';
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 92, 124, 0.1)';
-                        e.currentTarget.style.transform = 'scale(1)';
-                    }}
+                    className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 hover:border-red-500/30 transition-all"
                 >
-                    <FaSignOutAlt />
-                    <span>Terminate Session</span>
+                    <FaSignOutAlt className="text-xs" />
+                    <span className="font-bold text-[9px] uppercase tracking-widest">Terminate Session</span>
                 </button>
             </div>
         </aside>

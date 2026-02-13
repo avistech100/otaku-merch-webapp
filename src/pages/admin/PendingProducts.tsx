@@ -39,62 +39,66 @@ const PendingProducts: React.FC = () => {
         }
     };
 
-    if (loading) return <div className="layout-container py-20 text-center animate-pulse font-black text-2xl uppercase">Analyzing Submissions...</div>;
+    if (loading) return <div className="p-10 text-center animate-pulse font-black text-sm text-[var(--text-muted)] uppercase tracking-widest">Analyzing Submissions...</div>;
 
     return (
-        <div className="animate-fadeIn space-y-10">
-            <div>
-                <h1 className="text-5xl font-black mb-2 tracking-tighter uppercase" style={{ color: 'var(--text-primary)' }}>Drop Quality Control</h1>
-                <p className="font-medium uppercase tracking-[0.3em] text-xs flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
-                    <FaTag className="text-accent-primary" /> Technical Review of Upcoming Drops
+        <div className="space-y-6">
+            <div className="flex flex-col gap-1">
+                <h1 className="text-xl md:text-2xl font-black tracking-tighter text-[var(--text-primary)] uppercase">Drop Quality Control</h1>
+                <p className="text-[var(--text-muted)] font-bold tracking-widest uppercase text-[9px] flex items-center gap-2">
+                    <FaTag className="text-[var(--accent-primary)]" /> Technical Review of Upcoming Drops
                 </p>
             </div>
 
             {products.length === 0 ? (
-                <div className="admin-card border-2 border-dashed border-border p-20 text-center">
-                    <p className="font-black uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>No pending drops</p>
+                <div className="border border-dashed border-[var(--border)] rounded-lg p-10 text-center bg-[var(--bg-secondary)]">
+                    <p className="font-bold uppercase tracking-widest text-[10px] text-[var(--text-muted)]">No pending drops</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 gap-8">
+                <div className="grid grid-cols-1 gap-4">
                     {products.map((product) => (
-                        <div key={product.id} className="admin-card border-0 rounded-[40px] overflow-hidden shadow-2xl flex flex-col lg:flex-row group p-0 bg-bg-secondary">
-                            <div className="lg:w-72 relative overflow-hidden bg-bg-primary">
-                                <img src={product.image_url || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=400'} alt="Product" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                                <div className="absolute top-4 left-4">
-                                    <span className="bg-primary-black/80 backdrop-blur-md text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest flex items-center gap-2">
-                                        <FaTag size={8} className="text-accent-primary" /> ${product.price}
+                        <div key={product.id} className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg overflow-hidden flex flex-col sm:flex-row group hover:border-[var(--accent-primary)] transition-all duration-200">
+                            <div className="sm:w-32 h-32 sm:h-auto relative bg-[var(--bg-elevated)] shrink-0">
+                                <img
+                                    src={product.image_url || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=400'}
+                                    alt="Product"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                                <div className="absolute bottom-2 left-2">
+                                    <span className="bg-black/70 backdrop-blur-sm text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest flex items-center gap-1">
+                                        <FaTag size={8} className="text-[var(--accent-primary)]" /> ${product.price}
                                     </span>
                                 </div>
                             </div>
 
-                            <div className="flex-1 p-10 flex flex-col justify-between">
+                            <div className="flex-1 p-4 flex flex-col justify-between gap-3">
                                 <div>
-                                    <div className="flex justify-between items-start mb-4">
+                                    <div className="flex justify-between items-start mb-1">
                                         <div>
-                                            <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-1" style={{ color: 'var(--accent-primary)' }}>by {product.profiles?.full_name || 'Verified Creator'}</p>
-                                            <h3 className="text-3xl font-black uppercase tracking-tighter" style={{ color: 'var(--text-primary)' }}>{product.title}</h3>
+                                            <p className="text-[8px] font-black uppercase tracking-widest text-[var(--accent-primary)] mb-0.5">by {product.profiles?.full_name || 'Verified Creator'}</p>
+                                            <h3 className="text-sm font-black uppercase tracking-tight text-[var(--text-primary)] leading-tight">{product.title}</h3>
                                         </div>
-                                        <button className="transition-all" style={{ color: 'var(--text-muted)' }}>
-                                            <FaExternalLinkAlt size={18} />
+                                        <button className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
+                                            <FaExternalLinkAlt size={12} />
                                         </button>
                                     </div>
-                                    <p className="font-medium line-clamp-2 mb-8 leading-relaxed italic" style={{ color: 'var(--text-secondary)' }}>
+                                    <p className="text-[10px] text-[var(--text-secondary)] line-clamp-2 leading-relaxed opacity-80">
                                         "{product.description}"
                                     </p>
                                 </div>
 
-                                <div className="flex gap-4">
+                                <div className="flex gap-2 w-full">
                                     <button
                                         onClick={() => handleApproval(product.id, true)}
-                                        className="admin-btn admin-btn-success flex-1 py-4 uppercase text-xs tracking-widest shadow-lg"
+                                        className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded bg-[var(--accent-secondary)] text-white hover:bg-[var(--accent-secondary)]/90 transition-all text-[9px] font-black uppercase tracking-widest shadow-sm"
                                     >
-                                        <FaCheck /> APPROVE DROP
+                                        <FaCheck size={10} /> APPROVE
                                     </button>
                                     <button
                                         onClick={() => handleApproval(product.id, false)}
-                                        className="admin-btn admin-btn-danger flex-1 py-4 uppercase text-xs tracking-widest shadow-lg"
+                                        className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded bg-[var(--bg-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/20 transition-all text-[9px] font-black uppercase tracking-widest"
                                     >
-                                        <FaTimes /> REJECT DROP
+                                        <FaTimes size={10} /> REJECT
                                     </button>
                                 </div>
                             </div>

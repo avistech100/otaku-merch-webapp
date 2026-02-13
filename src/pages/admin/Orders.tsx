@@ -63,7 +63,7 @@ const Orders: React.FC = () => {
         {
             header: 'Transmission ID',
             accessor: (row) => (
-                <span className="font-black text-xs text-white uppercase tracking-widest">
+                <span className="font-black text-[10px] text-[var(--text-primary)] uppercase tracking-widest font-mono">
                     #{row.id.slice(0, 8)}
                 </span>
             )
@@ -72,15 +72,15 @@ const Orders: React.FC = () => {
             header: 'Ensign (User)',
             accessor: (row) => (
                 <div className="flex flex-col">
-                    <span className="font-bold text-white text-sm">{row.profiles?.display_name || row.profiles?.username}</span>
-                    <span className="text-[10px] text-white/40 font-black uppercase tracking-widest">{row.profiles?.username}</span>
+                    <span className="font-bold text-[var(--text-primary)] text-xs">{row.profiles?.display_name || row.profiles?.username}</span>
+                    <span className="text-[9px] text-[var(--text-muted)] font-black uppercase tracking-widest opacity-70">@{row.profiles?.username}</span>
                 </div>
             )
         },
         {
             header: 'Amount',
             accessor: (row) => (
-                <span className="font-black text-purple-500">
+                <span className="font-black text-[var(--accent-secondary)] text-xs">
                     ${row.total_amount.toFixed(2)}
                 </span>
             )
@@ -88,7 +88,7 @@ const Orders: React.FC = () => {
         {
             header: 'Status',
             accessor: (row) => (
-                <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${getStatusStyle(row.status)}`}>
+                <span className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest border border-transparent ${getStatusStyle(row.status)}`}>
                     {row.status}
                 </span>
             )
@@ -96,7 +96,7 @@ const Orders: React.FC = () => {
         {
             header: 'Time',
             accessor: (row) => (
-                <span className="text-xs text-white/40 font-medium">
+                <span className="text-[10px] text-[var(--text-muted)] font-medium">
                     {new Date(row.created_at).toLocaleString()}
                 </span>
             )
@@ -106,37 +106,37 @@ const Orders: React.FC = () => {
             accessor: (row) => (
                 <button
                     onClick={() => navigate(`/admin/orders/${row.id}`)}
-                    className="p-2 hover:bg-white/5 rounded-lg transition-all text-white/20 hover:text-white"
+                    className="p-1.5 hover:bg-[var(--bg-elevated)] rounded-md transition-all text-[var(--text-muted)] hover:text-[var(--text-main)]"
                 >
-                    <FaExternalLinkAlt size={12} />
+                    <FaExternalLinkAlt size={10} />
                 </button>
             )
         }
     ];
 
     return (
-        <div className="space-y-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h1 className="text-5xl font-black tracking-tighter text-white mb-2 uppercase">Order Intelligence</h1>
-                    <p className="text-white/40 font-bold tracking-widest uppercase text-xs flex items-center gap-2">
-                        <FaShoppingBag className="text-purple-500" /> Platform Transaction Stream • Tracking Global Sales
+                    <h1 className="text-xl md:text-2xl font-black tracking-tighter text-[var(--text-primary)] mb-1 uppercase">Order Intelligence</h1>
+                    <p className="text-[var(--text-muted)] font-bold tracking-widest uppercase text-[9px] flex items-center gap-2">
+                        <FaShoppingBag className="text-[var(--accent-primary)]" /> Platform Transaction Stream
                     </p>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
                     <div className="relative group">
-                        <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-purple-500 transition-colors" />
+                        <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] group-focus-within:text-[var(--accent-primary)] transition-colors text-xs" />
                         <input
                             type="text"
                             placeholder="Find Order..."
-                            className="h-12 w-64 bg-white/5 rounded-xl pl-12 pr-6 border border-white/5 focus:border-purple-500 outline-none transition-all text-sm font-medium"
+                            className="h-9 w-48 bg-[var(--bg-secondary)] rounded-md pl-9 pr-3 border border-[var(--border)] focus:border-[var(--accent-primary)] outline-none transition-all text-xs font-medium text-[var(--text-primary)] placeholder-[var(--text-muted)]"
                         />
                     </div>
                     <select
                         value={filterStatus}
                         onChange={(e) => setFilterStatus(e.target.value)}
-                        className="h-12 bg-white/5 rounded-xl px-6 border border-white/5 focus:border-purple-500 outline-none text-xs font-black uppercase tracking-widest text-white/60 appearance-none cursor-pointer hover:bg-white/10 transition-all"
+                        className="h-9 bg-[var(--bg-secondary)] rounded-md px-3 border border-[var(--border)] focus:border-[var(--accent-primary)] outline-none text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] appearance-none cursor-pointer hover:bg-[var(--bg-elevated)] transition-all"
                     >
                         <option value="all">Global (All)</option>
                         <option value="pending">Pending</option>
@@ -149,25 +149,25 @@ const Orders: React.FC = () => {
             </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[
                     { label: 'Active Transmissions', value: orders.filter(o => ['pending', 'processing'].includes(o.status)).length, icon: FaClock, color: 'text-yellow-500' },
-                    { label: 'In Transit', value: orders.filter(o => o.status === 'shipped').length, icon: FaShippingFast, color: 'text-purple-500' },
+                    { label: 'In Transit', value: orders.filter(o => o.status === 'shipped').length, icon: FaShippingFast, color: 'text-[var(--accent-secondary)]' },
                     { label: 'Completed Orders', value: orders.filter(o => o.status === 'delivered').length, icon: FaCheckCircle, color: 'text-green-500' },
                 ].map((stat, i) => (
-                    <div key={i} className="bg-white/5 border border-white/5 p-6 rounded-[30px] flex items-center gap-6">
-                        <div className={`w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center ${stat.color}`}>
-                            <stat.icon />
+                    <div key={i} className="bg-[var(--bg-secondary)] border border-[var(--border)] p-4 rounded-lg flex items-center gap-4">
+                        <div className={`w-8 h-8 rounded-md bg-[var(--bg-elevated)] flex items-center justify-center ${stat.color}`}>
+                            <stat.icon className="text-sm" />
                         </div>
                         <div>
-                            <p className="text-[10px] font-black uppercase tracking-widest text-white/30">{stat.label}</p>
-                            <p className="text-2xl font-black text-white">{stat.value}</p>
+                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] opacity-70 mb-0.5">{stat.label}</p>
+                            <p className="text-xl font-black text-[var(--text-primary)]">{stat.value}</p>
                         </div>
                     </div>
                 ))}
             </div>
 
-            <section className="bg-white/5 border border-white/5 p-8 rounded-[40px] shadow-2xl relative overflow-hidden">
+            <section className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg shadow-sm overflow-hidden">
                 <DataTable
                     columns={columns}
                     data={orders}

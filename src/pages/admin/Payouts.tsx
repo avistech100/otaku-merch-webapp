@@ -75,13 +75,13 @@ const Payouts: React.FC = () => {
         {
             header: 'Creator',
             accessor: (row) => (
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500">
-                        <FaUser />
+                <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-md bg-[var(--bg-elevated)] flex items-center justify-center text-[var(--accent-primary)]">
+                        <FaUser size={10} />
                     </div>
                     <div className="flex flex-col">
-                        <span className="font-bold text-white text-sm">{row.profiles?.display_name || row.profiles?.username}</span>
-                        <span className="text-[10px] text-white/40 font-black uppercase tracking-widest">@{row.profiles?.username}</span>
+                        <span className="font-bold text-[var(--text-primary)] text-xs">{row.profiles?.display_name || row.profiles?.username}</span>
+                        <span className="text-[8px] text-[var(--text-muted)] font-black uppercase tracking-widest opacity-70">@{row.profiles?.username}</span>
                     </div>
                 </div>
             )
@@ -89,7 +89,7 @@ const Payouts: React.FC = () => {
         {
             header: 'Amount Requested',
             accessor: (row) => (
-                <span className="font-black text-white text-lg">
+                <span className="font-black text-[var(--text-primary)] text-sm">
                     ${row.amount.toFixed(2)}
                 </span>
             )
@@ -97,7 +97,7 @@ const Payouts: React.FC = () => {
         {
             header: 'Current Balance',
             accessor: (row) => (
-                <span className="text-xs font-bold text-white/40">
+                <span className="text-[10px] font-bold text-[var(--text-muted)] opacity-80">
                     Total: ${row.profiles?.wallet_balance?.toFixed(2) || '0.00'}
                 </span>
             )
@@ -105,9 +105,9 @@ const Payouts: React.FC = () => {
         {
             header: 'Status',
             accessor: (row) => (
-                <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${row.status === 'completed' ? 'bg-green-500/10 text-green-500' :
-                    row.status === 'rejected' ? 'bg-red-500/10 text-red-500' :
-                        'bg-yellow-500/10 text-yellow-500'
+                <span className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest border border-transparent ${row.status === 'completed' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                    row.status === 'rejected' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
+                        'bg-yellow-500/10 text-yellow-500 border-yellow-500/20'
                     }`}>
                     {row.status}
                 </span>
@@ -117,59 +117,59 @@ const Payouts: React.FC = () => {
             header: 'Actions',
             accessor: (row) => (
                 row.status === 'pending' ? (
-                    <div className="flex gap-2">
+                    <div className="flex gap-1">
                         <button
                             onClick={() => handlePayoutAction(row, true)}
-                            className="p-2 bg-white text-black rounded-lg hover:bg-purple-500 hover:text-white transition-all shadow-lg"
+                            className="p-1.5 bg-[var(--accent-primary)] text-white rounded-md hover:bg-[var(--accent-primary)]/90 transition-all shadow-sm"
                         >
-                            <FaCheck size={12} />
+                            <FaCheck size={10} />
                         </button>
                         <button
                             onClick={() => handlePayoutAction(row, false)}
-                            className="p-2 bg-white/5 text-white/40 rounded-lg hover:text-red-500 hover:border-red-500/30 border border-white/5 transition-all"
+                            className="p-1.5 bg-[var(--bg-elevated)] text-[var(--text-muted)] rounded-md hover:text-red-500 hover:bg-red-500/10 border border-[var(--border)] transition-all"
                         >
-                            <FaTimes size={12} />
+                            <FaTimes size={10} />
                         </button>
                     </div>
                 ) : (
-                    <span className="text-[10px] font-black text-white/20 uppercase">No Action Required</span>
+                    <span className="text-[8px] font-black text-[var(--text-muted)] uppercase opacity-50">No Action Required</span>
                 )
             )
         }
     ];
 
     return (
-        <div className="space-y-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div>
-                    <h1 className="text-5xl font-black tracking-tighter text-white mb-2 uppercase">Finance Hub</h1>
-                    <p className="text-white/40 font-bold tracking-widest uppercase text-xs flex items-center gap-2">
-                        <FaWallet className="text-purple-500" /> Payout Approvals • Managing Platform Liquidity
+        <div className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div className="flex flex-col gap-1">
+                    <h1 className="text-xl md:text-2xl font-black tracking-tighter text-[var(--text-primary)] uppercase">Finance Hub</h1>
+                    <p className="text-[var(--text-muted)] font-bold tracking-widest uppercase text-[9px] flex items-center gap-2">
+                        <FaWallet className="text-[var(--accent-primary)]" /> Payout Approvals • Managing Platform Liquidity
                     </p>
                 </div>
-                <div className="flex gap-4">
-                    <button className="h-14 px-8 rounded-2xl bg-white/5 border border-white/5 text-white/60 font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all flex items-center gap-3">
+                <div className="flex gap-2">
+                    <button className="h-9 px-4 rounded-md bg-[var(--bg-secondary)] border border-[var(--border)] text-[var(--text-muted)] font-black text-[10px] uppercase tracking-widest hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] transition-all flex items-center gap-2">
                         <FaHistory /> Transaction History
                     </button>
                 </div>
             </div>
 
             {/* Balances Summary */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[
                     { label: 'Pending Payouts', value: `$${payouts.filter(p => p.status === 'pending').reduce((sum, p) => sum + p.amount, 0).toFixed(2)}`, color: 'text-yellow-500' },
-                    { label: 'Authorized Today', value: '$8,450.00', color: 'text-purple-500' },
-                    { label: 'Total Platform Payouts', value: '$142,800.00', color: 'text-green-500' },
+                    { label: 'Authorized Today', value: '$8,450.00', color: 'text-[var(--accent-secondary)]' },
+                    { label: 'Total Platform Payouts', value: '$142,800.00', color: 'text-[var(--text-primary)]' },
                 ].map((stat, i) => (
-                    <div key={i} className="bg-white/5 border border-white/5 p-8 rounded-[32px] overflow-hidden relative group">
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full blur-2xl -mr-12 -mt-12 group-hover:bg-purple-500/10 transition-colors" />
-                        <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">{stat.label}</p>
-                        <p className={`text-4xl font-black ${stat.color}`}>{stat.value}</p>
+                    <div key={i} className="bg-[var(--bg-secondary)] border border-[var(--border)] p-5 rounded-lg overflow-hidden relative group hover:border-[var(--accent-primary)]/30 transition-all">
+                        <div className="absolute top-0 right-0 w-16 h-16 bg-[var(--bg-elevated)] rounded-full blur-xl -mr-8 -mt-8 group-hover:bg-[var(--accent-primary)]/10 transition-colors" />
+                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] opacity-70 mb-1">{stat.label}</p>
+                        <p className={`text-2xl font-black ${stat.color}`}>{stat.value}</p>
                     </div>
                 ))}
             </div>
 
-            <section className="bg-white/5 border border-white/5 p-8 rounded-[40px] shadow-2xl relative overflow-hidden">
+            <section className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg shadow-sm overflow-hidden">
                 <DataTable
                     columns={columns}
                     data={payouts}

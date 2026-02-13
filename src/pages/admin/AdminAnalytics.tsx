@@ -40,63 +40,65 @@ const AdminAnalytics: React.FC = () => {
         fetchAnalytics();
     }, []);
 
-    if (loading) return <div className="layout-container py-20 text-center animate-pulse font-black text-2xl uppercase">Loading Intelligence...</div>;
-
     const cards = [
-        { title: 'Total Revenue', value: `$${stats.totalRevenue.toFixed(2)}`, icon: <FaDollarSign />, color: 'bg-accent-crypto', trend: '+12.5%' },
-        { title: 'Orders', value: stats.totalOrders, icon: <FaShoppingBag />, color: 'bg-accent-anime', trend: '+8.2%' },
-        { title: 'Creators', value: stats.totalCreators, icon: <FaUsers />, color: 'bg-primary-black', trend: '+4.1%' },
-        { title: 'Active Reach', value: stats.activeUsers, icon: <FaChartLine />, color: 'bg-primary-dark-gray', trend: '-2.4%' },
+        { title: 'Total Revenue', value: `$${stats?.totalRevenue?.toFixed(2) || '0.00'}`, icon: <FaDollarSign />, color: 'text-[var(--accent-secondary)]', bg: 'bg-[var(--accent-secondary)]', trend: '+12.5%' },
+        { title: 'Orders', value: stats?.totalOrders || 0, icon: <FaShoppingBag />, color: 'text-[var(--accent-primary)]', bg: 'bg-[var(--accent-primary)]', trend: '+8.2%' },
+        { title: 'Creators', value: stats?.totalCreators || 0, icon: <FaUsers />, color: 'text-[var(--text-primary)]', bg: 'bg-[var(--text-primary)]', trend: '+4.1%' },
+        { title: 'Active Reach', value: stats?.activeUsers || 0, icon: <FaChartLine />, color: 'text-[var(--text-secondary)]', bg: 'bg-[var(--text-secondary)]', trend: '-2.4%' },
     ];
 
-    return (
-        <div className="layout-container py-12 animate-fadeIn">
-            <h1 className="text-5xl font-black mb-4 tracking-tighter uppercase text-primary-black">Nexus Intelligence</h1>
-            <p className="text-primary-dark-gray/60 font-medium mb-12 uppercase tracking-[0.3em] text-xs">Real-time Platform Analytics</p>
+    if (loading) return <div className="p-10 text-center animate-pulse font-black text-sm text-[var(--text-muted)] uppercase tracking-widest">Loading Intelligence...</div>;
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    return (
+        <div className="space-y-6">
+            <div className="flex flex-col gap-1">
+                <h1 className="text-xl md:text-2xl font-black tracking-tighter text-[var(--text-primary)] uppercase">Nexus Intelligence</h1>
+                <p className="text-[var(--text-muted)] font-bold tracking-widest uppercase text-[9px]">Real-time Platform Analytics</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {cards.map((card, i) => (
-                    <div key={i} className="bg-primary-white border border-bg-light p-8 rounded-[40px] shadow-xl shadow-black/5 hover:scale-105 transition-all cursor-pointer group">
-                        <div className="flex justify-between items-start mb-6">
-                            <div className={`p-4 rounded-2xl ${card.color} text-primary-white shadow-lg`}>
-                                {card.icon}
+                    <div key={i} className="bg-[var(--bg-secondary)] border border-[var(--border)] p-4 rounded-lg shadow-sm hover:border-[var(--accent-primary)]/30 transition-all cursor-pointer group">
+                        <div className="flex justify-between items-start mb-3">
+                            <div className={`p-2 rounded-md bg-[var(--bg-elevated)] ${card.color} shadow-sm`}>
+                                {React.cloneElement(card.icon as React.ReactElement, { className: 'text-sm' })}
                             </div>
-                            <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full ${card.trend.startsWith('+') ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                            <span className={`text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${card.trend.startsWith('+') ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
                                 {card.trend}
                             </span>
                         </div>
-                        <h3 className="text-primary-dark-gray/40 font-black text-[10px] uppercase tracking-widest mb-1">{card.title}</h3>
-                        <p className="text-4xl font-black text-primary-black tracking-tighter">{card.value}</p>
+                        <h3 className="text-[var(--text-muted)] font-black text-[9px] uppercase tracking-widest mb-0.5 opacity-70">{card.title}</h3>
+                        <p className="text-xl font-black text-[var(--text-primary)] tracking-tight">{card.value}</p>
                     </div>
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="bg-primary-white border border-bg-light p-10 rounded-[40px] shadow-xl shadow-black/5">
-                    <h3 className="text-xl font-black mb-8 uppercase tracking-tight text-primary-black">Revenue Timeline</h3>
-                    <div className="h-64 bg-bg-light/30 rounded-3xl flex items-end justify-between p-8 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="bg-[var(--bg-secondary)] border border-[var(--border)] p-5 rounded-lg shadow-sm">
+                    <h3 className="text-base font-black mb-4 uppercase tracking-tight text-[var(--text-primary)]">Revenue Timeline</h3>
+                    <div className="h-48 bg-[var(--bg-elevated)]/30 rounded-lg flex items-end justify-between p-4 gap-2">
                         {[40, 70, 45, 90, 65, 80, 50, 85].map((h, i) => (
-                            <div key={i} className="flex-1 bg-accent-crypto rounded-t-lg transition-all hover:bg-accent-anime" style={{ height: `${h}%` }}></div>
+                            <div key={i} className={`flex-1 rounded-t-sm transition-all hover:opacity-80 ${i % 2 === 0 ? 'bg-[var(--accent-primary)]' : 'bg-[var(--accent-secondary)]'}`} style={{ height: `${h}%` }}></div>
                         ))}
                     </div>
-                    <div className="flex justify-between mt-4 text-[10px] font-black text-primary-dark-gray/30 uppercase tracking-widest px-2">
+                    <div className="flex justify-between mt-2 text-[8px] font-black text-[var(--text-muted)] uppercase tracking-widest px-1">
                         <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
                     </div>
                 </div>
 
-                <div className="bg-primary-white border border-bg-light p-10 rounded-[40px] shadow-xl shadow-black/5">
-                    <h3 className="text-xl font-black mb-8 uppercase tracking-tight text-primary-black">System Logs</h3>
-                    <div className="space-y-6">
+                <div className="bg-[var(--bg-secondary)] border border-[var(--border)] p-5 rounded-lg shadow-sm">
+                    <h3 className="text-base font-black mb-4 uppercase tracking-tight text-[var(--text-primary)]">System Logs</h3>
+                    <div className="space-y-3">
                         {[
                             { msg: 'New Drop "Genesis" approved', time: '2m ago', status: 'success' },
                             { msg: 'Inventory low: Over Tee (M)', time: '15m ago', status: 'warning' },
                             { msg: 'System update: v2.4.1 deployed', time: '1h ago', status: 'neutral' },
                             { msg: 'Security firewall: 0 threats', time: '3h ago', status: 'success' },
                         ].map((log, i) => (
-                            <div key={i} className="flex items-center gap-4 group">
-                                <div className={`w-2 h-2 rounded-full ${log.status === 'success' ? 'bg-green-500' : log.status === 'warning' ? 'bg-amber-500' : 'bg-primary-dark-gray/30'}`}></div>
-                                <p className="flex-1 text-sm font-bold text-primary-black group-hover:text-accent-anime transition-all">{log.msg}</p>
-                                <span className="text-[10px] font-black text-primary-dark-gray/30 uppercase">{log.time}</span>
+                            <div key={i} className="flex items-center gap-3 group p-2 hover:bg-[var(--bg-elevated)] rounded-md transition-colors">
+                                <div className={`w-1.5 h-1.5 rounded-full ${log.status === 'success' ? 'bg-green-500 shadow-[0_0_6px_var(--accent-secondary)]' : log.status === 'warning' ? 'bg-yellow-500' : 'bg-[var(--text-muted)]'}`}></div>
+                                <p className="flex-1 text-xs font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-all">{log.msg}</p>
+                                <span className="text-[9px] font-black text-[var(--text-muted)] uppercase">{log.time}</span>
                             </div>
                         ))}
                     </div>

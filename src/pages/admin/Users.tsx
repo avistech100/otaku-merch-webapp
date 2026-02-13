@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { FaUserShield, FaUserEdit, FaShieldAlt, FaUsers } from 'react-icons/fa';
+import { FaUserShield, FaUserEdit, FaShieldAlt } from 'react-icons/fa';
 import DataTable, { type Column } from '../../components/shared/DataTable';
 
 interface UserProfile {
@@ -64,12 +64,12 @@ const Users: React.FC = () => {
             header: 'Identity',
             accessor: (row) => (
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 font-black">
+                    <div className="w-8 h-8 rounded-md bg-[var(--bg-elevated)] flex items-center justify-center text-[var(--accent-primary)] font-black text-xs">
                         {row.username?.[0]?.toUpperCase() || 'U'}
                     </div>
                     <div className="flex flex-col">
-                        <span style={{ color: 'var(--text-primary)' }} className="font-bold text-sm">{row.display_name || row.username}</span>
-                        <span style={{ color: 'var(--text-muted)' }} className="text-[10px] font-black uppercase tracking-widest">{row.id.slice(0, 8)}</span>
+                        <span className="font-bold text-xs text-[var(--text-primary)]">{row.display_name || row.username}</span>
+                        <span className="text-[8px] font-black uppercase tracking-widest text-[var(--text-muted)] opacity-70">{row.id.slice(0, 8)}</span>
                     </div>
                 </div>
             )
@@ -77,9 +77,9 @@ const Users: React.FC = () => {
         {
             header: 'Access Level',
             accessor: (row) => (
-                <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${row.role === 'admin' ? 'bg-red-500/20 text-red-500' :
-                    row.role === 'creator' ? 'bg-purple-500/20 text-purple-500' :
-                        'bg-white/10 text-white'
+                <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border border-transparent ${row.role === 'admin' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
+                    row.role === 'creator' ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] border-[var(--accent-primary)]/20' :
+                        'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border-[var(--border)]'
                     }`}>
                     {row.role}
                 </span>
@@ -89,15 +89,15 @@ const Users: React.FC = () => {
             header: 'Status',
             accessor: (row) => (
                 <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${row.role === 'admin' ? 'bg-purple-500 shadow-[0_0_8px_rgba(139,92,246,0.5)]' : 'bg-green-500'}`} />
-                    <span className="text-xs font-medium" style={{ color: 'var(--text-secondary)' }}>Active Session</span>
+                    <div className={`w-1.5 h-1.5 rounded-full ${row.role === 'admin' ? 'bg-[var(--accent-secondary)] shadow-[0_0_8px_var(--accent-secondary)]' : 'bg-green-500'}`} />
+                    <span className="text-[10px] font-medium text-[var(--text-secondary)]">Active Session</span>
                 </div>
             )
         },
         {
             header: 'Joined',
             accessor: (row) => (
-                <span className="text-xs font-bold" style={{ color: 'var(--text-muted)' }}>
+                <span className="text-[10px] font-bold text-[var(--text-muted)]">
                     {new Date(row.created_at).toLocaleDateString()}
                 </span>
             )
@@ -105,16 +105,16 @@ const Users: React.FC = () => {
         {
             header: 'Actions',
             accessor: (row) => (
-                <div className="flex gap-2">
+                <div className="flex gap-1">
                     <button
                         onClick={() => toggleRole(row.id, row.role)}
                         title="Rotate Role"
-                        className="p-2 hover:bg-white/5 rounded-lg transition-colors text-purple-500"
+                        className="p-1.5 hover:bg-[var(--bg-elevated)] rounded-md transition-colors text-[var(--accent-primary)]"
                     >
-                        <FaShieldAlt />
+                        <FaShieldAlt className="text-xs" />
                     </button>
-                    <button className="p-2 hover:bg-white/5 rounded-lg transition-colors text-white/20 hover:text-white">
-                        <FaUserEdit />
+                    <button className="p-1.5 hover:bg-[var(--bg-elevated)] rounded-md transition-colors text-[var(--text-muted)] hover:text-[var(--text-primary)]">
+                        <FaUserEdit className="text-xs" />
                     </button>
                 </div>
             )
@@ -122,19 +122,15 @@ const Users: React.FC = () => {
     ];
 
     return (
-        <div className="space-y-10">
-            <div>
-                <h1 className="text-5xl font-black tracking-tighter mb-2 uppercase" style={{ color: 'var(--text-primary)' }}>User Registry</h1>
-                <p className="font-bold tracking-widest uppercase text-xs flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
-                    <FaUserShield className="text-purple-500" /> Administrative Access Required to Modify Records
+        <div className="space-y-6">
+            <div className="flex flex-col gap-1">
+                <h1 className="text-xl md:text-2xl font-black tracking-tighter text-[var(--text-primary)] uppercase">User Registry</h1>
+                <p className="text-[var(--text-muted)] font-bold tracking-widest uppercase text-[9px] flex items-center gap-2">
+                    <FaUserShield className="text-[var(--accent-primary)]" /> Administrative Access Required to Modify Records
                 </p>
             </div>
 
-            <section className="admin-card relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-8 pointer-events-none opacity-5">
-                    <FaUsers className="text-9xl" style={{ color: 'var(--text-primary)' }} />
-                </div>
-
+            <section className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg overflow-hidden shadow-sm">
                 <DataTable
                     columns={columns}
                     data={users}

@@ -42,15 +42,15 @@ const ContentManagement: React.FC = () => {
             header: 'Title',
             accessor: (row) => (
                 <div className="flex flex-col">
-                    <span style={{ color: 'var(--text-primary)' }} className="font-bold text-sm">{row.title}</span>
-                    <span style={{ color: 'var(--text-muted)' }} className="text-[10px] font-black uppercase tracking-widest">{row.slug}</span>
+                    <span className="font-bold text-[var(--text-primary)] text-xs">{row.title}</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] opacity-70">{row.slug}</span>
                 </div>
             )
         },
         {
             header: 'Type',
             accessor: (row) => (
-                <span style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-secondary)', borderColor: 'var(--border)' }} className="px-2 py-1 rounded text-[10px] font-black uppercase tracking-widest border">
+                <span className="px-1.5 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest border border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)]">
                     {row.type}
                 </span>
             )
@@ -58,16 +58,16 @@ const ContentManagement: React.FC = () => {
         {
             header: 'Status',
             accessor: (row) => (
-                <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${row.status === 'published' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]' : 'bg-yellow-500'}`} />
-                    <span style={{ color: 'var(--text-secondary)' }} className="text-[10px] font-black uppercase tracking-widest">{row.status}</span>
+                <div className="flex items-center gap-1.5">
+                    <div className={`w-1.5 h-1.5 rounded-full ${row.status === 'published' ? 'bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.5)]' : 'bg-yellow-500'}`} />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-secondary)]">{row.status}</span>
                 </div>
             )
         },
         {
             header: 'Created',
             accessor: (row) => (
-                <span style={{ color: 'var(--text-muted)' }} className="text-xs font-bold">
+                <span className="text-[10px] font-bold text-[var(--text-muted)]">
                     {new Date(row.created_at).toLocaleDateString()}
                 </span>
             )
@@ -75,18 +75,18 @@ const ContentManagement: React.FC = () => {
         {
             header: 'Operations',
             accessor: (row) => (
-                <div className="flex gap-2">
+                <div className="flex gap-1">
                     <button
                         onClick={() => console.log('Edit', row.id)}
-                        className="p-2 hover:bg-white/5 rounded-lg transition-all text-white/20 hover:text-white"
+                        className="p-1.5 hover:bg-[var(--bg-elevated)] rounded-md transition-all text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                     >
-                        <FaEdit size={12} />
+                        <FaEdit size={10} />
                     </button>
                     <button
                         onClick={() => console.log('Delete', row.id)}
-                        className="p-2 hover:bg-white/5 rounded-lg transition-all text-white/20 hover:text-red-500"
+                        className="p-1.5 hover:bg-[var(--bg-elevated)] rounded-md transition-all text-[var(--text-muted)] hover:text-red-500"
                     >
-                        <FaTrash size={12} />
+                        <FaTrash size={10} />
                     </button>
                 </div>
             )
@@ -94,20 +94,20 @@ const ContentManagement: React.FC = () => {
     ];
 
     return (
-        <div className="space-y-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div>
-                    <h1 style={{ color: 'var(--text-primary)' }} className="text-5xl font-black tracking-tighter mb-2 uppercase">Content System</h1>
-                    <p style={{ color: 'var(--text-muted)' }} className="font-bold tracking-widest uppercase text-xs flex items-center gap-2">
-                        <FaFileAlt className="text-purple-500" /> Platform Communication • Announcements & Articles
+        <div className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div className="flex flex-col gap-1">
+                    <h1 className="text-xl md:text-2xl font-black tracking-tighter text-[var(--text-primary)] uppercase">Content System</h1>
+                    <p className="text-[var(--text-muted)] font-bold tracking-widest uppercase text-[9px] flex items-center gap-2">
+                        <FaFileAlt className="text-[var(--accent-primary)]" /> Platform Communication • Announcements & Articles
                     </p>
                 </div>
-                <button className="h-14 px-8 rounded-2xl bg-white text-black font-black text-xs uppercase tracking-[0.2em] hover:bg-purple-500 hover:text-white transition-all shadow-xl flex items-center gap-3">
-                    <FaPlus /> New Transmission
+                <button className="h-9 px-4 rounded-md bg-[var(--text-primary)] text-[var(--bg-primary)] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-[var(--accent-primary)] hover:text-white transition-all shadow-md flex items-center gap-2">
+                    <FaPlus size={10} /> New Transmission
                 </button>
             </div>
 
-            <section className="admin-card relative overflow-hidden">
+            <section className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg shadow-sm overflow-hidden">
                 <DataTable
                     columns={columns}
                     data={content}
