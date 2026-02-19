@@ -61,7 +61,7 @@ const AdminAnalytics: React.FC = () => {
                     <div key={i} className="bg-[var(--bg-secondary)] border border-[var(--border)] p-4 rounded-lg shadow-sm hover:border-[var(--accent-primary)]/30 transition-all cursor-pointer group">
                         <div className="flex justify-between items-start mb-3">
                             <div className={`p-2 rounded-md bg-[var(--bg-elevated)] ${card.color} shadow-sm`}>
-                                {React.cloneElement(card.icon as React.ReactElement, { className: 'text-sm' })}
+                                {React.cloneElement(card.icon as React.ReactElement<{ className?: string }>, { className: 'text-sm' })}
                             </div>
                             <span className={`text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${card.trend.startsWith('+') ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
                                 {card.trend}
